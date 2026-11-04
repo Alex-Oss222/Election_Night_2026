@@ -21,8 +21,8 @@ Open `http://localhost:8000/` for the live results page. It has the following pa
 - **Office tabs:** Senate, House and governor.
 - **Seats bar:** seats not up, won and leading in votes, with the number needed to win.
 - **Map:** each state is colored by who leads in votes and by how much, and labeled with the leader's vote total. Hover or tap a state for the full count. The House tab shows seats won or led per state, plus a grid of all 435 seats.
-- **Ratings board:** called, safe, likely, lean and toss-up races, from the blended market odds.
-- **Battlegrounds:** a card for each battleground race.
+- **Status board:** every race placed by the leader's vote margin, from projected through within 1 point.
+- **Battlegrounds:** a card for each battleground race. Projected winners get a yellow check everywhere.
 - **All races:** a table you can filter and sort.
 - **Live feed:** AP calls and poll closings.
 

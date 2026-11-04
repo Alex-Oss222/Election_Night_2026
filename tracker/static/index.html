@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Election Night 2026</title>
-<meta name="description" content="Live 2026 midterm results: AP votes and calls with Polymarket and Kalshi odds.">
+<meta name="description" content="Live 2026 midterm results: AP vote counts and projected winners.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Public+Sans:wght@400;500;600;700&display=swap">
@@ -28,7 +28,7 @@
 
   <div class="layout">
     <main>
-      <div class="latest" id="latest">Loading results…</div>
+      <div id="latest" class="muted">Loading results…</div>
 
       <section aria-labelledby="seats-h">
         <h2 id="seats-h" hidden>Seats</h2>
@@ -71,7 +71,7 @@
           <div class="scale-row">
             <span style="background:var(--d4)"></span><span style="background:var(--d3)"></span><span style="background:var(--d2)"></span><span style="background:var(--d1)"></span><span style="background:var(--toss)"></span><span style="background:var(--r1)"></span><span style="background:var(--r2)"></span><span style="background:var(--r3)"></span><span style="background:var(--r4)"></span>
           </div>
-          <div class="scale-labels"><span>Called</span><span>Leads 10+</span><span>5–10</span><span>1–5</span><span>Within 1</span><span>1–5</span><span>5–10</span><span>Leads 10+</span><span>Called</span></div>
+          <div class="scale-labels"><span>Projected</span><span>Leads 10+</span><span>5–10</span><span>1–5</span><span>Within 1</span><span>1–5</span><span>5–10</span><span>Leads 10+</span><span>Projected</span></div>
         </div>
         <div class="map-box" id="map-box">
           <svg id="map" viewBox="0 0 1060 610" role="img" aria-label="Map of results by state"></svg>
@@ -81,7 +81,7 @@
       </section>
 
       <section aria-labelledby="board-h">
-        <h2 id="board-h">Race ratings from the markets</h2>
+        <h2 id="board-h">Where every race stands</h2>
         <div class="board-scroll"><div class="board" id="board"></div></div>
         <p class="board-note" id="board-note"></p>
       </section>
@@ -113,8 +113,7 @@
 
 <footer>
   <div class="wrap">
-    <p>Votes and race calls: AP, read from the New York Times results feed. Unofficial until certified. AP calls can trail network projections.</p>
-    <p>Odds: Polymarket and Kalshi prices, averaged. They are market prices, not a forecast. Ratings tiers: safe 90%+, likely 75–90, lean 60–75, toss-up 40–60.</p>
+    <p>Votes and projected winners: AP, read from the New York Times results feed. Unofficial until certified. AP calls can trail network projections.</p>
     <p>Map: U.S. Census Bureau boundaries via us-atlas. Data refreshes every 3 seconds; the results feed itself updates about every 10.</p>
   </div>
 </footer>

@@ -122,18 +122,15 @@
     if (st.kind === "counting") return "var(--ink-on-light)";
     return "var(--muted)";
   }
+  const YCK = '<i class="yck" title="Projected winner">✓</i>';
   function statusPill(r, st) {
     if (st.kind === "called") {
-      const label = st.unopposed ? "Unopposed" : `AP call ✓ ${PARTY_ADJ[st.party]}${st.flip ? " flip" : ""}`;
-      return `<span class="pill called-${st.party}">${label}</span>`;
+      if (st.unopposed) return `<span class="pill won">Unopposed ✓</span>`;
+      return `<span class="pill won">Projected winner ✓</span>${st.flip ? ` <span class="tag flip">${PARTY_ADJ[st.party]} FLIP</span>` : ""}`;
     }
-    if (st.kind === "counting") return `<span class="pill wait">Too early to call</span> <span class="muted">${pctIn(r.eevp)} in</span>`;
+    if (st.kind === "counting") return `<span class="pill early">Too early to call</span> <span class="muted">${pctIn(r.eevp)} in</span>`;
     if (st.kind === "closed") return `<span class="pill plain">Polls closed · no votes yet</span>`;
     return `<span class="pill plain">Polls close ${etTime(r.poll_close) || "later"} ET</span>`;
-  }
-  function marketLine(blend) {
-    const ps = Object.entries(blend || {}).filter(([, v]) => v != null).sort((a, b) => b[1] - a[1]);
-    return ps.length ? ps.map(([p, v]) => `${p} ${pct(v)}`).join(" · ") : "no market";
   }
   const officeRaces = () => byOffice[office] || [];
   function groupBy(arr, f) { const o = {}; for (const x of arr) (o[f(x)] ||= []).push(x); return o; }
@@ -179,19 +176,16 @@
       const txt = liveWs && liveWs.ok && !liveWs.stale ? "live" : s && s.age_seconds != null ? `${Math.round(s.age_seconds)}s` : "–";
       return `<span class="src ${cls}" title="${esc(name)} data age">${esc(name)} ${txt}</span>`;
     };
-    $("sources").innerHTML = chip("AP votes", src.nyt) + chip("Polymarket", src.polymarket, src.polymarket_ws) + chip("Kalshi", src.kalshi, src.kalshi_ws);
+    $("sources").innerHTML = chip("AP votes", src.nyt);
   }
 
   function renderTabs() {
     for (const o of OFFICES) {
       $(`tab-${o}`).setAttribute("aria-selected", String(o === office));
-      const b = data.control && data.control[o] && data.control[o].blend;
+      const rs = byOffice[o] || [];
       const el = $(`tab-odds-${o}`);
-      if (b && (b.D != null || b.R != null)) {
-        const p = (b.D || 0) >= (b.R || 0) ? "D" : "R";
-        el.textContent = `${p} ${pct(b[p])}`;
-        el.className = lc(p);
-      } else el.textContent = "";
+      el.textContent = rs.length ? `${rs.filter((r) => r.called).length}/${rs.length} called` : "";
+      el.className = "muted";
     }
     $("view-map").hidden = $("view-seats").hidden = office !== "house";
     $("view-map").setAttribute("aria-pressed", String(houseView === "map"));
@@ -199,11 +193,16 @@
     $("bg-only").setAttribute("aria-pressed", String(bgOnly));
   }
 
+  function officeLine(r) {
+    if (r.office === "house") return distNum(r) === "AL" ? "At-large district" : `House District ${distNum(r)}`;
+    return r.office === "senate" ? (r.special ? "Senate special" : "Senate") : "Governor";
+  }
   function renderLatest() {
     const c = data.calls && data.calls[0];
-    if (!c) { $("latest").textContent = "No races called yet."; return; }
-    const r = byKey[c.key];
-    $("latest").innerHTML = `Latest call ${esc(etTime(c.at))}: <b>${esc(r ? raceName(r) : c.key)}</b>, ${esc(c.winner)} (${esc(c.party)})${c.flip === true ? " · flip" : c.flip === false ? " · hold" : ""}`;
+    const r = c && byKey[c.key];
+    if (!r) { $("latest").innerHTML = '<span class="muted">No projected winners yet.</span>'; return; }
+    const st = standing(r);
+    $("latest").innerHTML = `<div class="latest-card" data-key="${esc(r.key)}"><div class="lc-head"><span class="eyebrow">Latest projection · ${esc(etTime(c.at))} ET</span><h3>${esc(STATE_NAMES[r.state] || r.state)}</h3><div class="sub">${esc(officeLine(r))}</div></div><div class="lc-body">${statusPill(r, st)}${candRows(r, st, 2)}</div></div>`;
   }
 
   // ------------------------------------------------------------------ seats bar
@@ -251,37 +250,24 @@
     return `<div class="cell"><div class="eyebrow">${label}</div><div class="v">${value}</div>${sub ? `<div class="s">${sub}</div>` : ""}${extra}</div>`;
   }
   function renderStrip() {
-    const out = [];
-    const c = data.control && data.control[office];
-    if (c && c.blend) {
-      const b = c.blend;
-      out.push(cell("Control odds", `<span class="d">D ${pct(b.D)}</span> · <span class="r">R ${pct(b.R)}</span>`,
-        "Polymarket and Kalshi averaged",
-        `<div class="oddsbar"><span style="width:${(b.D || 0) * 100}%;background:var(--d3)"></span><span style="width:${(b.R || 0) * 100}%;background:var(--r3)"></span></div>`));
-      const pm = c.polymarket || {}, kx = c.kalshi || {};
-      out.push(cell("Each market, Dem", `${pct(pm.D, 1)} / ${pct(kx.D, 1)}`, "Polymarket / Kalshi"));
-      const nd = c.nyt_needle && c.nyt_needle.D;
-      if (nd) out.push(cell("NYT model, Dem", `${pct(nd.win_prob)} · ${nd.seats ?? "–"} seats`, `Range ${(nd.seats_quantile || []).slice(1, 4).join("–") || "–"}`));
-      const s6 = c.since_6pm && c.since_6pm.D;
-      if (s6 != null) out.push(cell("Since 6 pm ET", `<span class="${s6 >= 0 ? "d" : "r"}">D ${s6 >= 0 ? "+" : ""}${(s6 * 100).toFixed(1)} pts</span>`, "Change in Dem control odds"));
-    }
-    const pr = data.projection && data.projection[office];
-    if (pr && pr.parties) {
-      const P = pr.parties;
-      const tu = pr.tossups || [];
-      out.push(cell("Markets project", `<span class="d">D ${P.D ? P.D.projected : "–"}</span> · <span class="r">R ${P.R ? P.R.projected : "–"}</span>`,
-        `${tu.length} toss-up${tu.length === 1 ? "" : "s"}${tu.length ? ": " + tu.slice(0, 4).map((k) => byKey[k] ? shortName(byKey[k]) : k).join(", ") : ""}`));
-    }
-    const ch = data.chambers && data.chambers[office];
-    if (ch && ch.flips) out.push(cell("Flips so far", `<span class="d">D ${ch.flips.D || 0}</span> · <span class="r">R ${ch.flips.R || 0}</span>`, "Seats changing party, AP calls"));
-    if ((office === "senate" || office === "house") && data.control && data.control.balance_of_power) {
-      const bp = data.control.balance_of_power;
-      out.push(cell("Both chambers", `Dem sweep ${pct(bp["Democrats Sweep"])}`, `GOP sweep ${pct(bp["Republicans Sweep"])} · split ${pct((bp["D Senate, R House"] || 0) + (bp["R Senate, D House"] || 0))}`));
-    }
     const rs = officeRaces();
-    const reporting = rs.filter((r) => (r.total_votes || 0) > 0).length;
-    out.push(cell("Races reporting", `${reporting} of ${rs.length}`, `${rs.filter((r) => r.called).length} called`));
-    $("strip").innerHTML = out.join("");
+    const n = { calledD: 0, calledR: 0, calledI: 0, leadD: 0, leadR: 0, leadI: 0, flipD: 0, flipR: 0, flipI: 0, close: 0, waiting: 0 };
+    for (const r of rs) {
+      const st = standing(r);
+      if (st.kind === "called") { n["called" + st.party]++; if (st.flip) n["flip" + st.party]++; }
+      else if (st.kind === "counting") { n["lead" + st.party]++; if (st.margin < 1) n.close++; }
+      else n.waiting++;
+    }
+    const exp = rs.reduce((s, r) => s + (r.expected_votes || 0), 0), got = rs.reduce((s, r) => s + (r.total_votes || 0), 0);
+    const dr = (k) => `<span class="d">D ${n[k + "D"]}</span> · <span class="r">R ${n[k + "R"]}</span>${n[k + "I"] ? ` · <span class="i">I ${n[k + "I"]}</span>` : ""}`;
+    $("strip").innerHTML = [
+      cell("Projected winners", dr("called"), `${n.calledD + n.calledR + n.calledI} of ${rs.length} races called by AP`),
+      cell("Leading in votes", dr("lead"), "Uncalled races with votes counted"),
+      cell("Within 1 point", String(n.close), "Closest uncalled races"),
+      cell("No votes yet", String(n.waiting), "Polls open, or closed with nothing counted"),
+      cell("Expected vote in", exp ? `${Math.round((got / exp) * 100)}%` : "–", `${fmtN(got)} votes counted`),
+      cell("Flips so far", dr("flip"), "Seats changing party"),
+    ].join("");
   }
 
   // ------------------------------------------------------------------ map
@@ -322,30 +308,31 @@
     const r = rs.find((x) => !x.special) || rs[0];
     const st = standing(r);
     let val = "";
-    if (st.kind === "called") val = st.unopposed ? "Unopp." : st.tv ? "✓ " + fmtV(st.lead && st.lead.votes) : "✓";
+    if (st.kind === "called") val = st.unopposed ? "Unopp." : st.tv ? fmtV(st.lead && st.lead.votes) : "";
     else if (st.kind === "counting") val = fmtV(st.lead.votes);
     else if (st.kind === "closed") val = "–";
     else val = etTime(r.poll_close);
-    return { st, val };
+    return { st, val, check: st.kind === "called" };
   }
+  const labelHtml = (val, check) => (check ? '<tspan class="ck">✓</tspan> ' : "") + esc(val);
   function updateMap() {
     const by = groupBy(officeRaces(), (r) => r.state);
     for (const el of document.querySelectorAll("#map [data-st]")) {
       const ab = el.dataset.st, rs = by[ab];
-      const { st, val } = stateView(ab, rs);
+      const { st, val, check } = stateView(ab, rs);
       const dim = bgOnly && rs && !rs.some((r) => r.battleground);
       const ink = inkOf(st);
       if (el.tagName.toLowerCase() === "g") {
         el.querySelector("rect").style.fill = fillSvg(st);
         const t = el.querySelectorAll("text");
         t[0].style.fill = t[1].style.fill = ink;
-        t[1].textContent = val;
+        t[1].innerHTML = labelHtml(val, check);
         el.classList.toggle("dim", !!dim);
       } else {
         el.style.fill = fillSvg(st);
         el.classList.toggle("dim", !!dim);
         const lbl = document.querySelector(`[data-lbl="${ab}"]`);
-        if (lbl) { lbl.style.fill = ink; lbl.lastElementChild.textContent = val; lbl.classList.toggle("dim", !!dim); }
+        if (lbl) { lbl.style.fill = ink; lbl.lastElementChild.innerHTML = labelHtml(val, check); lbl.classList.toggle("dim", !!dim); }
       }
     }
     $("map-note").textContent = office === "house"
@@ -365,37 +352,33 @@
       }).join("")}</div></div>`).join("");
   }
 
-  // ------------------------------------------------------------------ rating board
-  const COLS = [["called", "D", "Called"], ["safe", "D", "Safe"], ["likely", "D", "Likely"], ["lean", "D", "Lean"], ["tossup", null, "Toss-up"],
-    ["lean", "R", "Lean"], ["likely", "R", "Likely"], ["safe", "R", "Safe"], ["called", "R", "Called"]];
-  const STEP = { called: 4, safe: 3, likely: 2, lean: 1 };
+  // ------------------------------------------------------------------ status board: every race by vote margin
+  const COLS = [["called", "D", "Projected"], [3, "D", "Leads 10+"], [2, "D", "Leads 5–10"], [1, "D", "Leads 1–5"], [0, null, "Within 1"],
+    [1, "R", "Leads 1–5"], [2, "R", "Leads 5–10"], [3, "R", "Leads 10+"], ["called", "R", "Projected"]];
   function renderBoard() {
-    const cols = COLS.map((c) => ({ tier: c[0], party: c[1], label: c[2], races: [] }));
-    const ind = { tier: "any", party: "I", label: "Independent", races: [] };
-    let unpriced = 0;
+    const cols = COLS.map(([step, party, label]) => ({ step, party, label, races: [] }));
+    const indCalled = { step: "called", party: "I", label: "Projected", races: [] }, indLead = { step: 2, party: "I", label: "Leads", races: [] };
+    let waiting = 0;
     for (const r of officeRaces()) {
-      let tier, party;
-      if (r.called) { tier = "called"; party = standing(r).party; }
-      else if (r.tier === "tossup") { tier = "tossup"; party = null; }
-      else if (STEP[r.tier]) { tier = r.tier; party = r.tier_party; }
-      else { unpriced++; continue; }
-      if (party === "I") { ind.races.push(r); continue; }
-      const col = cols.find((c) => c.tier === tier && c.party === party);
-      if (col) col.races.push(r); else unpriced++;
+      const st = standing(r);
+      if (st.kind !== "called" && st.kind !== "counting") { waiting++; continue; }
+      const step = st.kind === "called" ? "called" : st.step;
+      if (st.party === "I" && step !== 0) { (step === "called" ? indCalled : indLead).races.push(r); continue; }
+      (step === 0 ? cols[4] : cols.find((c) => c.step === step && c.party === st.party)).races.push(r);
     }
-    if (ind.races.length) cols.splice(5, 0, ind);
+    for (const extra of [indLead, indCalled]) if (extra.races.length) cols.splice(5, 0, extra);
     const cap = office === "house" ? 40 : 60;
     $("board").style.setProperty("--cols", cols.length);
     $("board").innerHTML = cols.map((c) => {
-      const p = c.party, step = c.tier === "tossup" ? 0 : STEP[c.tier] || 2;
-      const bg = p ? `var(--${lc(p)}${step})` : "var(--toss)";
-      const ink = !p || step <= 2 ? "var(--ink-on-light)" : "#fff";
-      const head = p ? `<span class="${lc(p)}">${c.label}</span>` : c.label;
+      const p = c.party, called = c.step === "called";
+      const bg = !p ? "var(--toss)" : `var(--${lc(p)}${called ? 4 : c.step})`;
+      const ink = p && (called || c.step === 3) ? "#fff" : "var(--ink-on-light)";
+      const head = p ? `<span class="${lc(p)}">${p === "I" ? "Ind " : ""}${c.label}</span>${called ? YCK : ""}` : c.label;
       const chips = c.races.slice(0, cap).map((r) => `<span class="rchip" data-key="${esc(r.key)}" style="background:${bg};color:${ink}">${esc(shortName(r))}</span>`).join("");
       const more = c.races.length > cap ? `<span class="rchip" style="background:var(--panel-2);color:var(--muted)">+${c.races.length - cap}</span>` : "";
       return `<div class="col${p ? "" : " mid"}"><span class="cnt ${p ? lc(p) : ""}">${c.races.length}</span><h3>${head}</h3><div class="chips">${chips}${more}</div></div>`;
     }).join("");
-    $("board-note").textContent = `Tiers come from blended market prices: safe 90%+, likely 75–90, lean 60–75, toss-up 40–60. AP calls override the markets.${office === "senate" && officeRaces().some((r) => r.special) ? " * Special election." : ""}${unpriced ? ` ${unpriced} race${unpriced === 1 ? " has" : "s have"} no market and ${unpriced === 1 ? "is" : "are"} left off.` : ""}`;
+    $("board-note").textContent = `Uncalled races are placed by the leader's margin in the votes counted so far, in percentage points. Projected means AP has called it.${office === "senate" && officeRaces().some((r) => r.special) ? " * Special election." : ""}${waiting ? ` ${waiting} race${waiting === 1 ? " has" : "s have"} no votes counted yet.` : ""}`;
   }
 
   // ------------------------------------------------------------------ battleground cards
@@ -404,19 +387,20 @@
     return cs.map((c) => {
       const p = partyOf(c), share = tv ? ((c.votes || 0) / tv) * 100 : null;
       const lead = tv && c === st.cs[0];
-      return `<div class="cand${lead ? " lead" : ""}"><span class="pbox ${p}">${esc(letter(c))}</span><span class="nm">${esc(lastName(c.name))}${c.incumbent ? ' <span class="muted">(i)</span>' : ""}${c.winner ? " ✓" : ""}</span><span class="pc">${share == null ? "0%" : share.toFixed(1) + "%"}<span class="vt">${fmtN(c.votes)}</span></span></div>`;
+      return `<div class="cand${lead ? " lead" : ""}"><span class="pbox ${p}">${esc(letter(c))}</span><span class="nm">${esc(lastName(c.name))}${c.incumbent ? ' <span class="muted">(i)</span>' : ""}${c.winner ? YCK : ""}</span><span class="pc">${share == null ? "0%" : share.toFixed(1) + "%"}<span class="vt">${fmtN(c.votes)}</span></span></div>`;
     }).join("");
   }
   function renderCards() {
     let rs = officeRaces().filter((r) => r.battleground);
     let title = "Battlegrounds";
-    if (!rs.length) { rs = officeRaces().filter((r) => !r.called && r.tier && r.tier !== "safe"); title = "Competitive races"; }
+    if (!rs.length) { rs = officeRaces().filter((r) => { const s = standing(r); return s.kind === "counting" && s.margin < 10; }); title = "Close races"; }
     $("bg-h").textContent = `${{ senate: "Senate", house: "House", governor: "Governor" }[office]} ${title.toLowerCase()}`;
     const shown = allCards ? rs : rs.slice(0, 12);
     $("cards").innerHTML = shown.map((r) => {
       const st = standing(r);
       const sub = r.office === "house" ? (distNum(r) === "AL" ? "At-large district" : `House District ${distNum(r)}`) : r.special ? "Special election" : "";
-      const mk = r.blend && Object.keys(r.blend).length ? `Markets ${marketLine(r.blend)}` : "No market";
+      const mk = st.kind === "called" && r.called_at ? `Called ${etTime(r.called_at)} ET` : st.tv ? `${fmtN(st.tv)} votes counted`
+        : r.poll_close ? `Polls ${new Date(r.poll_close) <= Date.now() ? "closed" : "close"} ${etTime(r.poll_close)} ET` : "";
       return `<div class="card" data-key="${esc(r.key)}"><h3>${esc(STATE_NAMES[r.state] || r.state)} ›</h3><div class="sub">${esc(sub)}</div>${statusPill(r, st)}${candRows(r, st, st.cs.length > 2 && st.tv && (st.cs[2].votes || 0) / st.tv > 0.05 ? 3 : 2)}<div class="mk">${esc(mk)}${r.est_votes_outstanding ? ` · ~${fmtV(r.est_votes_outstanding)} left to count` : ""}</div></div>`;
     }).join("") || `<div class="empty">No battleground races for this office.</div>`;
     const more = $("cards-more");
@@ -430,10 +414,10 @@
     if (!c) return `<span class="sm">—</span>`;
     const share = st.tv ? ((c.votes || 0) / st.tv) * 100 : null;
     const lead = st.tv && c === st.cs[0];
-    return `<span class="${lead ? "w" : ""}">${esc(lastName(c.name))}${c.winner ? " ✓" : ""}</span> ${share == null ? "" : share.toFixed(1) + "%"}<div class="sm">${fmtN(c.votes)}</div>`;
+    return `<span class="${lead ? "w" : ""}">${esc(lastName(c.name))}${c.winner ? YCK : ""}</span> ${share == null ? "" : share.toFixed(1) + "%"}<div class="sm">${fmtN(c.votes)}</div>`;
   }
   function renderTable() {
-    const head = [["race", "Race"], ["dem", "Democrat"], ["rep", "Republican"], ["oth", "Other"], ["in", "% in", "n"], ["status", "Status"], ["mkt", "Markets", "n"]];
+    const head = [["race", "Race"], ["dem", "Democrat"], ["rep", "Republican"], ["oth", "Other"], ["in", "% in", "n"], ["status", "Status"]];
     $("tbl").tHead.innerHTML = `<tr>${head.map(([k, t, cls]) => `<th class="${cls || ""}"><button data-sort="${k}">${t}${sortKey === k ? (sortDir > 0 ? " ▴" : " ▾") : ""}</button></th>`).join("")}</tr>`;
     const q = query.trim().toLowerCase();
     let rows = officeRaces().map((r) => ({ r, st: standing(r) }));
@@ -444,15 +428,15 @@
     };
     const rank = { called: 3, counting: 2, closed: 1, open: 0 };
     const keyf = { race: null, in: ({ r }) => r.eevp || 0, dem: margin, rep: (x) => -margin(x), status: ({ st }) => rank[st.kind],
-      mkt: ({ r }) => (r.blend && r.blend.D) || 0, oth: ({ st }) => { const o = best(st, (p) => p === "I"); return o && st.tv ? o.votes / st.tv : 0; } }[sortKey];
+oth: ({ st }) => { const o = best(st, (p) => p === "I"); return o && st.tv ? o.votes / st.tv : 0; } }[sortKey];
     if (keyf) rows.sort((a, b) => (keyf(a) - keyf(b)) * sortDir || raceSort(a.r, b.r));
     else if (sortDir < 0) rows.reverse();
     $("tbl-count").textContent = `${rows.length} race${rows.length === 1 ? "" : "s"}`;
     $("tbl").tBodies[0].innerHTML = rows.map(({ r, st }) => {
-      const status = st.kind === "called" ? `<span class="${lc(st.party)}">✓ ${PARTY_ADJ[st.party]}${st.flip ? " flip" : ""}</span>`
+      const status = st.kind === "called" ? `<span class="${lc(st.party)}">${PARTY_ADJ[st.party]} win${st.flip ? " (flip)" : ""}</span>${YCK}`
         : st.kind === "counting" ? `<span class="${lc(st.party)}"><i class="lead-dot" style="background:var(--${lc(st.party)}3)"></i>${PARTY_ADJ[st.party]} +${st.margin.toFixed(1)}</span>`
           : st.kind === "closed" ? "Polls closed" : `Polls close ${etTime(r.poll_close)}`;
-      return `<tr data-key="${esc(r.key)}"><td><b>${esc(raceName(r))}</b></td><td>${candCell(best(st, (p) => p === "D"), st)}</td><td>${candCell(best(st, (p) => p === "R"), st)}</td><td>${candCell(best(st, (p) => p === "I"), st)}</td><td class="n">${pctIn(r.eevp)}<div class="sm">${fmtV(r.total_votes)}</div></td><td>${status}</td><td class="n">${r.blend && r.blend.D != null ? `D ${pct(r.blend.D)}` : "—"}</td></tr>`;
+      return `<tr data-key="${esc(r.key)}"><td><b>${esc(raceName(r))}</b></td><td>${candCell(best(st, (p) => p === "D"), st)}</td><td>${candCell(best(st, (p) => p === "R"), st)}</td><td>${candCell(best(st, (p) => p === "I"), st)}</td><td class="n">${pctIn(r.eevp)}<div class="sm">${fmtV(r.total_votes)}</div></td><td>${status}</td></tr>`;
     }).join("");
   }
 
@@ -466,7 +450,7 @@
       const w = (r.candidates || []).find((x) => x.winner);
       const verb = w && w.incumbent ? `wins re-election in ${placePhrase(r)}` : `wins ${placePhrase(r)}`;
       const tag = c.flip === true ? '<span class="tag flip">FLIP</span>' : c.flip === false ? '<span class="tag hold">HOLD</span>' : "";
-      items.push({ at: c.at, cls: p, when: `${{ senate: "Senate", house: "House", governor: "Governor" }[r.office]} · AP call`, what: `${PARTY_WORD[p]} ${esc(c.winner)} ${esc(verb)}${tag}` });
+      items.push({ at: c.at, cls: p, when: `${{ senate: "Senate", house: "House", governor: "Governor" }[r.office]} · Projected winner`, what: `${PARTY_WORD[p]} ${esc(c.winner)} ${esc(verb)}${YCK}${tag}` });
     }
     for (const pc of pollClosings()) if (new Date(pc.at) <= Date.now()) {
       items.push({ at: pc.at, cls: "poll", when: "Polls closed", what: `Polls closed in ${pc.states.length} state${pc.states.length === 1 ? "" : "s"}: ${pc.states.join(", ")}` });
@@ -483,13 +467,12 @@
     let h = `<h4>${esc(raceName(r))}</h4>${statusPill(r, st)}`;
     for (const c of st.cs.slice(0, 4)) {
       const p = partyOf(c), share = tv ? (c.votes || 0) / tv : 0;
-      h += `<div class="row"><span class="pbox ${p}">${esc(letter(c))}</span><span class="${tv && c === st.cs[0] ? "w" : ""}">${esc(c.name)}${c.incumbent ? ' <span class="muted">(i)</span>' : ""}${c.winner ? " ✓" : ""}</span><span class="num">${tv ? (share * 100).toFixed(1) + "%" : "–"}</span><span class="vv">${fmtN(c.votes)}</span></div><div class="barline"><span style="width:${(share * 100).toFixed(1)}%;background:var(--${lc(p)}3)"></span></div>`;
+      h += `<div class="row"><span class="pbox ${p}">${esc(letter(c))}</span><span class="${tv && c === st.cs[0] ? "w" : ""}">${esc(c.name)}${c.incumbent ? ' <span class="muted">(i)</span>' : ""}${c.winner ? YCK : ""}</span><span class="num">${tv ? (share * 100).toFixed(1) + "%" : "–"}</span><span class="vv">${fmtN(c.votes)}</span></div><div class="barline"><span style="width:${(share * 100).toFixed(1)}%;background:var(--${lc(p)}3)"></span></div>`;
     }
     const foot = [];
     if (tv) foot.push(`${pctIn(r.eevp)} of expected vote in · ${fmtN(r.total_votes)} counted`);
     if (r.est_votes_outstanding) foot.push(`About ${fmtN(r.est_votes_outstanding)} votes left to count`);
     if (r.called && r.called_at) foot.push(`AP called it at ${etTime(r.called_at)} ET`);
-    foot.push(`Markets: ${marketLine(r.blend)}`);
     if (RATING[r.rating]) foot.push(`Pre-election rating: ${RATING[r.rating]}`);
     if (r.poll_close) foot.push(`Polls ${new Date(r.poll_close) <= Date.now() ? "closed" : "close"} ${etTime(r.poll_close)} ET`);
     return h + `<div class="foot">${foot.map((f) => `<span>${esc(f)}</span>`).join("")}</div>`;
@@ -501,7 +484,7 @@
     const rows = rs.map((r) => {
       const st = standing(r);
       const who = st.lead && (st.kind === "called" || st.kind === "counting")
-        ? `<span class="${lc(st.party)}">${esc(lastName(st.lead.name))}${st.kind === "called" ? " ✓" : ""}</span>${st.kind === "counting" ? ` +${st.margin.toFixed(1)}` : ""}`
+        ? `<span class="${lc(st.party)}">${esc(lastName(st.lead.name))}${st.kind === "called" ? YCK : ""}</span>${st.kind === "counting" ? ` +${st.margin.toFixed(1)}` : ""}`
         : `<span class="muted">${st.kind === "closed" ? "no votes yet" : "polls open"}</span>`;
       return `<div class="row" style="grid-template-columns:44px 1fr auto"><b>${esc(shortName(r))}</b><span>${who}</span><span class="vv">${pctIn(r.eevp)} in</span></div>`;
     }).join("");
