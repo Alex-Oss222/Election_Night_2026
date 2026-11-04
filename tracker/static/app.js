@@ -201,48 +201,40 @@
     const c = data.calls && data.calls[0];
     const r = c && byKey[c.key];
     if (!r) { $("latest").innerHTML = '<span class="muted">No projected winners yet.</span>'; return; }
-    const st = standing(r);
-    $("latest").innerHTML = `<div class="latest-card" data-key="${esc(r.key)}"><div class="lc-head"><span class="eyebrow">Latest projection · ${esc(etTime(c.at))} ET</span><h3>${esc(STATE_NAMES[r.state] || r.state)}</h3><div class="sub">${esc(officeLine(r))}</div></div><div class="lc-body">${statusPill(r, st)}${candRows(r, st, 2)}</div></div>`;
+    $("latest").innerHTML = raceCard(r, { eyebrow: `Latest projection · ${etTime(c.at)} ET`, office: true });
   }
 
   // ------------------------------------------------------------------ seats bar
   function renderSeats() {
     const rs = officeRaces();
-    const won = { D: 0, R: 0, I: 0 }, lead = { D: 0, R: 0, I: 0 };
+    const won = { D: 0, R: 0, I: 0 }, lead = { D: 0, R: 0, I: 0 }, flips = { D: 0, R: 0, I: 0 };
     let none = 0;
     for (const r of rs) {
       const st = standing(r);
-      if (st.kind === "called") won[st.party]++;
+      if (st.kind === "called") { won[st.party]++; if (st.flip) flips[st.party]++; }
       else if (st.kind === "counting") lead[st.party]++;
       else none++;
     }
     const ch = data.chambers && data.chambers[office];
     const notUp = { D: 0, R: 0, I: 0, ...((ch && ch.not_up) || {}) };
     const total = (ch && ch.total) || rs.length || 1;
-    const toWin = ch && ch.to_win;
     const isGov = office === "governor";
-    $("seat-d").textContent = notUp.D + won.D;
-    $("seat-r").textContent = notUp.R + won.R;
-    $("seat-d-label").textContent = isGov ? "Democratic wins" : "Democratic seats";
-    $("seat-r-label").textContent = isGov ? "Republican wins" : "Republican seats";
-    if (toWin && office === "senate") $("to-win").innerHTML = `<b>${toWin.D}</b>Dems need ${toWin.D}, GOP ${toWin.R} with the VP`;
-    else if (toWin) $("to-win").innerHTML = `<b>${toWin.D}</b>to win`;
-    else $("to-win").innerHTML = `<b>${rs.length}</b>races`;
-    const segs = [
-      [notUp.D, "background:var(--d4)", "Dem not up"], [won.D, "background:var(--d3)", "Dem won"], [lead.D, "", "Dem leading", "seg-hatch-d"],
-      [notUp.I + won.I, "background:var(--i3)", "Ind seats"], [lead.I, "", "Ind leading", "seg-hatch-i"],
-      [none, "background:var(--open)", "No votes yet"],
-      [lead.R, "", "GOP leading", "seg-hatch-r"], [won.R, "background:var(--r3)", "GOP won"], [notUp.R, "background:var(--r4)", "GOP not up"],
-    ];
-    const marker = toWin ? (office === "senate" ? total / 2 : toWin.D) / total : null;
-    $("seat-bar").innerHTML = segs.filter((s) => s[0] > 0).map(([n, style, t, cls]) =>
-      `<span class="${cls || ""}" style="width:${(n / total) * 100}%;${style}" title="${t}: ${n}"></span>`).join("")
-      + (marker != null ? `<i class="marker" style="left:${marker * 100}%"></i>` : "");
-    $("seat-bar").setAttribute("aria-label", `Democrats ${notUp.D + won.D} seats, Republicans ${notUp.R + won.R}, ${none} races with no votes yet`);
-    const left = [isGov ? null : `${notUp.D} not up`, `${won.D} won`, `${lead.D} leading`].filter(Boolean).join(" · ");
-    const right = [`${lead.R} leading`, `${won.R} won`, isGov ? null : `${notUp.R} not up`].filter(Boolean).join(" · ");
-    const ind = notUp.I + won.I + lead.I ? ` · Ind ${notUp.I + won.I} won, ${lead.I} leading` : "";
-    $("bar-labels").innerHTML = `<span class="d">${left}</span><span>${rs.length} up · ${none} with no votes yet${ind}</span><span class="r">${right}</span>`;
+    const seats = { D: notUp.D + won.D, R: notUp.R + won.R, I: notUp.I + won.I };
+    $("seat-d").textContent = seats.D;
+    $("seat-r").textContent = seats.R;
+    const mark = office === "senate" ? total / 2 : ch && ch.to_win ? ch.to_win.D : null;
+    $("to-win").textContent = mark ? `${mark} seats` : `${rs.length} races`;
+    const w = (n) => (n / total) * 100;
+    const segs = [[seats.D, "seg-d", "Democrats"], [lead.D, "seg-d-lead", "Democrats leading in votes"], [seats.I, "seg-i", "Independents"],
+      [lead.I, "seg-i-lead", "Independents leading"], [none, "seg-none", "No votes yet"], [lead.R, "seg-r-lead", "Republicans leading in votes"], [seats.R, "seg-r", "Republicans"]];
+    $("seat-bar").innerHTML = segs.filter((x) => x[0] > 0).map(([n, cls, t]) => `<span class="${cls}" style="width:${w(n)}%" title="${t}: ${n}"></span>`).join("")
+      + (mark ? `<i class="marker" style="left:${w(mark)}%"></i>` : "");
+    $("seat-bar").setAttribute("aria-label", `Democrats ${seats.D}, Republicans ${seats.R}, ${none} races with no votes yet`);
+    const unit = isGov ? "governorship" : "seat";
+    const change = (n) => (n > 0 ? `Gained ${n} ${unit}${n === 1 ? "" : "s"}` : n < 0 ? `Lost ${-n} ${unit}${n === -1 ? "" : "s"}` : `No ${unit}s changed hands`);
+    const net = flips.D - flips.R;
+    $("bar-labels").innerHTML = `<span>${change(net)}</span>${seats.I ? `<span>${seats.I} independent${seats.I === 1 ? "" : "s"}</span>` : ""}<span>${change(-net)}</span>`;
+    $("bar-sub").innerHTML = `<span class="d">${isGov ? "" : notUp.D + " not up · "}${won.D} won · ${lead.D} leading</span><span>${none} with no votes yet</span><span class="r">${lead.R} leading · ${won.R} won${isGov ? "" : " · " + notUp.R + " not up"}</span>`;
   }
 
   // ------------------------------------------------------------------ odds + counts strip
@@ -324,6 +316,7 @@
       const ink = inkOf(st);
       if (el.tagName.toLowerCase() === "g") {
         el.querySelector("rect").style.fill = fillSvg(st);
+        el.classList.toggle("flipped", !!(st && st.flip));
         const t = el.querySelectorAll("text");
         t[0].style.fill = t[1].style.fill = ink;
         t[1].innerHTML = labelHtml(val, check);
@@ -331,6 +324,9 @@
       } else {
         el.style.fill = fillSvg(st);
         el.classList.toggle("dim", !!dim);
+        const flipped = !!(st && st.flip);
+        el.classList.toggle("flipped", flipped);
+        if (flipped && el.nextElementSibling) el.parentNode.appendChild(el);  // draw the gold outline above its neighbours
         const lbl = document.querySelector(`[data-lbl="${ab}"]`);
         if (lbl) { lbl.style.fill = ink; lbl.lastElementChild.innerHTML = labelHtml(val, check); lbl.classList.toggle("dim", !!dim); }
       }
@@ -348,7 +344,7 @@
     $("seatgrid").innerHTML = Object.keys(by).sort((a, b) => (STATE_NAMES[a] || a).localeCompare(STATE_NAMES[b] || b)).map((s) =>
       `<div class="sg-state"><h4>${esc(STATE_NAMES[s] || s)} · ${by[s].length}</h4><div class="sg-tiles">${by[s].map((r) => {
         const st = standing(r);
-        return `<span class="tile${bgOnly && !r.battleground ? " dim" : ""}" data-key="${esc(r.key)}" style="background:${fillCss(st)};color:${inkOf(st)}">${esc(distNum(r))}</span>`;
+        return `<span class="tile${bgOnly && !r.battleground ? " dim" : ""}${r.flip === true ? " flip" : ""}" data-key="${esc(r.key)}" style="background:${fillCss(st)};color:${inkOf(st)}">${esc(distNum(r))}</span>`;
       }).join("")}</div></div>`).join("");
   }
 
@@ -374,35 +370,40 @@
       const bg = !p ? "var(--toss)" : `var(--${lc(p)}${called ? 4 : c.step})`;
       const ink = p && (called || c.step === 3) ? "#fff" : "var(--ink-on-light)";
       const head = p ? `<span class="${lc(p)}">${p === "I" ? "Ind " : ""}${c.label}</span>${called ? YCK : ""}` : c.label;
-      const chips = c.races.slice(0, cap).map((r) => `<span class="rchip" data-key="${esc(r.key)}" style="background:${bg};color:${ink}">${esc(shortName(r))}</span>`).join("");
+      const chips = c.races.slice(0, cap).map((r) => `<span class="rchip${r.flip === true ? " flip" : ""}" data-key="${esc(r.key)}" style="background:${bg};color:${ink}">${esc(shortName(r))}</span>`).join("");
       const more = c.races.length > cap ? `<span class="rchip" style="background:var(--panel-2);color:var(--muted)">+${c.races.length - cap}</span>` : "";
       return `<div class="col${p ? "" : " mid"}"><span class="cnt ${p ? lc(p) : ""}">${c.races.length}</span><h3>${head}</h3><div class="chips">${chips}${more}</div></div>`;
     }).join("");
-    $("board-note").textContent = `Uncalled races are placed by the leader's margin in the votes counted so far, in percentage points. Projected means AP has called it.${office === "senate" && officeRaces().some((r) => r.special) ? " * Special election." : ""}${waiting ? ` ${waiting} race${waiting === 1 ? " has" : "s have"} no votes counted yet.` : ""}`;
+    $("board-note").textContent = `Uncalled races are placed by the leader's margin in the votes counted so far, in percentage points. Projected means AP has called it. Gold outline: the seat flipped to the other party.${office === "senate" && officeRaces().some((r) => r.special) ? " * Special election." : ""}${waiting ? ` ${waiting} race${waiting === 1 ? " has" : "s have"} no votes counted yet.` : ""}`;
   }
 
-  // ------------------------------------------------------------------ battleground cards
-  function candRows(r, st, n = 2) {
-    const cs = st.cs.slice(0, n), tv = st.tv;
-    return cs.map((c) => {
-      const p = partyOf(c), share = tv ? ((c.votes || 0) / tv) * 100 : null;
-      const lead = tv && c === st.cs[0];
-      return `<div class="cand${lead ? " lead" : ""}"><span class="pbox ${p}">${esc(letter(c))}</span><span class="nm">${esc(lastName(c.name))}${c.incumbent ? ' <span class="muted">(i)</span>' : ""}${c.winner ? YCK : ""}</span><span class="pc">${share == null ? "0%" : share.toFixed(1) + "%"}<span class="vt">${fmtN(c.votes)}</span></span></div>`;
-    }).join("");
+  // ------------------------------------------------------------------ race cards (Google-style: vote % and vote count)
+  function candTable(r, st, max = 3) {
+    const tv = st.tv;
+    const cs = st.cs.filter((c, i) => i < 2 || (tv && (c.votes || 0) / tv >= 0.02)).slice(0, max);
+    return `<table class="rc-t"><thead><tr><th>Candidate</th><th>Vote %</th><th>Vote count</th></tr></thead><tbody>${cs.map((c) => {
+      const p = partyOf(c), lead = tv && c === st.cs[0];
+      const share = tv ? (((c.votes || 0) / tv) * 100).toFixed(2) + "%" : "–";
+      return `<tr class="${lead ? "lead lead-" + p : ""}"><td><i class="dot ${p}"></i>${esc(c.name)}${c.incumbent ? ' <span class="muted">(i)</span>' : ""}${c.winner ? YCK : ""}</td><td>${share}</td><td>${fmtN(c.votes)}</td></tr>`;
+    }).join("")}</tbody></table>`;
+  }
+  function raceCard(r, opts = {}) {
+    const st = standing(r);
+    const st8 = STATE_NAMES[r.state] || r.state;
+    const where = r.office === "house" ? `${st8} ${distNum(r) === "AL" ? "At-large" : "District " + distNum(r)}` : st8 + (r.special ? " (special)" : "");
+    const rep = st.tv ? `${pctIn(r.eevp)} reporting` : st.kind === "open" ? `Polls close ${etTime(r.poll_close)} ET` : "No votes reported yet";
+    const sub = (opts.office && r.office !== "house" ? officeLine(r) + " · " : "") + rep;
+    const foot = [st.kind === "called" && r.called_at ? `Projected ${etTime(r.called_at)} ET` : "",
+      !r.called && r.est_votes_outstanding ? `About ${fmtV(r.est_votes_outstanding)} votes left to count` : ""].filter(Boolean).join(" · ");
+    return `<article class="rc" data-key="${esc(r.key)}">${opts.eyebrow ? `<div class="eyebrow">${esc(opts.eyebrow)}</div>` : ""}<div class="rc-head"><div><h3>${esc(where)}</h3><div class="sub">${esc(sub)}</div></div>${r.battleground ? '<span class="chip">Key race</span>' : ""}</div>${st.kind === "called" ? `<div>${statusPill(r, st)}</div>` : ""}${candTable(r, st)}${foot ? `<div class="rc-foot">${esc(foot)}</div>` : ""}</article>`;
   }
   function renderCards() {
     let rs = officeRaces().filter((r) => r.battleground);
-    let title = "Battlegrounds";
-    if (!rs.length) { rs = officeRaces().filter((r) => { const s = standing(r); return s.kind === "counting" && s.margin < 10; }); title = "Close races"; }
-    $("bg-h").textContent = `${{ senate: "Senate", house: "House", governor: "Governor" }[office]} ${title.toLowerCase()}`;
+    let title = "key races";
+    if (!rs.length) { rs = officeRaces().filter((r) => { const x = standing(r); return x.kind === "counting" && x.margin < 10; }); title = "close races"; }
+    $("bg-h").textContent = `${{ senate: "Senate", house: "House", governor: "Governor" }[office]} ${title}`;
     const shown = allCards ? rs : rs.slice(0, 12);
-    $("cards").innerHTML = shown.map((r) => {
-      const st = standing(r);
-      const sub = r.office === "house" ? (distNum(r) === "AL" ? "At-large district" : `House District ${distNum(r)}`) : r.special ? "Special election" : "";
-      const mk = st.kind === "called" && r.called_at ? `Called ${etTime(r.called_at)} ET` : st.tv ? `${fmtN(st.tv)} votes counted`
-        : r.poll_close ? `Polls ${new Date(r.poll_close) <= Date.now() ? "closed" : "close"} ${etTime(r.poll_close)} ET` : "";
-      return `<div class="card" data-key="${esc(r.key)}"><h3>${esc(STATE_NAMES[r.state] || r.state)} ›</h3><div class="sub">${esc(sub)}</div>${statusPill(r, st)}${candRows(r, st, st.cs.length > 2 && st.tv && (st.cs[2].votes || 0) / st.tv > 0.05 ? 3 : 2)}<div class="mk">${esc(mk)}${r.est_votes_outstanding ? ` · ~${fmtV(r.est_votes_outstanding)} left to count` : ""}</div></div>`;
-    }).join("") || `<div class="empty">No battleground races for this office.</div>`;
+    $("cards").innerHTML = shown.map((r) => raceCard(r)).join("") || `<div class="empty">No key races for this office.</div>`;
     const more = $("cards-more");
     more.hidden = rs.length <= 12;
     more.textContent = allCards ? "Show fewer races ▴" : `See ${rs.length - 12} more races ▾`;
@@ -414,7 +415,7 @@
     if (!c) return `<span class="sm">—</span>`;
     const share = st.tv ? ((c.votes || 0) / st.tv) * 100 : null;
     const lead = st.tv && c === st.cs[0];
-    return `<span class="${lead ? "w" : ""}">${esc(lastName(c.name))}${c.winner ? YCK : ""}</span> ${share == null ? "" : share.toFixed(1) + "%"}<div class="sm">${fmtN(c.votes)}</div>`;
+    return `<span class="${lead ? "w" : ""}">${esc(lastName(c.name))}${c.winner ? YCK : ""}</span> ${share == null ? "" : share.toFixed(2) + "%"}<div class="sm">${fmtN(c.votes)}</div>`;
   }
   function renderTable() {
     const head = [["race", "Race"], ["dem", "Democrat"], ["rep", "Republican"], ["oth", "Other"], ["in", "% in", "n"], ["status", "Status"]];
@@ -463,19 +464,11 @@ oth: ({ st }) => { const o = best(st, (p) => p === "I"); return o && st.tv ? o.v
 
   // ------------------------------------------------------------------ tooltip
   function raceTip(r) {
-    const st = standing(r), tv = st.tv;
-    let h = `<h4>${esc(raceName(r))}</h4>${statusPill(r, st)}`;
-    for (const c of st.cs.slice(0, 4)) {
-      const p = partyOf(c), share = tv ? (c.votes || 0) / tv : 0;
-      h += `<div class="row"><span class="pbox ${p}">${esc(letter(c))}</span><span class="${tv && c === st.cs[0] ? "w" : ""}">${esc(c.name)}${c.incumbent ? ' <span class="muted">(i)</span>' : ""}${c.winner ? YCK : ""}</span><span class="num">${tv ? (share * 100).toFixed(1) + "%" : "–"}</span><span class="vv">${fmtN(c.votes)}</span></div><div class="barline"><span style="width:${(share * 100).toFixed(1)}%;background:var(--${lc(p)}3)"></span></div>`;
-    }
-    const foot = [];
-    if (tv) foot.push(`${pctIn(r.eevp)} of expected vote in · ${fmtN(r.total_votes)} counted`);
-    if (r.est_votes_outstanding) foot.push(`About ${fmtN(r.est_votes_outstanding)} votes left to count`);
-    if (r.called && r.called_at) foot.push(`AP called it at ${etTime(r.called_at)} ET`);
-    if (RATING[r.rating]) foot.push(`Pre-election rating: ${RATING[r.rating]}`);
-    if (r.poll_close) foot.push(`Polls ${new Date(r.poll_close) <= Date.now() ? "closed" : "close"} ${etTime(r.poll_close)} ET`);
-    return h + `<div class="foot">${foot.map((f) => `<span>${esc(f)}</span>`).join("")}</div>`;
+    const extra = [];
+    if (r.total_votes) extra.push(`${fmtN(r.total_votes)} votes counted`);
+    if (RATING[r.rating]) extra.push(`Pre-election rating: ${RATING[r.rating]}`);
+    if (r.poll_close) extra.push(`Polls ${new Date(r.poll_close) <= Date.now() ? "closed" : "close"} ${etTime(r.poll_close)} ET`);
+    return raceCard(r, { office: true }) + `<div class="foot">${extra.map((f) => `<span>${esc(f)}</span>`).join("")}</div>`;
   }
   function stateTip(ab) {
     const rs = officeRaces().filter((r) => r.state === ab);

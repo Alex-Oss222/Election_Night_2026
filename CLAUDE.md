@@ -26,6 +26,10 @@ Tests (offline):
 
 Check status at `curl -s localhost:8000/api/health`. Kalshi discovery takes 1 to 2 minutes after a start.
 
+## Live site
+
+https://electionnight2026-production.up.railway.app, deployed from `main` by Railway (Dockerfile, port 8080, 1 replica). Kalshi keys are not set there, so Kalshi uses REST polling only.
+
 ## Status (as of 2026-11-04 ~00:55 UTC)
 
 Built, tested (13 tests) and pushed on `claude/laughing-brahmagupta-yyojle`; the Kalshi key fix is on `claude/brave-thompson-x08sht`, which contains that branch plus the fix. `/api/health` returned ok against the live feeds:
@@ -90,4 +94,5 @@ The user is deleting the Kalshi account after election night. Remind them to als
 - Be direct, accuracy over agreement, and separate what's verified from what's inferred.
 - No em dashes.
 - Keep the user posted in a few words during long work.
-- The user granted full autonomy on this repo: commit and push to the branch above. No PR unless asked.
+- The user granted full autonomy on this repo. Push straight to `main`, no branches and no PRs (the user's instruction on 2026-11-04). Every push to `main` redeploys the Railway site.
+- The user cares about results only: no market odds on the page. Projected winners get a yellow check, flipped seats a gold outline. The design reference is Google's election results page.

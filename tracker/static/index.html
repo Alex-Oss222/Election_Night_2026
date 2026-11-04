@@ -7,7 +7,7 @@
 <meta name="description" content="Live 2026 midterm results: AP vote counts and projected winners.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
 <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
@@ -30,24 +30,20 @@
     <main>
       <div id="latest" class="muted">Loading results…</div>
 
-      <section aria-labelledby="seats-h">
+      <section aria-labelledby="seats-h" class="seats">
         <h2 id="seats-h" hidden>Seats</h2>
         <div class="seats-head">
-          <div class="seats-side"><div class="big d" id="seat-d">–</div><div class="side-label" id="seat-d-label">Democratic seats</div></div>
+          <div class="seats-side"><span class="big d" id="seat-d">–</span><span class="ptag">DEM</span></div>
           <div class="to-win" id="to-win"></div>
-          <div class="seats-side right"><div class="big r" id="seat-r">–</div><div class="side-label" id="seat-r-label">Republican seats</div></div>
+          <div class="seats-side right"><span class="ptag">GOP</span><span class="big r" id="seat-r">–</span></div>
         </div>
         <div class="bar" id="seat-bar" role="img" aria-label="Seats by party"></div>
         <div class="bar-labels" id="bar-labels"></div>
-        <div class="bar-key">
-          <span><i class="sw" style="background:var(--d4)"></i>Not up</span>
-          <span><i class="sw" style="background:var(--d3)"></i>Won</span>
-          <span><i class="sw seg-hatch-d"></i>Leading in votes</span>
-          <span><i class="sw" style="background:var(--open)"></i>No votes counted yet</span>
-        </div>
+        <div class="bar-sub" id="bar-sub"></div>
+        <div class="bar-key">Solid: seats held or won · Lighter: leading in votes · Gray: no votes yet</div>
       </section>
 
-      <section aria-label="Odds and counts"><div class="strip" id="strip"></div></section>
+      <section aria-label="Race counts"><div class="strip" id="strip"></div></section>
 
       <section aria-labelledby="map-h">
         <div class="map-tools">
@@ -63,6 +59,7 @@
           <span class="k"><i class="box" style="background:repeating-linear-gradient(135deg,var(--d4) 0 3px,var(--d1) 3px 6px)"></i>Dem flip</span>
           <span class="k"><i class="box" style="background:var(--r4)"></i>GOP win</span>
           <span class="k"><i class="box" style="background:repeating-linear-gradient(135deg,var(--r4) 0 3px,var(--r1) 3px 6px)"></i>GOP flip</span>
+          <span class="k"><i class="box" style="background:var(--open);box-shadow:0 0 0 2px var(--yellow)"></i>Flipped seat</span>
           <span class="k"><i class="box" style="background:repeating-linear-gradient(135deg,var(--closed) 0 3px,var(--hatch) 3px 5px)"></i>Polls closed, no votes yet</span>
           <span class="k"><i class="box" style="background:var(--open)"></i>Polls open</span>
           <span class="k"><i class="box" style="background:var(--none);border:1px solid var(--line-2)"></i>No election</span>
