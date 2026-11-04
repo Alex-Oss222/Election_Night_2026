@@ -14,6 +14,17 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
 Interactive docs are served at `http://localhost:8000/docs`. On startup the first NYT pull takes about 2 seconds, Polymarket discovery about 5, and Kalshi discovery 1 to 2 minutes, because Kalshi rate-limits aggressively and discovery probes one event per request. Once discovery is done, Kalshi is refreshed in batches of 100 markets.
 
+## Deploy on Railway
+
+The repo has a `Dockerfile`, which Railway builds automatically.
+
+1. New Project, then Deploy from GitHub repo. Pick this repo, and under the service's Settings, Source, set the branch.
+2. Under Variables, add `KALSHI_API_KEY_ID` and `KALSHI_PRIVATE_KEY`, both optional. Also add `API_TOKEN` set to any long random string, which is recommended because the URL is public.
+3. Under Settings, Networking, click Generate Domain. Optionally set the health check path to `/api/health`.
+4. Keep it to 1 replica. State is in memory, and every extra replica multiplies the Kalshi request rate.
+
+With `API_TOKEN` set, every endpoint except `/api/health` and `/docs` needs `?token=...` or `Authorization: Bearer ...`. Use the query form for `/api/stream`, because browsers' `EventSource` can't send headers. History (`data/history.jsonl`) is lost on each redeploy unless you attach a volume at `/app/data`.
+
 ## Endpoints
 
 | Endpoint | What it returns |

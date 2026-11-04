@@ -156,3 +156,19 @@ def test_kalshi_ws_ticker_updates_price():
     o = e.kx_events["SENATETX-26"][0]
     assert (o["bid"], o["ask"], o["p"]) == (0.61, 0.63, 0.62)
     assert e.status["kalshi_ws"]["last_msg"]
+
+
+def test_api_token_gate(monkeypatch):
+    from fastapi.testclient import TestClient
+    from tracker import app as appmod
+    from tracker import config as C
+
+    client = TestClient(appmod.app)  # no `with`: lifespan (live pollers) does not start
+    monkeypatch.setattr(C, "API_TOKEN", None)
+    assert client.get("/api/control").status_code == 200
+    monkeypatch.setattr(C, "API_TOKEN", "s3cret")
+    assert client.get("/api/control").status_code == 401
+    assert client.get("/api/control?token=wrong").status_code == 401
+    assert client.get("/api/control?token=s3cret").status_code == 200
+    assert client.get("/api/control", headers={"Authorization": "Bearer s3cret"}).status_code == 200
+    assert client.get("/api/health").status_code == 200

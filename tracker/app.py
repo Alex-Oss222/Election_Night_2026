@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import hmac
 import json
 import logging
 from contextlib import asynccontextmanager
@@ -9,7 +10,7 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
 from . import config as C
 from .engine import Engine, age_seconds
@@ -29,6 +30,21 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="Election Night 2026 Tracker", version="0.1.0", lifespan=lifespan,
               description="AP results (via NYT JSON) blended with Polymarket and Kalshi prices.")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], allow_headers=["*"])
+
+OPEN_PATHS = {"/api/health", "/docs", "/openapi.json", "/docs/oauth2-redirect"}
+
+
+@app.middleware("http")
+async def token_gate(request: Request, call_next):
+    """When API_TOKEN is set, every data endpoint needs ?token=... or 'Authorization: Bearer ...'.
+    Health and the docs stay open so a host's health check and the schema page still work."""
+    if C.API_TOKEN and request.url.path not in OPEN_PATHS:
+        auth = request.headers.get("authorization", "")
+        supplied = request.query_params.get("token") or (auth[7:] if auth.lower().startswith("bearer ") else "")
+        if not hmac.compare_digest(supplied.encode(), C.API_TOKEN.encode()):
+            return JSONResponse({"error": "token required: add ?token=... or an Authorization: Bearer header"},
+                                status_code=401)
+    return await call_next(request)
 
 
 # A source is stale when it hasn't succeeded for 3x its poll interval.

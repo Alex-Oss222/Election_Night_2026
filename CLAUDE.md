@@ -53,6 +53,10 @@ Never print, log or commit the key values. Never ask the user to paste a key int
 
 The user is deleting the Kalshi account after election night. Remind them to also remove both variables from the environment settings.
 
+## Deployment
+
+The service is deployed on Railway from the `Dockerfile`. Railway's `railway.json` config file is deprecated (it works for legacy services until 2026-12-01), so it isn't used. The user sets these in Railway Variables: `KALSHI_API_KEY_ID`, `KALSHI_PRIVATE_KEY` and `API_TOKEN`. Railway's egress IP differs from the cloud session's, so Kalshi 429s may be rarer there. Run 1 replica only.
+
 ## Code map
 
 - **`tracker/nyt.py`:** parses the NYT results JSON (AP data). Race keys are `S-TX`, `S-OH-special`, `G-GA` and `H-PA-07`; at-large districts are `-01`.

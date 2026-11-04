@@ -31,6 +31,7 @@ POLYMARKET_WS = os.environ.get("POLYMARKET_WS", "1") != "0"
 HISTORY_FILE = os.environ.get("HISTORY_FILE", "data/history.jsonl")
 HISTORY_EVERY = _f("HISTORY_EVERY", 20)
 USER_AGENT = "election-night-2026-tracker/0.1"
+API_TOKEN = os.environ.get("API_TOKEN") or None  # optional shared secret for the public URL
 
 # Methodology thresholds (election.offgramercy.com/methodology)
 TOSSUP_LOW, TOSSUP_HIGH = 0.40, 0.60
