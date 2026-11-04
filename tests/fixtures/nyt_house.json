@@ -1,0 +1,2376 @@
+{
+"races": [
+{
+"nyt_id": "US-G-H-2026-11-03",
+"election_date": "2026-11-03",
+"office": "U.S. House",
+"office_id": "H",
+"seat": "District 1",
+"seat_number": "1",
+"seat_description": null,
+"long_description": null,
+"ballot_measure_text": null,
+"title": {
+"embed": null,
+"subhed": null,
+"default": null,
+"dashboard": null
+},
+"coverage": "national",
+"max_winners": 1,
+"max_runoff": null,
+"win_threshold": null,
+"type": "General",
+"race_type_id": "G",
+"uncontested": false,
+"tabulation_method": "single-round",
+"key_race_providers": [
+"ap"
+],
+"in_party_control": true,
+"certified": false,
+"race_call_status": null,
+"has_incumbent": false,
+"rating": null,
+"general_rating": null,
+"updated_at": "2026-11-04T00:33:27.172Z",
+"party": null,
+"model_settings": {
+"nyt_turnout": true,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results",
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null
+},
+"candidate_metadata": {
+"democrat": {
+"nyt_id": "democrat",
+"nyt_candidate_id": 126902,
+"nyt_candidate_race_id": 102088698,
+"first_name": null,
+"middle_name": null,
+"last_name": "Democrat",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 2,
+"order": 1,
+"party": {
+"nyt_id": "DEM",
+"name": "Democrat",
+"abbreviation": "Dem."
+},
+"party_caucus": null,
+"groups": null
+},
+"republican": {
+"nyt_id": "republican",
+"nyt_candidate_id": 126903,
+"nyt_candidate_race_id": 102088699,
+"first_name": null,
+"middle_name": null,
+"last_name": "Republican",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 1,
+"order": 2,
+"party": {
+"nyt_id": "GOP",
+"name": "Republican",
+"abbreviation": "Rep."
+},
+"party_caucus": null,
+"groups": null
+},
+"other": {
+"nyt_id": "other",
+"nyt_candidate_id": 128595,
+"nyt_candidate_race_id": 102090391,
+"first_name": null,
+"middle_name": null,
+"last_name": "Other",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 3,
+"order": 3,
+"party": {
+"nyt_id": "OTH",
+"name": "Independent",
+"abbreviation": "Ind."
+},
+"party_caucus": null,
+"groups": null
+}
+},
+"rounds": null,
+"outcome": {
+"won": [],
+"advanced_to_runoff": [],
+"called_by": [],
+"runoff_accepted_at": [],
+"winner_accepted_at": [],
+"gained": null,
+"electoral_votes": null
+},
+"top_reporting_unit": {
+"nyt_id": "US-national",
+"name": "United States",
+"fips_state": null,
+"fips_county": null,
+"fips_suffix": null,
+"level": "national",
+"state_postal": "US",
+"state_abb": null,
+"eevp": 6.1,
+"eevp_by_vote_type": {
+"total": 6.1
+},
+"eevp_max": 99,
+"expected_vote_by_vote_type": {
+"total": 124166093
+},
+"total_votes": 7568118,
+"total_expected_vote": 124166093,
+"precincts_reporting": 2093,
+"precincts_total": 172484,
+"provider_updated_at": "2026-11-04T00:33:27.172+00:00",
+"provider": "ap",
+"nyt_model_estimates": null,
+"candidates": [
+{
+"votes": {
+"total": 4028385
+},
+"leader": true,
+"nyt_id": "democrat",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102088698
+},
+{
+"votes": {
+"total": 3467926
+},
+"leader": false,
+"nyt_id": "republican",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102088699
+},
+{
+"votes": {
+"total": 71807
+},
+"leader": false,
+"nyt_id": "other",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102090391
+}
+],
+"demographic_categories": []
+}
+},
+{
+"nyt_id": "AK-G-H-1-2026-11-03",
+"election_date": "2026-11-03",
+"office": "U.S. House",
+"office_id": "H",
+"seat": "District 1",
+"seat_number": "1",
+"seat_description": null,
+"long_description": "Representative Nick Begich, a Republican in his first term, faces a challenge from Bill Hill, a fisherman and former school administrator who is mounting a competitive campaign as an independent candidate. They will appear alongside two other candidates on Alaska\u2019s top-four ranked-choice ballot.",
+"ballot_measure_text": null,
+"title": {
+"embed": null,
+"subhed": null,
+"default": null,
+"dashboard": null
+},
+"coverage": "state",
+"max_winners": 1,
+"max_runoff": null,
+"win_threshold": 50,
+"type": "General",
+"race_type_id": "G",
+"uncontested": false,
+"tabulation_method": "ranked-choice",
+"key_race_providers": [
+"ap"
+],
+"in_party_control": true,
+"certified": false,
+"race_call_status": "too_early",
+"has_incumbent": true,
+"rating": "lean-rep",
+"general_rating": "lean-rep",
+"updated_at": "2026-11-03T18:03:44.275Z",
+"party": null,
+"model_settings": {
+"nyt_turnout": true,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results",
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null
+},
+"candidate_metadata": {
+"begich-n": {
+"nyt_id": "begich-n",
+"nyt_candidate_id": 127152,
+"nyt_candidate_race_id": 102088948,
+"first_name": "Nick",
+"middle_name": null,
+"last_name": "Begich",
+"suffix": "III",
+"pronoun": null,
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/AK-APP-H-1-2026-08-18-begich-n-110526.png",
+"incumbent": true,
+"ballot_order": 1,
+"order": 1,
+"party": {
+"nyt_id": "GOP",
+"name": "Republican",
+"abbreviation": "Rep."
+},
+"party_caucus": null,
+"groups": null
+},
+"hill-b": {
+"nyt_id": "hill-b",
+"nyt_candidate_id": 127150,
+"nyt_candidate_race_id": 102088946,
+"first_name": "Bill",
+"middle_name": null,
+"last_name": "Hill",
+"suffix": null,
+"pronoun": null,
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/AK-APP-H-1-2026-08-18-hill-b-110517.png",
+"incumbent": false,
+"ballot_order": 3,
+"order": 2,
+"party": {
+"nyt_id": "NP",
+"name": "Nonpartisan",
+"abbreviation": "Nonpartisan"
+},
+"party_caucus": null,
+"groups": null
+},
+"hafner-e": {
+"nyt_id": "hafner-e",
+"nyt_candidate_id": 127149,
+"nyt_candidate_race_id": 102088945,
+"first_name": "Eric",
+"middle_name": null,
+"last_name": "Hafner",
+"suffix": null,
+"pronoun": null,
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/AK-G-H-1-2026-11-03-hafner-e-127149.png",
+"incumbent": false,
+"ballot_order": 2,
+"order": 3,
+"party": {
+"nyt_id": "DEM",
+"name": "Democrat",
+"abbreviation": "Dem."
+},
+"party_caucus": null,
+"groups": null
+},
+"mcdermott-j": {
+"nyt_id": "mcdermott-j",
+"nyt_candidate_id": 127151,
+"nyt_candidate_race_id": 102088947,
+"first_name": "James",
+"middle_name": "C.",
+"last_name": "McDermott",
+"suffix": null,
+"pronoun": null,
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/AK-G-H-1-2026-11-03-mcdermott-j-127151.png",
+"incumbent": false,
+"ballot_order": 4,
+"order": 4,
+"party": {
+"nyt_id": "LIB",
+"name": "Libertarian",
+"abbreviation": "Lib."
+},
+"party_caucus": null,
+"groups": null
+},
+"total_writeins": {
+"nyt_id": "total_writeins",
+"nyt_candidate_id": 127148,
+"nyt_candidate_race_id": 102088944,
+"first_name": null,
+"middle_name": null,
+"last_name": "Total Write-ins",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 5,
+"order": 5,
+"party": {
+"nyt_id": "OTH",
+"name": "",
+"abbreviation": ""
+},
+"party_caucus": null,
+"groups": null
+}
+},
+"rounds": null,
+"outcome": {
+"won": [],
+"advanced_to_runoff": [],
+"called_by": [],
+"runoff_accepted_at": [],
+"winner_accepted_at": [],
+"gained": null,
+"electoral_votes": null
+},
+"top_reporting_unit": {
+"nyt_id": "AK-state",
+"name": "Alaska",
+"fips_state": "02",
+"fips_county": null,
+"fips_suffix": null,
+"level": "state",
+"state_postal": "AK",
+"state_abb": "Alaska",
+"eevp": 0,
+"eevp_by_vote_type": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"eevp_max": 99,
+"expected_vote_by_vote_type": {
+"total": 302532,
+"advance": 118062,
+"provisional": 8951,
+"absentee_mail": 51732,
+"advance_in_person": 66330,
+"election_day_in_person": 175519
+},
+"total_votes": 0,
+"total_expected_vote": 302532,
+"precincts_reporting": 0,
+"precincts_total": 403,
+"provider_updated_at": "2026-11-03T18:03:44.275+00:00",
+"provider": "ap",
+"nyt_model_estimates": {
+"id": "01a1a2e5-3e1d-0d1c-7219-25ba701f4e7c",
+"election_track_id": 12663,
+"source_run_id": 10625228,
+"votes_estimated": 299921,
+"votes_counted": 0,
+"votes_remaining": 299340,
+"margin_quantile": [
+-0.1216,
+-0.0093,
+0.0487,
+0.1106,
+0.2196
+],
+"model_type": "national",
+"model_components": {
+"proportion_model_voteshare": 0,
+"proportion_counted_voteshare": 0,
+"proportion_baseline_voteshare": 1
+},
+"extra_columns": {
+"runoff_rcv_obj": {
+"runoff_rcv_type": "rcv",
+"prop_sims_in_runoff": 0.1119
+},
+"goodness_turnout": 0,
+"turnout_quantile": [
+242155,
+279285,
+299339.9893,
+318856,
+361679
+],
+"include_voteshare": null,
+"dem_margin_counted": [
+{
+"dem_margin_counted_county": 0,
+"dem_margin_counted_precinct": 0,
+"dem_margin_counted_township": 0
+}
+],
+"goodness_voteshare": 0,
+"dem_margin_baseline": [
+{
+"dem_margin_baseline_county": 0,
+"dem_margin_baseline_precinct": 0,
+"dem_margin_baseline_township": 0
+}
+],
+"n_include_voteshare": [
+{
+"n_include_voteshare_county": 0,
+"n_include_voteshare_precinct": 0,
+"n_include_voteshare_township": 0
+}
+],
+"dem_margin_benchmark": [
+{
+"dem_margin_benchmark_county": 0,
+"dem_margin_benchmark_precinct": 0,
+"dem_margin_benchmark_township": 0
+}
+]
+},
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+"candidates": [
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "begich-n",
+"nyt_model_estimates": {
+"id": "01a1a2e5-3e1e-f059-c26b-fac843406bd3",
+"ranking": 1,
+"party_caucus": "GOP",
+"extra_columns": {
+"share_baseline": 51.7729,
+"share_benchmark": 50.0093,
+"share_benchmark_major_cand": 50.0018
+},
+"votes_counted": 0,
+"share_remaining": 52,
+"votes_estimated": 155278,
+"votes_remaining": 155278,
+"win_probability": 0.7029,
+"voteshare_quantile": [
+0.4317,
+0.4889,
+0.5177,
+0.5482,
+0.6029
+],
+"model_vote_report_id": "01a1a2e5-3e1d-0d1c-7219-25ba701f4e7c",
+"second_place_probability": 0.2971,
+"votes_estimated_quantile": [
+119065,
+141320,
+154916,
+168322,
+195641
+]
+},
+"nyt_candidate_race_id": 102088948
+},
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "hill-b",
+"nyt_model_estimates": {
+"id": "01a1a2e5-3e1e-a4f7-b948-113fcf567791",
+"ranking": 2,
+"party_caucus": "OTH",
+"extra_columns": {
+"share_baseline": 46.9051,
+"share_benchmark": 49.9907,
+"share_benchmark_major_cand": 49.9982
+},
+"votes_counted": 0,
+"share_remaining": 47,
+"votes_estimated": 140678,
+"votes_remaining": 140678,
+"win_probability": 0.2971,
+"voteshare_quantile": [
+0.3829,
+0.4382,
+0.4691,
+0.4981,
+0.5543
+],
+"model_vote_report_id": "01a1a2e5-3e1d-0d1c-7219-25ba701f4e7c",
+"second_place_probability": 0.7029,
+"votes_estimated_quantile": [
+104422,
+126572,
+140459,
+153814,
+182079
+]
+},
+"nyt_candidate_race_id": 102088946
+},
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "hafner-e",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102088945
+},
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "mcdermott-j",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102088947
+},
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "total_writeins",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102088944
+}
+],
+"demographic_categories": [],
+"historical_comparison_race_data": {
+"AK-G-P-2024-11-05": {
+"pct_dem": 41.41,
+"pct_rep": 54.54,
+"margin": -13.14
+}
+},
+"historical_comparison_race_meta": {
+"AK-G-P-2024-11-05": {
+"label": "2024 presidential",
+"raceId": "AK-G-P-2024-11-05",
+"officeId": "P",
+"electionDate": "2024-11-05",
+"year": "2024",
+"officeName": "presidential",
+"candsByParty": {
+"democrat": "Harris",
+"republican": "Trump"
+}
+}
+}
+},
+"url": "https://www.nytimes.com/interactive/2026/11/03/us/elections/results-alaska-us-house-at-large.html"
+},
+{
+"nyt_id": "VA-G-H-2-2026-11-03",
+"election_date": "2026-11-03",
+"office": "U.S. House",
+"office_id": "H",
+"seat": "District 2",
+"seat_number": "2",
+"seat_description": "Virginia Beach and eastern shore",
+"long_description": "Representative Jen Kiggans, a Republican, is in a rematch against Elaine Luria, the former Democratic representative she unseated four years ago. The two Navy veterans are vying to represent Virginia\u2019s tidewater district, which is deeply intertwined with the U.S. military and affected by the Iran War.",
+"ballot_measure_text": null,
+"title": {
+"embed": null,
+"subhed": null,
+"default": null,
+"dashboard": null
+},
+"coverage": "multi-county",
+"max_winners": 1,
+"max_runoff": null,
+"win_threshold": null,
+"type": "General",
+"race_type_id": "G",
+"uncontested": false,
+"tabulation_method": "single-round",
+"key_race_providers": [
+"ap"
+],
+"in_party_control": true,
+"certified": false,
+"race_call_status": "too_early",
+"has_incumbent": true,
+"rating": "lean-dem",
+"general_rating": "lean-dem",
+"updated_at": "2026-11-04T00:29:46.877Z",
+"party": null,
+"model_settings": {
+"nyt_turnout": true,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results",
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null
+},
+"candidate_metadata": {
+"kiggans-j": {
+"nyt_id": "kiggans-j",
+"nyt_candidate_id": 124658,
+"nyt_candidate_race_id": 102086454,
+"first_name": "Jen",
+"middle_name": "A.",
+"last_name": "Kiggans",
+"suffix": null,
+"pronoun": "she",
+"img_url": "https://static01.nyt.com/elections-assets/2022/headshots/VA-R-H-2-2022-06-21__kiggans-j-us-house-2-va.png",
+"incumbent": true,
+"ballot_order": 2,
+"order": 1,
+"party": {
+"nyt_id": "GOP",
+"name": "Republican",
+"abbreviation": "Rep."
+},
+"party_caucus": null,
+"groups": null
+},
+"luria-e": {
+"nyt_id": "luria-e",
+"nyt_candidate_id": 124657,
+"nyt_candidate_race_id": 102086453,
+"first_name": "Elaine",
+"middle_name": "G.",
+"last_name": "Luria",
+"suffix": null,
+"pronoun": "she",
+"img_url": "https://static01.nyt.com/elections-assets/2022/headshots/VA-D-H-2-2022-06-21__luria-e-us-house-2-va.png",
+"incumbent": false,
+"ballot_order": 1,
+"order": 2,
+"party": {
+"nyt_id": "DEM",
+"name": "Democrat",
+"abbreviation": "Dem."
+},
+"party_caucus": null,
+"groups": null
+},
+"staten-g": {
+"nyt_id": "staten-g",
+"nyt_candidate_id": 128574,
+"nyt_candidate_race_id": 102090370,
+"first_name": "Geral",
+"middle_name": "D.",
+"last_name": "Staten",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 3,
+"order": 3,
+"party": {
+"nyt_id": "IND",
+"name": "Independent",
+"abbreviation": "Ind."
+},
+"party_caucus": null,
+"groups": null
+},
+"baker-j": {
+"nyt_id": "baker-j",
+"nyt_candidate_id": 128557,
+"nyt_candidate_race_id": 102090353,
+"first_name": "J.",
+"middle_name": "Matt",
+"last_name": "Baker",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 4,
+"order": 4,
+"party": {
+"nyt_id": "IND",
+"name": "Independent",
+"abbreviation": "Ind."
+},
+"party_caucus": null,
+"groups": null
+},
+"total_writeins": {
+"nyt_id": "total_writeins",
+"nyt_candidate_id": 124656,
+"nyt_candidate_race_id": 102086452,
+"first_name": null,
+"middle_name": null,
+"last_name": "Total Write-ins",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 5,
+"order": 5,
+"party": {
+"nyt_id": "OTH",
+"name": "",
+"abbreviation": ""
+},
+"party_caucus": null,
+"groups": null
+}
+},
+"rounds": null,
+"outcome": {
+"won": [],
+"advanced_to_runoff": [],
+"called_by": [],
+"runoff_accepted_at": [],
+"winner_accepted_at": [],
+"gained": null,
+"electoral_votes": null
+},
+"top_reporting_unit": {
+"nyt_id": "VA-state",
+"name": "Virginia",
+"fips_state": "51",
+"fips_county": null,
+"fips_suffix": null,
+"level": "state",
+"state_postal": "VA",
+"state_abb": "Va.",
+"eevp": 4.61,
+"eevp_by_vote_type": {
+"total": 4.61,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 8.98
+},
+"eevp_max": 99,
+"expected_vote_by_vote_type": {
+"total": 337886,
+"advance": 161418,
+"provisional": 2762,
+"absentee_mail": 40737,
+"advance_in_person": 120681,
+"election_day_in_person": 173706
+},
+"total_votes": 15591,
+"total_expected_vote": 337886,
+"precincts_reporting": 18,
+"precincts_total": 222,
+"provider_updated_at": "2026-11-04T00:29:46.877+00:00",
+"provider": "ap",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4f39-0c06-5ca2-1b3030bc1d11",
+"election_track_id": 12663,
+"source_run_id": 10625228,
+"votes_estimated": 308025,
+"votes_counted": 0,
+"votes_remaining": 307633,
+"margin_quantile": [
+-0.1333,
+-0.0173,
+0.0397,
+0.0998,
+0.2113
+],
+"model_type": "national",
+"model_components": {
+"proportion_model_voteshare": 0,
+"proportion_counted_voteshare": 0,
+"proportion_baseline_voteshare": 1
+},
+"extra_columns": {
+"runoff_rcv_obj": {},
+"goodness_turnout": 0,
+"turnout_quantile": [
+252633,
+286524,
+307632.9554,
+326831,
+373425
+],
+"include_voteshare": null,
+"dem_margin_counted": [
+{
+"dem_margin_counted_county": 0,
+"dem_margin_counted_precinct": 0,
+"dem_margin_counted_township": 0
+}
+],
+"goodness_voteshare": 0,
+"dem_margin_baseline": [
+{
+"dem_margin_baseline_county": 0,
+"dem_margin_baseline_precinct": 0,
+"dem_margin_baseline_township": 0
+}
+],
+"n_include_voteshare": [
+{
+"n_include_voteshare_county": 0,
+"n_include_voteshare_precinct": 0,
+"n_include_voteshare_township": 0
+}
+],
+"dem_margin_benchmark": [
+{
+"dem_margin_benchmark_county": 0,
+"dem_margin_benchmark_precinct": 0,
+"dem_margin_benchmark_township": 0
+}
+]
+},
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+"candidates": [
+{
+"votes": {
+"total": 8498,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 8498
+},
+"leader": true,
+"nyt_id": "kiggans-j",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4f39-2d7b-ec5b-95d8e94c8469",
+"ranking": 2,
+"party_caucus": "GOP",
+"extra_columns": {
+"share_baseline": 47.3562,
+"share_benchmark": 49.9969,
+"share_benchmark_major_cand": 49.9972
+},
+"votes_counted": 0,
+"share_remaining": 47,
+"votes_estimated": 145869,
+"votes_remaining": 145869,
+"win_probability": 0.3245,
+"voteshare_quantile": [
+0.3856,
+0.443,
+0.4736,
+0.5023,
+0.5593
+],
+"model_vote_report_id": "01a1a2e5-4f39-0c06-5ca2-1b3030bc1d11",
+"second_place_probability": 0.6755,
+"votes_estimated_quantile": [
+109981,
+131665,
+145663,
+159171,
+186286
+]
+},
+"nyt_candidate_race_id": 102086454
+},
+{
+"votes": {
+"total": 6671,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 6671
+},
+"leader": false,
+"nyt_id": "luria-e",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4f39-ffa6-304a-41b243b179c0",
+"ranking": 1,
+"party_caucus": "DEM",
+"extra_columns": {
+"share_baseline": 51.3277,
+"share_benchmark": 50.0031,
+"share_benchmark_major_cand": 50.0028
+},
+"votes_counted": 0,
+"share_remaining": 51,
+"votes_estimated": 158102,
+"votes_remaining": 158102,
+"win_probability": 0.6755,
+"voteshare_quantile": [
+0.426,
+0.4844,
+0.5133,
+0.5436,
+0.5995
+],
+"model_vote_report_id": "01a1a2e5-4f39-0c06-5ca2-1b3030bc1d11",
+"second_place_probability": 0.3245,
+"votes_estimated_quantile": [
+119299,
+143488,
+157919,
+171857,
+201352
+]
+},
+"nyt_candidate_race_id": 102086453
+},
+{
+"votes": {
+"total": 291,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 291
+},
+"leader": false,
+"nyt_id": "baker-j",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102090353
+},
+{
+"votes": {
+"total": 110,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 110
+},
+"leader": false,
+"nyt_id": "staten-g",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102090370
+},
+{
+"votes": {
+"total": 21,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 21
+},
+"leader": false,
+"nyt_id": "total_writeins",
+"nyt_model_estimates": null,
+"nyt_candidate_race_id": 102086452
+}
+],
+"demographic_categories": [],
+"historical_comparison_race_data": {
+"VA-G-P-2024-11-05": {
+"pct_dem": 49.27,
+"pct_rep": 49.55,
+"margin": -0.29
+}
+},
+"historical_comparison_race_meta": {
+"VA-G-P-2024-11-05": {
+"label": "2024 presidential",
+"raceId": "VA-G-P-2024-11-05",
+"officeId": "P",
+"electionDate": "2024-11-05",
+"year": "2024",
+"officeName": "presidential",
+"candsByParty": {
+"democrat": "Harris",
+"republican": "Trump"
+}
+}
+}
+},
+"url": "https://www.nytimes.com/interactive/2026/11/03/us/elections/results-virginia-us-house-2.html"
+}
+],
+"partyControlData": {
+"count": 1,
+"results": [
+{
+"state_postal": "US",
+"state": "United States",
+"offices": {
+"H": {
+"office_id": "H",
+"office": "U.S. House",
+"lg_party_id": null,
+"total": 435,
+"open_seats": 435,
+"no_election_seats": 0,
+"num_races_called": 8,
+"to_win": {
+"DEM": 218,
+"GOP": 218,
+"OTH": 218
+},
+"party_balance": {
+"DEM": {
+"party_id": "DEM",
+"party": "Democrat",
+"party_abbreviation": "Dem.",
+"flip_count": 0,
+"seats": 6,
+"no_election": 0,
+"winner": false,
+"candidate_metadata": null,
+"controlled_at": null,
+"votes": 4028385
+},
+"GOP": {
+"party_id": "GOP",
+"party": "Republican",
+"party_abbreviation": "Rep.",
+"flip_count": 0,
+"seats": 2,
+"no_election": 0,
+"winner": false,
+"candidate_metadata": null,
+"controlled_at": null,
+"votes": 3467926
+},
+"OTH": {
+"party_id": "OTH",
+"party": "Independent",
+"party_abbreviation": "Ind.",
+"flip_count": 0,
+"seats": 0,
+"no_election": 0,
+"winner": false,
+"candidate_metadata": null,
+"controlled_at": null,
+"votes": 71807
+}
+},
+"current_control": {
+"DEM": 214,
+"GOP": 218,
+"OTH": 1
+},
+"nyt_model_estimates": [
+{
+"id": 149297,
+"nyt_party_id": "DEM",
+"ranking": 1,
+"seats": 237,
+"seats_quantile": [
+206,
+225,
+237,
+251,
+279
+],
+"win_probability": 0.8941,
+"seat_margin": 40,
+"seat_margin_quantile": [
+-23,
+16,
+40,
+67,
+124
+],
+"popular_vote": 64340727,
+"popular_vote_quantile": [
+55807229,
+61115918,
+64340727,
+67274687,
+73151476
+],
+"voteshare_margin": 0.0979,
+"voteshare_margin_quantile": [
+0.017,
+0.0701,
+0.0979,
+0.1256,
+0.1759
+],
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+{
+"id": 149298,
+"nyt_party_id": "GOP",
+"ranking": 2,
+"seats": 197,
+"seats_quantile": [
+155,
+184,
+197,
+209,
+229
+],
+"win_probability": 0.1039,
+"seat_margin": -40,
+"seat_margin_quantile": [
+-124,
+-67,
+-40,
+-16,
+23
+],
+"popular_vote": 52765012,
+"popular_vote_quantile": [
+45362832,
+49925635,
+52765012,
+55348066,
+60564988
+],
+"voteshare_margin": -0.0979,
+"voteshare_margin_quantile": [
+-0.1766,
+-0.1258,
+-0.0979,
+-0.0702,
+-0.0176
+],
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+{
+"id": 149299,
+"nyt_party_id": "OTH",
+"ranking": 3,
+"seats": 0,
+"seats_quantile": [
+0,
+0,
+0,
+1,
+1
+],
+"win_probability": 0,
+"seat_margin": null,
+"seat_margin_quantile": null,
+"popular_vote": 1065878,
+"popular_vote_quantile": [
+897478,
+994429,
+1065878,
+1118109,
+1339096
+],
+"voteshare_margin": null,
+"voteshare_margin_quantile": null,
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+}
+],
+"nyt_model_chamber": {
+"id": 21469,
+"no_control": 0.002,
+"voteshare_inclusion": {
+"dem_margin_counted": [
+{
+"dem_margin_counted_county": 0,
+"dem_margin_counted_precinct": 0,
+"dem_margin_counted_township": 0
+}
+],
+"dem_margin_baseline": [
+{
+"dem_margin_baseline_county": 0,
+"dem_margin_baseline_precinct": 0,
+"dem_margin_baseline_township": 0
+}
+],
+"n_include_voteshare": [
+{
+"n_include_voteshare_county": 0,
+"n_include_voteshare_precinct": 0,
+"n_include_voteshare_township": 0
+}
+],
+"dem_margin_benchmark": [
+{
+"dem_margin_benchmark_county": 0,
+"dem_margin_benchmark_precinct": 0,
+"dem_margin_benchmark_township": 0
+}
+],
+"turnout_included_voteshare": [
+{
+"turnout_included_county": 0,
+"turnout_included_precinct": 0,
+"turnout_included_township": 0
+}
+]
+},
+"estimate_components": {
+"proportion_model_voteshare": 0,
+"proportion_counted_voteshare": 0,
+"proportion_baseline_voteshare": 1
+},
+"seat_combination_probabilities": [
+{
+"DEM": 220,
+"GOP": 215,
+"OTH": 0,
+"prop_sims": 0.0207
+},
+{
+"DEM": 231,
+"GOP": 204,
+"OTH": 0,
+"prop_sims": 0.0193
+},
+{
+"DEM": 232,
+"GOP": 203,
+"OTH": 0,
+"prop_sims": 0.0193
+},
+{
+"DEM": 247,
+"GOP": 188,
+"OTH": 0,
+"prop_sims": 0.0193
+},
+{
+"DEM": 225,
+"GOP": 210,
+"OTH": 0,
+"prop_sims": 0.0187
+},
+{
+"DEM": 230,
+"GOP": 205,
+"OTH": 0,
+"prop_sims": 0.0187
+},
+{
+"DEM": 238,
+"GOP": 197,
+"OTH": 0,
+"prop_sims": 0.0187
+},
+{
+"DEM": 223,
+"GOP": 212,
+"OTH": 0,
+"prop_sims": 0.0173
+},
+{
+"DEM": 235,
+"GOP": 200,
+"OTH": 0,
+"prop_sims": 0.0173
+},
+{
+"DEM": 228,
+"GOP": 207,
+"OTH": 0,
+"prop_sims": 0.0167
+},
+{
+"DEM": 234,
+"GOP": 201,
+"OTH": 0,
+"prop_sims": 0.0167
+},
+{
+"DEM": 219,
+"GOP": 216,
+"OTH": 0,
+"prop_sims": 0.016
+},
+{
+"DEM": 241,
+"GOP": 194,
+"OTH": 0,
+"prop_sims": 0.016
+},
+{
+"DEM": 226,
+"GOP": 209,
+"OTH": 0,
+"prop_sims": 0.0153
+},
+{
+"DEM": 237,
+"GOP": 198,
+"OTH": 0,
+"prop_sims": 0.0153
+},
+{
+"DEM": 218,
+"GOP": 217,
+"OTH": 0,
+"prop_sims": 0.0147
+},
+{
+"DEM": 229,
+"GOP": 206,
+"OTH": 0,
+"prop_sims": 0.014
+},
+{
+"DEM": 243,
+"GOP": 192,
+"OTH": 0,
+"prop_sims": 0.014
+},
+{
+"DEM": 233,
+"GOP": 202,
+"OTH": 0,
+"prop_sims": 0.0133
+},
+{
+"DEM": 239,
+"GOP": 196,
+"OTH": 0,
+"prop_sims": 0.0133
+},
+{
+"DEM": 244,
+"GOP": 191,
+"OTH": 0,
+"prop_sims": 0.0133
+},
+{
+"DEM": 224,
+"GOP": 211,
+"OTH": 0,
+"prop_sims": 0.0127
+},
+{
+"DEM": 227,
+"GOP": 208,
+"OTH": 0,
+"prop_sims": 0.0127
+},
+{
+"DEM": 240,
+"GOP": 195,
+"OTH": 0,
+"prop_sims": 0.0127
+},
+{
+"DEM": 245,
+"GOP": 190,
+"OTH": 0,
+"prop_sims": 0.0127
+},
+{
+"DEM": 253,
+"GOP": 182,
+"OTH": 0,
+"prop_sims": 0.0127
+},
+{
+"DEM": 221,
+"GOP": 214,
+"OTH": 0,
+"prop_sims": 0.012
+},
+{
+"DEM": 239,
+"GOP": 195,
+"OTH": 1,
+"prop_sims": 0.012
+},
+{
+"DEM": 215,
+"GOP": 220,
+"OTH": 0,
+"prop_sims": 0.0113
+},
+{
+"DEM": 248,
+"GOP": 187,
+"OTH": 0,
+"prop_sims": 0.0113
+},
+{
+"DEM": 251,
+"GOP": 184,
+"OTH": 0,
+"prop_sims": 0.0113
+},
+{
+"DEM": 222,
+"GOP": 213,
+"OTH": 0,
+"prop_sims": 0.0107
+},
+{
+"DEM": 236,
+"GOP": 199,
+"OTH": 0,
+"prop_sims": 0.0107
+},
+{
+"DEM": 242,
+"GOP": 193,
+"OTH": 0,
+"prop_sims": 0.0107
+},
+{
+"DEM": 246,
+"GOP": 189,
+"OTH": 0,
+"prop_sims": 0.01
+},
+{
+"DEM": 253,
+"GOP": 181,
+"OTH": 1,
+"prop_sims": 0.01
+},
+{
+"DEM": 212,
+"GOP": 223,
+"OTH": 0,
+"prop_sims": 0.0093
+},
+{
+"DEM": 216,
+"GOP": 219,
+"OTH": 0,
+"prop_sims": 0.0093
+},
+{
+"DEM": 250,
+"GOP": 185,
+"OTH": 0,
+"prop_sims": 0.0093
+},
+{
+"DEM": 259,
+"GOP": 176,
+"OTH": 0,
+"prop_sims": 0.0093
+},
+{
+"DEM": 254,
+"GOP": 181,
+"OTH": 0,
+"prop_sims": 0.0087
+},
+{
+"DEM": 238,
+"GOP": 196,
+"OTH": 1,
+"prop_sims": 0.008
+},
+{
+"DEM": 241,
+"GOP": 193,
+"OTH": 1,
+"prop_sims": 0.008
+},
+{
+"DEM": 247,
+"GOP": 187,
+"OTH": 1,
+"prop_sims": 0.008
+},
+{
+"DEM": 259,
+"GOP": 175,
+"OTH": 1,
+"prop_sims": 0.008
+},
+{
+"DEM": 235,
+"GOP": 199,
+"OTH": 1,
+"prop_sims": 0.0073
+},
+{
+"DEM": 250,
+"GOP": 184,
+"OTH": 1,
+"prop_sims": 0.0073
+},
+{
+"DEM": 251,
+"GOP": 183,
+"OTH": 1,
+"prop_sims": 0.0073
+},
+{
+"DEM": 255,
+"GOP": 180,
+"OTH": 0,
+"prop_sims": 0.0073
+},
+{
+"DEM": 213,
+"GOP": 222,
+"OTH": 0,
+"prop_sims": 0.0067
+},
+{
+"DEM": 217,
+"GOP": 218,
+"OTH": 0,
+"prop_sims": 0.0067
+},
+{
+"DEM": 232,
+"GOP": 202,
+"OTH": 1,
+"prop_sims": 0.0067
+},
+{
+"DEM": 236,
+"GOP": 198,
+"OTH": 1,
+"prop_sims": 0.0067
+},
+{
+"DEM": 255,
+"GOP": 179,
+"OTH": 1,
+"prop_sims": 0.0067
+},
+{
+"DEM": 258,
+"GOP": 177,
+"OTH": 0,
+"prop_sims": 0.0067
+},
+{
+"DEM": 207,
+"GOP": 228,
+"OTH": 0,
+"prop_sims": 0.006
+},
+{
+"DEM": 234,
+"GOP": 200,
+"OTH": 1,
+"prop_sims": 0.006
+},
+{
+"DEM": 242,
+"GOP": 192,
+"OTH": 1,
+"prop_sims": 0.006
+},
+{
+"DEM": 244,
+"GOP": 190,
+"OTH": 1,
+"prop_sims": 0.006
+},
+{
+"DEM": 249,
+"GOP": 186,
+"OTH": 0,
+"prop_sims": 0.006
+},
+{
+"DEM": 252,
+"GOP": 182,
+"OTH": 1,
+"prop_sims": 0.006
+},
+{
+"DEM": 204,
+"GOP": 231,
+"OTH": 0,
+"prop_sims": 0.0053
+},
+{
+"DEM": 208,
+"GOP": 227,
+"OTH": 0,
+"prop_sims": 0.0053
+},
+{
+"DEM": 209,
+"GOP": 226,
+"OTH": 0,
+"prop_sims": 0.0053
+},
+{
+"DEM": 214,
+"GOP": 221,
+"OTH": 0,
+"prop_sims": 0.0053
+},
+{
+"DEM": 225,
+"GOP": 209,
+"OTH": 1,
+"prop_sims": 0.0053
+},
+{
+"DEM": 237,
+"GOP": 197,
+"OTH": 1,
+"prop_sims": 0.0053
+},
+{
+"DEM": 248,
+"GOP": 186,
+"OTH": 1,
+"prop_sims": 0.0053
+},
+{
+"DEM": 249,
+"GOP": 185,
+"OTH": 1,
+"prop_sims": 0.0053
+},
+{
+"DEM": 258,
+"GOP": 176,
+"OTH": 1,
+"prop_sims": 0.0053
+},
+{
+"DEM": 260,
+"GOP": 174,
+"OTH": 1,
+"prop_sims": 0.0053
+},
+{
+"DEM": 262,
+"GOP": 172,
+"OTH": 1,
+"prop_sims": 0.0053
+},
+{
+"DEM": 221,
+"GOP": 213,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 228,
+"GOP": 206,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 229,
+"GOP": 205,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 230,
+"GOP": 204,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 231,
+"GOP": 203,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 252,
+"GOP": 183,
+"OTH": 0,
+"prop_sims": 0.0047
+},
+{
+"DEM": 254,
+"GOP": 180,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 256,
+"GOP": 179,
+"OTH": 0,
+"prop_sims": 0.0047
+},
+{
+"DEM": 257,
+"GOP": 177,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 262,
+"GOP": 173,
+"OTH": 0,
+"prop_sims": 0.0047
+},
+{
+"DEM": 263,
+"GOP": 171,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 265,
+"GOP": 169,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 267,
+"GOP": 167,
+"OTH": 1,
+"prop_sims": 0.0047
+},
+{
+"DEM": 206,
+"GOP": 229,
+"OTH": 0,
+"prop_sims": 0.004
+},
+{
+"DEM": 211,
+"GOP": 224,
+"OTH": 0,
+"prop_sims": 0.004
+},
+{
+"DEM": 218,
+"GOP": 216,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 222,
+"GOP": 212,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 223,
+"GOP": 211,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 226,
+"GOP": 208,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 246,
+"GOP": 188,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 256,
+"GOP": 178,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 261,
+"GOP": 173,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 261,
+"GOP": 174,
+"OTH": 0,
+"prop_sims": 0.004
+},
+{
+"DEM": 264,
+"GOP": 170,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 269,
+"GOP": 166,
+"OTH": 0,
+"prop_sims": 0.004
+},
+{
+"DEM": 272,
+"GOP": 162,
+"OTH": 1,
+"prop_sims": 0.004
+},
+{
+"DEM": 245,
+"GOP": 189,
+"OTH": 1,
+"prop_sims": 0.0033
+},
+{
+"DEM": 257,
+"GOP": 178,
+"OTH": 0,
+"prop_sims": 0.0033
+},
+{
+"DEM": 260,
+"GOP": 175,
+"OTH": 0,
+"prop_sims": 0.0033
+},
+{
+"DEM": 264,
+"GOP": 171,
+"OTH": 0,
+"prop_sims": 0.0033
+},
+{
+"DEM": 266,
+"GOP": 168,
+"OTH": 1,
+"prop_sims": 0.0033
+},
+{
+"DEM": 268,
+"GOP": 167,
+"OTH": 0,
+"prop_sims": 0.0033
+},
+{
+"DEM": 269,
+"GOP": 165,
+"OTH": 1,
+"prop_sims": 0.0033
+},
+{
+"DEM": 274,
+"GOP": 160,
+"OTH": 1,
+"prop_sims": 0.0033
+},
+{
+"DEM": 202,
+"GOP": 233,
+"OTH": 0,
+"prop_sims": 0.0027
+},
+{
+"DEM": 233,
+"GOP": 201,
+"OTH": 1,
+"prop_sims": 0.0027
+},
+{
+"DEM": 265,
+"GOP": 170,
+"OTH": 0,
+"prop_sims": 0.0027
+},
+{
+"DEM": 267,
+"GOP": 168,
+"OTH": 0,
+"prop_sims": 0.0027
+},
+{
+"DEM": 271,
+"GOP": 163,
+"OTH": 1,
+"prop_sims": 0.0027
+},
+{
+"DEM": 273,
+"GOP": 161,
+"OTH": 1,
+"prop_sims": 0.0027
+},
+{
+"DEM": 277,
+"GOP": 157,
+"OTH": 1,
+"prop_sims": 0.0027
+},
+{
+"DEM": 200,
+"GOP": 235,
+"OTH": 0,
+"prop_sims": 0.002
+},
+{
+"DEM": 201,
+"GOP": 234,
+"OTH": 0,
+"prop_sims": 0.002
+},
+{
+"DEM": 203,
+"GOP": 232,
+"OTH": 0,
+"prop_sims": 0.002
+},
+{
+"DEM": 210,
+"GOP": 225,
+"OTH": 0,
+"prop_sims": 0.002
+},
+{
+"DEM": 217,
+"GOP": 217,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 220,
+"GOP": 214,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 224,
+"GOP": 210,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 243,
+"GOP": 191,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 268,
+"GOP": 166,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 271,
+"GOP": 164,
+"OTH": 0,
+"prop_sims": 0.002
+},
+{
+"DEM": 276,
+"GOP": 158,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 276,
+"GOP": 159,
+"OTH": 0,
+"prop_sims": 0.002
+},
+{
+"DEM": 278,
+"GOP": 156,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 296,
+"GOP": 138,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 214,
+"GOP": 220,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 215,
+"GOP": 219,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 216,
+"GOP": 218,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 263,
+"GOP": 172,
+"OTH": 0,
+"prop_sims": 0.0013
+},
+{
+"DEM": 266,
+"GOP": 169,
+"OTH": 0,
+"prop_sims": 0.0013
+},
+{
+"DEM": 270,
+"GOP": 164,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 270,
+"GOP": 165,
+"OTH": 0,
+"prop_sims": 0.0013
+},
+{
+"DEM": 272,
+"GOP": 163,
+"OTH": 0,
+"prop_sims": 0.0013
+},
+{
+"DEM": 279,
+"GOP": 155,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 280,
+"GOP": 154,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 286,
+"GOP": 148,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 287,
+"GOP": 147,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 293,
+"GOP": 141,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 294,
+"GOP": 141,
+"OTH": 0,
+"prop_sims": 0.0013
+},
+{
+"DEM": 185,
+"GOP": 249,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 186,
+"GOP": 249,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 188,
+"GOP": 247,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 189,
+"GOP": 246,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 191,
+"GOP": 244,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 192,
+"GOP": 243,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 193,
+"GOP": 242,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 194,
+"GOP": 241,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 196,
+"GOP": 238,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 198,
+"GOP": 237,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 199,
+"GOP": 236,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 205,
+"GOP": 229,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 205,
+"GOP": 230,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 211,
+"GOP": 223,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 212,
+"GOP": 222,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 213,
+"GOP": 221,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 219,
+"GOP": 215,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 227,
+"GOP": 207,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 232,
+"GOP": 201,
+"OTH": 2,
+"prop_sims": 0.0007
+},
+{
+"DEM": 237,
+"GOP": 196,
+"OTH": 2,
+"prop_sims": 0.0007
+},
+{
+"DEM": 240,
+"GOP": 194,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 273,
+"GOP": 162,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 275,
+"GOP": 159,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 275,
+"GOP": 160,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 278,
+"GOP": 157,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 281,
+"GOP": 153,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 281,
+"GOP": 154,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 282,
+"GOP": 152,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 282,
+"GOP": 153,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 283,
+"GOP": 151,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 284,
+"GOP": 151,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 285,
+"GOP": 149,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 289,
+"GOP": 145,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 289,
+"GOP": 146,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 290,
+"GOP": 144,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 290,
+"GOP": 145,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 291,
+"GOP": 143,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 292,
+"GOP": 143,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 294,
+"GOP": 140,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 297,
+"GOP": 137,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 298,
+"GOP": 136,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 298,
+"GOP": 137,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 301,
+"GOP": 133,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 303,
+"GOP": 131,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 304,
+"GOP": 130,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 307,
+"GOP": 127,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 309,
+"GOP": 125,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 309,
+"GOP": 126,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 331,
+"GOP": 103,
+"OTH": 1,
+"prop_sims": 0.0007
+}
+],
+"nyt_updated_at": "2026-11-03T15:58:17.796Z"
+},
+"model_settings": {
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results"
+},
+"is_reporting": true,
+"votes": 7568118
+}
+}
+}
+]
+}
+}

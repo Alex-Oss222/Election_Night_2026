@@ -1,0 +1,1659 @@
+{
+"races": [
+{
+"nyt_id": "FL-S_W-S-2026-11-03",
+"election_date": "2026-11-03",
+"office": "U.S. Senate",
+"office_id": "S",
+"seat": null,
+"seat_number": "3",
+"seat_description": null,
+"long_description": "Senator Ashley Moody, the Republican incumbent, is on the Senate ballot for the first time, having been appointed last year to finish Marco Rubio\u2019s term. She faces State Representative Angie Nixon, a progressive who won the Democratic primary in an upset.",
+"ballot_measure_text": null,
+"title": {
+"embed": null,
+"subhed": null,
+"default": null,
+"dashboard": null
+},
+"coverage": "state",
+"max_winners": 1,
+"max_runoff": null,
+"win_threshold": null,
+"type": "Special General",
+"race_type_id": "W",
+"uncontested": false,
+"tabulation_method": "single-round",
+"key_race_providers": [
+"ap"
+],
+"in_party_control": true,
+"certified": false,
+"race_call_status": "too_early",
+"has_incumbent": true,
+"rating": null,
+"general_rating": "likely-rep",
+"updated_at": "2026-11-04T00:33:32.551Z",
+"party": null,
+"model_settings": {
+"nyt_turnout": true,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results",
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null
+},
+"candidate_metadata": {
+"moody-a": {
+"nyt_id": "moody-a",
+"nyt_candidate_id": 127401,
+"nyt_candidate_race_id": 102089197,
+"first_name": "Ashley",
+"middle_name": null,
+"last_name": "Moody",
+"suffix": null,
+"pronoun": null,
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/FL-S_K-S-2026-08-18-moody-a-110739.png",
+"incumbent": true,
+"ballot_order": 2,
+"order": 1,
+"party": {
+"nyt_id": "GOP",
+"name": "Republican",
+"abbreviation": "Rep."
+},
+"party_caucus": null,
+"groups": null
+},
+"nixon-a": {
+"nyt_id": "nixon-a",
+"nyt_candidate_id": 127402,
+"nyt_candidate_race_id": 102089198,
+"first_name": "Angie",
+"middle_name": null,
+"last_name": "Nixon",
+"suffix": null,
+"pronoun": null,
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/FL-S_J-S-2026-08-18-nixon-a-111204.png",
+"incumbent": false,
+"ballot_order": 3,
+"order": 2,
+"party": {
+"nyt_id": "DEM",
+"name": "Democrat",
+"abbreviation": "Dem."
+},
+"party_caucus": null,
+"groups": null
+},
+"gillespie-n": {
+"nyt_id": "gillespie-n",
+"nyt_candidate_id": 127403,
+"nyt_candidate_race_id": 102089199,
+"first_name": "Neil",
+"middle_name": "J.",
+"last_name": "Gillespie",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 1,
+"order": 3,
+"party": {
+"nyt_id": "NPA",
+"name": "Independent",
+"abbreviation": "Ind."
+},
+"party_caucus": null,
+"groups": null
+}
+},
+"rounds": null,
+"outcome": {
+"won": [],
+"advanced_to_runoff": [],
+"called_by": [],
+"runoff_accepted_at": [],
+"winner_accepted_at": [],
+"gained": null,
+"electoral_votes": null
+},
+"top_reporting_unit": {
+"nyt_id": "FL-state",
+"name": "Florida",
+"fips_state": "12",
+"fips_county": null,
+"fips_suffix": null,
+"level": "state",
+"state_postal": "FL",
+"state_abb": "Fla.",
+"eevp": 63.64,
+"eevp_by_vote_type": {
+"total": 63.64,
+"advance": 48.43,
+"provisional": 0,
+"absentee_mail": 47.84,
+"advance_in_person": 48.78,
+"election_day_in_person": 10.4
+},
+"eevp_max": 99,
+"expected_vote_by_vote_type": {
+"total": 8338997,
+"advance": 5527966,
+"provisional": 19291,
+"absentee_mail": 2060671,
+"advance_in_person": 3467295,
+"election_day_in_person": 2791740
+},
+"total_votes": 5307141,
+"total_expected_vote": 8338997,
+"precincts_reporting": 3585,
+"precincts_total": 5634,
+"provider_updated_at": "2026-11-04T00:33:32.551+00:00",
+"provider": "ap",
+"nyt_model_estimates": {
+"id": "01a1a2e5-3ff6-6c62-d8d2-374c522b6f78",
+"election_track_id": 12663,
+"source_run_id": 10625228,
+"votes_estimated": 8092695,
+"votes_counted": 0,
+"votes_remaining": 8056099,
+"margin_quantile": [
+-0.0965,
+0.0109,
+0.066,
+0.1224,
+0.2252
+],
+"model_type": "national",
+"model_components": {
+"proportion_model_voteshare": 0,
+"proportion_counted_voteshare": 0,
+"proportion_baseline_voteshare": 1
+},
+"extra_columns": {
+"runoff_rcv_obj": {},
+"goodness_turnout": 0,
+"turnout_quantile": [
+6594054,
+7448627,
+8056099.2558,
+8595693,
+9702708
+],
+"include_voteshare": null,
+"dem_margin_counted": [
+{
+"dem_margin_counted_county": 0,
+"dem_margin_counted_precinct": 0,
+"dem_margin_counted_township": 0
+}
+],
+"goodness_voteshare": 0,
+"dem_margin_baseline": [
+{
+"dem_margin_baseline_county": 0,
+"dem_margin_baseline_precinct": 0,
+"dem_margin_baseline_township": 0
+}
+],
+"n_include_voteshare": [
+{
+"n_include_voteshare_county": 0,
+"n_include_voteshare_precinct": 0,
+"n_include_voteshare_township": 0
+}
+],
+"dem_margin_benchmark": [
+{
+"dem_margin_benchmark_county": 0,
+"dem_margin_benchmark_precinct": 0,
+"dem_margin_benchmark_township": 0
+}
+]
+},
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+"candidates": [
+{
+"votes": {
+"total": 2649450,
+"advance": 1329458,
+"provisional": 0,
+"absentee_mail": 541356,
+"advance_in_person": 788102,
+"election_day_in_person": 91105
+},
+"leader": true,
+"nyt_id": "nixon-a",
+"nyt_model_estimates": {
+"id": "01a1a2e5-3ff6-8c77-1070-01104362d442",
+"ranking": 2,
+"party_caucus": "DEM",
+"extra_columns": {
+"share_baseline": 46.2024,
+"share_benchmark": 49.9918,
+"share_benchmark_major_cand": 49.9966
+},
+"votes_counted": 0,
+"share_remaining": 46,
+"votes_estimated": 3739018,
+"votes_remaining": 3739018,
+"win_probability": 0.2159,
+"voteshare_quantile": [
+0.3808,
+0.4339,
+0.462,
+0.4897,
+0.5427
+],
+"model_vote_report_id": "01a1a2e5-3ff6-6c62-d8d2-374c522b6f78",
+"second_place_probability": 0.7841,
+"votes_estimated_quantile": [
+2845542,
+3353298,
+3722756,
+4055077,
+4769489
+]
+},
+"nyt_candidate_race_id": 102089198
+},
+{
+"votes": {
+"total": 2600810,
+"advance": 1312727,
+"provisional": 0,
+"absentee_mail": 427203,
+"advance_in_person": 885524,
+"election_day_in_person": 191919
+},
+"leader": false,
+"nyt_id": "moody-a",
+"nyt_model_estimates": {
+"id": "01a1a2e5-3ff6-a2d3-f323-323fe0a8742d",
+"ranking": 1,
+"party_caucus": "GOP",
+"extra_columns": {
+"share_baseline": 52.7976,
+"share_benchmark": 50.0082,
+"share_benchmark_major_cand": 50.0034
+},
+"votes_counted": 0,
+"share_remaining": 53,
+"votes_estimated": 4272752,
+"votes_remaining": 4272752,
+"win_probability": 0.7841,
+"voteshare_quantile": [
+0.4469,
+0.5003,
+0.528,
+0.5561,
+0.6077
+],
+"model_vote_report_id": "01a1a2e5-3ff6-6c62-d8d2-374c522b6f78",
+"second_place_probability": 0.2159,
+"votes_estimated_quantile": [
+3284831,
+3872346,
+4252808,
+4606071,
+5363290
+]
+},
+"nyt_candidate_race_id": 102089197
+},
+{
+"votes": {
+"total": 56881,
+"advance": 35124,
+"provisional": 0,
+"absentee_mail": 17268,
+"advance_in_person": 17856,
+"election_day_in_person": 7217
+},
+"leader": false,
+"nyt_id": "gillespie-n",
+"nyt_model_estimates": {
+"id": "01a1a2e5-3ff6-1d9f-66ea-16a271470f80",
+"ranking": 3,
+"party_caucus": "OTH",
+"extra_columns": {
+"share_baseline": 1,
+"share_benchmark": null,
+"share_benchmark_major_cand": null
+},
+"votes_counted": 0,
+"share_remaining": 1,
+"votes_estimated": 80926,
+"votes_remaining": 80926,
+"win_probability": 0,
+"voteshare_quantile": [
+0.0085,
+0.0087,
+0.01,
+0.0102,
+0.016
+],
+"model_vote_report_id": "01a1a2e5-3ff6-6c62-d8d2-374c522b6f78",
+"second_place_probability": 0,
+"votes_estimated_quantile": [
+58339,
+68677,
+80535,
+85107,
+134621
+]
+},
+"nyt_candidate_race_id": 102089199
+}
+],
+"demographic_categories": []
+},
+"url": "https://www.nytimes.com/interactive/2026/11/03/us/elections/results-florida-us-senate-special.html"
+},
+{
+"nyt_id": "TX-G-S-2026-11-03",
+"election_date": "2026-11-03",
+"office": "U.S. Senate",
+"office_id": "S",
+"seat": null,
+"seat_number": "2",
+"seat_description": null,
+"long_description": "James Talarico, a state legislator, is trying to become the first Democrat in more than three decades to win a statewide election in Texas. He is facing Ken Paxton, the Republican state attorney general, in a race that is one of the most expensive American campaigns ever.",
+"ballot_measure_text": null,
+"title": {
+"embed": null,
+"subhed": null,
+"default": null,
+"dashboard": null
+},
+"coverage": "state",
+"max_winners": 1,
+"max_runoff": null,
+"win_threshold": null,
+"type": "General",
+"race_type_id": "G",
+"uncontested": false,
+"tabulation_method": "single-round",
+"key_race_providers": [
+"ap"
+],
+"in_party_control": true,
+"certified": false,
+"race_call_status": "too_early",
+"has_incumbent": false,
+"rating": "tossup",
+"general_rating": "tossup",
+"updated_at": "2026-11-04T00:29:47.760Z",
+"party": null,
+"model_settings": {
+"nyt_turnout": true,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results",
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null
+},
+"candidate_metadata": {
+"talarico-j": {
+"nyt_id": "talarico-j",
+"nyt_candidate_id": 119568,
+"nyt_candidate_race_id": 102081364,
+"first_name": "James",
+"middle_name": null,
+"last_name": "Talarico",
+"suffix": null,
+"pronoun": "he",
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/TX-D-S-2026-03-03-talarico-j-96256.png",
+"incumbent": false,
+"ballot_order": 3,
+"order": 1,
+"party": {
+"nyt_id": "DEM",
+"name": "Democrat",
+"abbreviation": "Dem."
+},
+"party_caucus": null,
+"groups": null
+},
+"paxton-k": {
+"nyt_id": "paxton-k",
+"nyt_candidate_id": 119569,
+"nyt_candidate_race_id": 102081365,
+"first_name": "Ken",
+"middle_name": null,
+"last_name": "Paxton",
+"suffix": null,
+"pronoun": "he",
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/TX-G-S-2026-11-03-paxton-k-119569.png",
+"incumbent": false,
+"ballot_order": 2,
+"order": 2,
+"party": {
+"nyt_id": "GOP",
+"name": "Republican",
+"abbreviation": "Rep."
+},
+"party_caucus": null,
+"groups": null
+},
+"brown-t": {
+"nyt_id": "brown-t",
+"nyt_candidate_id": 119570,
+"nyt_candidate_race_id": 102081366,
+"first_name": "Ted",
+"middle_name": null,
+"last_name": "Brown",
+"suffix": null,
+"pronoun": "he",
+"img_url": null,
+"incumbent": false,
+"ballot_order": 1,
+"order": 3,
+"party": {
+"nyt_id": "LIB",
+"name": "Libertarian",
+"abbreviation": "Lib."
+},
+"party_caucus": null,
+"groups": null
+}
+},
+"rounds": null,
+"outcome": {
+"won": [],
+"advanced_to_runoff": [],
+"called_by": [],
+"runoff_accepted_at": [],
+"winner_accepted_at": [],
+"gained": null,
+"electoral_votes": null
+},
+"top_reporting_unit": {
+"nyt_id": "TX-state",
+"name": "Texas",
+"fips_state": "48",
+"fips_county": null,
+"fips_suffix": null,
+"level": "state",
+"state_postal": "TX",
+"state_abb": "Texas",
+"eevp": 0,
+"eevp_by_vote_type": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"eevp_max": 99,
+"expected_vote_by_vote_type": {
+"total": 10424689,
+"advance": 7840504,
+"provisional": 15483,
+"absentee_mail": 352077,
+"advance_in_person": 7488427,
+"election_day_in_person": 2568702
+},
+"total_votes": 0,
+"total_expected_vote": 10424689,
+"precincts_reporting": 0,
+"precincts_total": 9900,
+"provider_updated_at": "2026-11-04T00:29:47.76+00:00",
+"provider": "ap",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4e9d-99e0-a3ae-44087d7d41c3",
+"election_track_id": 12663,
+"source_run_id": 10625228,
+"votes_estimated": 10500123,
+"votes_counted": 0,
+"votes_remaining": 10511242,
+"margin_quantile": [
+-0.1331,
+-0.0297,
+0.0295,
+0.0892,
+0.1985
+],
+"model_type": "national",
+"model_components": {
+"proportion_model_voteshare": 0,
+"proportion_counted_voteshare": 0,
+"proportion_baseline_voteshare": 1
+},
+"extra_columns": {
+"runoff_rcv_obj": {},
+"goodness_turnout": 0,
+"turnout_quantile": [
+8649032,
+9762200,
+10511242.0673,
+11216818,
+12679037
+],
+"include_voteshare": null,
+"dem_margin_counted": [
+{
+"dem_margin_counted_county": 0,
+"dem_margin_counted_precinct": 0,
+"dem_margin_counted_township": 0
+}
+],
+"goodness_voteshare": 0,
+"dem_margin_baseline": [
+{
+"dem_margin_baseline_county": 0,
+"dem_margin_baseline_precinct": 0,
+"dem_margin_baseline_township": 0
+}
+],
+"n_include_voteshare": [
+{
+"n_include_voteshare_county": 0,
+"n_include_voteshare_precinct": 0,
+"n_include_voteshare_township": 0
+}
+],
+"dem_margin_benchmark": [
+{
+"dem_margin_benchmark_county": 0,
+"dem_margin_benchmark_precinct": 0,
+"dem_margin_benchmark_township": 0
+}
+]
+},
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+"candidates": [
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "talarico-j",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4e9e-fe66-e7c3-af84c222b519",
+"ranking": 1,
+"party_caucus": "DEM",
+"extra_columns": {
+"share_baseline": 50.9755,
+"share_benchmark": 50.005,
+"share_benchmark_major_cand": 50.0131
+},
+"votes_counted": 0,
+"share_remaining": 51,
+"votes_estimated": 5352492,
+"votes_remaining": 5352492,
+"win_probability": 0.6362,
+"voteshare_quantile": [
+0.4285,
+0.4803,
+0.5098,
+0.5396,
+0.5944
+],
+"model_vote_report_id": "01a1a2e5-4e9d-99e0-a3ae-44087d7d41c3",
+"second_place_probability": 0.3638,
+"votes_estimated_quantile": [
+4075246,
+4824049,
+5359302,
+5822288,
+6847691
+]
+},
+"nyt_candidate_race_id": 102081364
+},
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "paxton-k",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4e9e-5f72-4ca8-318bd8c599e7",
+"ranking": 2,
+"party_caucus": "GOP",
+"extra_columns": {
+"share_baseline": 48.0245,
+"share_benchmark": 49.995,
+"share_benchmark_major_cand": 49.9869
+},
+"votes_counted": 0,
+"share_remaining": 48,
+"votes_estimated": 5042632,
+"votes_remaining": 5042632,
+"win_probability": 0.3638,
+"voteshare_quantile": [
+0.3943,
+0.4502,
+0.4802,
+0.5097,
+0.561
+],
+"model_vote_report_id": "01a1a2e5-4e9d-99e0-a3ae-44087d7d41c3",
+"second_place_probability": 0.6362,
+"votes_estimated_quantile": [
+3834383,
+4574502,
+5046824,
+5497541,
+6405465
+]
+},
+"nyt_candidate_race_id": 102081365
+},
+{
+"votes": {
+"total": 0,
+"advance": 0,
+"provisional": 0,
+"absentee_mail": 0,
+"advance_in_person": 0,
+"election_day_in_person": 0
+},
+"leader": false,
+"nyt_id": "brown-t",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4e9e-7996-3dc4-83f9edfefbc1",
+"ranking": 3,
+"party_caucus": "OTH",
+"extra_columns": {
+"share_baseline": 1,
+"share_benchmark": null,
+"share_benchmark_major_cand": null
+},
+"votes_counted": 0,
+"share_remaining": 1,
+"votes_estimated": 105000,
+"votes_remaining": 105000,
+"win_probability": 0,
+"voteshare_quantile": [
+0.0089,
+0.0091,
+0.01,
+0.0102,
+0.015
+],
+"model_vote_report_id": "01a1a2e5-4e9d-99e0-a3ae-44087d7d41c3",
+"second_place_probability": 0,
+"votes_estimated_quantile": [
+79873,
+92350,
+105116,
+111203,
+154650
+]
+},
+"nyt_candidate_race_id": 102081366
+}
+],
+"demographic_categories": []
+},
+"url": "https://www.nytimes.com/interactive/2026/11/03/us/elections/results-texas-us-senate.html"
+},
+{
+"nyt_id": "VA-G-S-2026-11-03",
+"election_date": "2026-11-03",
+"office": "U.S. Senate",
+"office_id": "S",
+"seat": null,
+"seat_number": "2",
+"seat_description": null,
+"long_description": "Senator Mark Warner, a Democrat, is seeking a fourth term in a state that is considered solidly blue. He faces Bert Mizusawa, a retired general who easily won the Republican primary.",
+"ballot_measure_text": null,
+"title": {
+"embed": null,
+"subhed": null,
+"default": null,
+"dashboard": null
+},
+"coverage": "state",
+"max_winners": 1,
+"max_runoff": null,
+"win_threshold": null,
+"type": "General",
+"race_type_id": "G",
+"uncontested": false,
+"tabulation_method": "single-round",
+"key_race_providers": [
+"ap"
+],
+"in_party_control": true,
+"certified": false,
+"race_call_status": "called",
+"has_incumbent": true,
+"rating": "solid-dem",
+"general_rating": "solid-dem",
+"updated_at": "2026-11-04T00:33:37.675Z",
+"party": null,
+"model_settings": {
+"nyt_turnout": true,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results",
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null
+},
+"candidate_metadata": {
+"warner-m": {
+"nyt_id": "warner-m",
+"nyt_candidate_id": 124688,
+"nyt_candidate_race_id": 102086484,
+"first_name": "Mark",
+"middle_name": "R.",
+"last_name": "Warner",
+"suffix": null,
+"pronoun": "he",
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/VA-D-S-2026-08-04-warner-m-108201.png",
+"incumbent": true,
+"ballot_order": 1,
+"order": 1,
+"party": {
+"nyt_id": "DEM",
+"name": "Democrat",
+"abbreviation": "Dem."
+},
+"party_caucus": null,
+"groups": null
+},
+"mizusawa-b": {
+"nyt_id": "mizusawa-b",
+"nyt_candidate_id": 124687,
+"nyt_candidate_race_id": 102086483,
+"first_name": "Bert",
+"middle_name": null,
+"last_name": "Mizusawa",
+"suffix": null,
+"pronoun": "he",
+"img_url": "https://static01.nyt.com/elections-assets/2026/headshots/VA-R-S-2026-08-04-mizusawa-b-108203.png",
+"incumbent": false,
+"ballot_order": 2,
+"order": 2,
+"party": {
+"nyt_id": "GOP",
+"name": "Republican",
+"abbreviation": "Rep."
+},
+"party_caucus": null,
+"groups": null
+},
+"total_writeins": {
+"nyt_id": "total_writeins",
+"nyt_candidate_id": 124686,
+"nyt_candidate_race_id": 102086482,
+"first_name": null,
+"middle_name": null,
+"last_name": "Total Write-ins",
+"suffix": null,
+"pronoun": null,
+"img_url": null,
+"incumbent": false,
+"ballot_order": 3,
+"order": 3,
+"party": {
+"nyt_id": "OTH",
+"name": "",
+"abbreviation": ""
+},
+"party_caucus": null,
+"groups": null
+}
+},
+"rounds": null,
+"outcome": {
+"won": [
+"warner-m"
+],
+"advanced_to_runoff": [],
+"called_by": [
+"ap"
+],
+"runoff_accepted_at": [],
+"winner_accepted_at": [
+"2026-11-04T00:00:31.573829+00:00"
+],
+"gained": false,
+"electoral_votes": null
+},
+"top_reporting_unit": {
+"nyt_id": "VA-state",
+"name": "Virginia",
+"fips_state": "51",
+"fips_county": null,
+"fips_suffix": null,
+"level": "state",
+"state_postal": "VA",
+"state_abb": "Va.",
+"eevp": 5.92,
+"eevp_by_vote_type": {
+"total": 5.92,
+"advance": 1.9,
+"provisional": 0,
+"absentee_mail": 2.35,
+"advance_in_person": 1.77,
+"election_day_in_person": 3.97
+},
+"eevp_max": 99,
+"expected_vote_by_vote_type": {
+"total": 3677376,
+"advance": 1692769,
+"provisional": 43634,
+"absentee_mail": 379730,
+"advance_in_person": 1313039,
+"election_day_in_person": 1940973
+},
+"total_votes": 217854,
+"total_expected_vote": 3677376,
+"precincts_reporting": 272,
+"precincts_total": 2529,
+"provider_updated_at": "2026-11-04T00:33:37.675+00:00",
+"provider": "ap",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4f70-1833-2d9c-459f7cbac452",
+"election_track_id": 12663,
+"source_run_id": 10625228,
+"votes_estimated": 3272830,
+"votes_counted": 0,
+"votes_remaining": 3263374,
+"margin_quantile": [
+0.0255,
+0.1416,
+0.1995,
+0.2611,
+0.3599
+],
+"model_type": "national",
+"model_components": {
+"proportion_model_voteshare": 0,
+"proportion_counted_voteshare": 0,
+"proportion_baseline_voteshare": 1
+},
+"extra_columns": {
+"runoff_rcv_obj": {},
+"goodness_turnout": 0,
+"turnout_quantile": [
+2658164,
+3029936,
+3263374.3851,
+3477549,
+3953240
+],
+"include_voteshare": null,
+"dem_margin_counted": [
+{
+"dem_margin_counted_county": 0,
+"dem_margin_counted_precinct": 0,
+"dem_margin_counted_township": 0
+}
+],
+"goodness_voteshare": 0,
+"dem_margin_baseline": [
+{
+"dem_margin_baseline_county": 0,
+"dem_margin_baseline_precinct": 0,
+"dem_margin_baseline_township": 0
+}
+],
+"n_include_voteshare": [
+{
+"n_include_voteshare_county": 0,
+"n_include_voteshare_precinct": 0,
+"n_include_voteshare_township": 0
+}
+],
+"dem_margin_benchmark": [
+{
+"dem_margin_benchmark_county": 0,
+"dem_margin_benchmark_precinct": 0,
+"dem_margin_benchmark_township": 0
+}
+]
+},
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+"candidates": [
+{
+"votes": {
+"total": 118154,
+"advance": 20011,
+"provisional": 0,
+"absentee_mail": 6640,
+"advance_in_person": 13371,
+"election_day_in_person": 35562
+},
+"leader": true,
+"nyt_id": "warner-m",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4f70-9387-b623-c1a1062757a2",
+"ranking": 1,
+"party_caucus": "DEM",
+"extra_columns": {
+"share_baseline": 59.4725,
+"share_benchmark": 50.0394,
+"share_benchmark_major_cand": 50.018
+},
+"votes_counted": 0,
+"share_remaining": 59,
+"votes_estimated": 1946434,
+"votes_remaining": 1946434,
+"win_probability": 0.9933,
+"voteshare_quantile": [
+0.5077,
+0.566,
+0.5947,
+0.6255,
+0.6754
+],
+"model_vote_report_id": "01a1a2e5-4f70-1833-2d9c-459f7cbac452",
+"second_place_probability": 0.0067,
+"votes_estimated_quantile": [
+1496966,
+1758176,
+1941398,
+2109262,
+2461418
+]
+},
+"nyt_candidate_race_id": 102086484
+},
+{
+"votes": {
+"total": 98992,
+"advance": 12159,
+"provisional": 0,
+"absentee_mail": 2258,
+"advance_in_person": 9901,
+"election_day_in_person": 41218
+},
+"leader": false,
+"nyt_id": "mizusawa-b",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4f70-6251-fc64-63be7a30ebfb",
+"ranking": 2,
+"party_caucus": "GOP",
+"extra_columns": {
+"share_baseline": 39.5275,
+"share_benchmark": 49.9606,
+"share_benchmark_major_cand": 49.982
+},
+"votes_counted": 0,
+"share_remaining": 40,
+"votes_estimated": 1293667,
+"votes_remaining": 1293667,
+"win_probability": 0.0067,
+"voteshare_quantile": [
+0.315,
+0.3646,
+0.3953,
+0.4243,
+0.4811
+],
+"model_vote_report_id": "01a1a2e5-4f70-1833-2d9c-459f7cbac452",
+"second_place_probability": 0.9933,
+"votes_estimated_quantile": [
+952018,
+1156789,
+1289368,
+1417213,
+1687204
+]
+},
+"nyt_candidate_race_id": 102086483
+},
+{
+"votes": {
+"total": 708,
+"advance": 47,
+"provisional": 0,
+"absentee_mail": 14,
+"advance_in_person": 33,
+"election_day_in_person": 219
+},
+"leader": false,
+"nyt_id": "total_writeins",
+"nyt_model_estimates": {
+"id": "01a1a2e5-4f70-2f4b-7a46-ad1293bed93e",
+"ranking": 3,
+"party_caucus": "OTH",
+"extra_columns": {
+"share_baseline": 1,
+"share_benchmark": null,
+"share_benchmark_major_cand": null
+},
+"votes_counted": 0,
+"share_remaining": 1,
+"votes_estimated": 32728,
+"votes_remaining": 32728,
+"win_probability": 0,
+"voteshare_quantile": [
+0.0089,
+0.0091,
+0.01,
+0.0101,
+0.0154
+],
+"model_vote_report_id": "01a1a2e5-4f70-1833-2d9c-459f7cbac452",
+"second_place_probability": 0,
+"votes_estimated_quantile": [
+24812,
+28717,
+32609,
+34310,
+50582
+]
+},
+"nyt_candidate_race_id": 102086482
+}
+],
+"demographic_categories": []
+},
+"url": "https://www.nytimes.com/interactive/2026/11/03/us/elections/results-virginia-us-senate.html"
+}
+],
+"partyControlData": {
+"count": 1,
+"results": [
+{
+"state_postal": "US",
+"state": "United States",
+"offices": {
+"S": {
+"office_id": "S",
+"office": "U.S. Senate",
+"lg_party_id": "GOP",
+"total": 100,
+"open_seats": 35,
+"no_election_seats": 65,
+"num_races_called": 1,
+"to_win": {
+"DEM": 51,
+"GOP": 50,
+"OTH": 51
+},
+"party_balance": {
+"DEM": {
+"party_id": "DEM",
+"party": "Democrat",
+"party_abbreviation": "Dem.",
+"flip_count": 0,
+"seats": 35,
+"no_election": 34,
+"winner": false,
+"candidate_metadata": null,
+"controlled_at": null
+},
+"GOP": {
+"party_id": "GOP",
+"party": "Republican",
+"party_abbreviation": "Rep.",
+"flip_count": 0,
+"seats": 31,
+"no_election": 31,
+"winner": false,
+"candidate_metadata": null,
+"controlled_at": null
+},
+"OTH": {
+"party_id": "OTH",
+"party": "Independent",
+"party_abbreviation": "Ind.",
+"flip_count": 0,
+"seats": 0,
+"no_election": 0,
+"winner": false,
+"candidate_metadata": null,
+"controlled_at": null
+}
+},
+"current_control": {
+"DEM": 45,
+"GOP": 57,
+"OTH": 2
+},
+"nyt_model_estimates": [
+{
+"id": 149300,
+"nyt_party_id": "DEM",
+"ranking": 1,
+"seats": 52,
+"seats_quantile": [
+46,
+50,
+52,
+54,
+57
+],
+"win_probability": 0.6656,
+"seat_margin": 4,
+"seat_margin_quantile": [
+-8,
+0,
+4,
+8,
+15
+],
+"popular_vote": 38567537,
+"popular_vote_quantile": [
+33023926,
+36518257,
+38567537,
+40580207,
+44513801
+],
+"voteshare_margin": 0.0351,
+"voteshare_margin_quantile": [
+-0.0515,
+0.0064,
+0.0351,
+0.066,
+0.1178
+],
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+{
+"id": 149301,
+"nyt_party_id": "GOP",
+"ranking": 2,
+"seats": 48,
+"seats_quantile": [
+42,
+46,
+48,
+50,
+54
+],
+"win_probability": 0.2985,
+"seat_margin": -4,
+"seat_margin_quantile": [
+-15,
+-8,
+-4,
+0,
+8
+],
+"popular_vote": 35886430,
+"popular_vote_quantile": [
+30940425,
+33954851,
+35886430,
+37677073,
+41574181
+],
+"voteshare_margin": -0.0351,
+"voteshare_margin_quantile": [
+-0.118,
+-0.066,
+-0.0351,
+-0.0066,
+0.0514
+],
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+},
+{
+"id": 149302,
+"nyt_party_id": "OTH",
+"ranking": 3,
+"seats": 0,
+"seats_quantile": [
+0,
+0,
+0,
+1,
+2
+],
+"win_probability": 0,
+"seat_margin": null,
+"seat_margin_quantile": null,
+"popular_vote": 1708030,
+"popular_vote_quantile": [
+1423902,
+1583379,
+1708030,
+1800949,
+2101638
+],
+"voteshare_margin": null,
+"voteshare_margin_quantile": null,
+"nyt_updated_at": "2026-11-03T15:58:17.796+00:00"
+}
+],
+"nyt_model_chamber": {
+"id": 21470,
+"no_control": 0.036,
+"voteshare_inclusion": {
+"dem_margin_counted": [
+{
+"dem_margin_counted_county": 0,
+"dem_margin_counted_precinct": 0,
+"dem_margin_counted_township": 0
+}
+],
+"dem_margin_baseline": [
+{
+"dem_margin_baseline_county": 0,
+"dem_margin_baseline_precinct": 0,
+"dem_margin_baseline_township": 0
+}
+],
+"n_include_voteshare": [
+{
+"n_include_voteshare_county": 0,
+"n_include_voteshare_precinct": 0,
+"n_include_voteshare_township": 0
+}
+],
+"dem_margin_benchmark": [
+{
+"dem_margin_benchmark_county": 0,
+"dem_margin_benchmark_precinct": 0,
+"dem_margin_benchmark_township": 0
+}
+],
+"turnout_included_voteshare": [
+{
+"turnout_included_county": 0,
+"turnout_included_precinct": 0,
+"turnout_included_township": 0
+}
+]
+},
+"estimate_components": {
+"proportion_model_voteshare": 0,
+"proportion_counted_voteshare": 0,
+"proportion_baseline_voteshare": 1
+},
+"seat_combination_probabilities": [
+{
+"DEM": 52,
+"GOP": 48,
+"OTH": 0,
+"prop_sims": 0.0773
+},
+{
+"DEM": 51,
+"GOP": 49,
+"OTH": 0,
+"prop_sims": 0.0766
+},
+{
+"DEM": 50,
+"GOP": 50,
+"OTH": 0,
+"prop_sims": 0.072
+},
+{
+"DEM": 49,
+"GOP": 51,
+"OTH": 0,
+"prop_sims": 0.0666
+},
+{
+"DEM": 53,
+"GOP": 47,
+"OTH": 0,
+"prop_sims": 0.0646
+},
+{
+"DEM": 53,
+"GOP": 46,
+"OTH": 1,
+"prop_sims": 0.064
+},
+{
+"DEM": 52,
+"GOP": 47,
+"OTH": 1,
+"prop_sims": 0.0606
+},
+{
+"DEM": 54,
+"GOP": 46,
+"OTH": 0,
+"prop_sims": 0.05
+},
+{
+"DEM": 51,
+"GOP": 48,
+"OTH": 1,
+"prop_sims": 0.048
+},
+{
+"DEM": 54,
+"GOP": 45,
+"OTH": 1,
+"prop_sims": 0.046
+},
+{
+"DEM": 48,
+"GOP": 52,
+"OTH": 0,
+"prop_sims": 0.0446
+},
+{
+"DEM": 55,
+"GOP": 44,
+"OTH": 1,
+"prop_sims": 0.0393
+},
+{
+"DEM": 50,
+"GOP": 49,
+"OTH": 1,
+"prop_sims": 0.0326
+},
+{
+"DEM": 47,
+"GOP": 53,
+"OTH": 0,
+"prop_sims": 0.0306
+},
+{
+"DEM": 55,
+"GOP": 45,
+"OTH": 0,
+"prop_sims": 0.03
+},
+{
+"DEM": 56,
+"GOP": 43,
+"OTH": 1,
+"prop_sims": 0.0253
+},
+{
+"DEM": 49,
+"GOP": 50,
+"OTH": 1,
+"prop_sims": 0.0227
+},
+{
+"DEM": 46,
+"GOP": 54,
+"OTH": 0,
+"prop_sims": 0.02
+},
+{
+"DEM": 56,
+"GOP": 44,
+"OTH": 0,
+"prop_sims": 0.016
+},
+{
+"DEM": 57,
+"GOP": 42,
+"OTH": 1,
+"prop_sims": 0.016
+},
+{
+"DEM": 45,
+"GOP": 55,
+"OTH": 0,
+"prop_sims": 0.0113
+},
+{
+"DEM": 47,
+"GOP": 52,
+"OTH": 1,
+"prop_sims": 0.01
+},
+{
+"DEM": 48,
+"GOP": 51,
+"OTH": 1,
+"prop_sims": 0.0093
+},
+{
+"DEM": 55,
+"GOP": 43,
+"OTH": 2,
+"prop_sims": 0.0093
+},
+{
+"DEM": 57,
+"GOP": 43,
+"OTH": 0,
+"prop_sims": 0.0073
+},
+{
+"DEM": 58,
+"GOP": 41,
+"OTH": 1,
+"prop_sims": 0.0073
+},
+{
+"DEM": 44,
+"GOP": 56,
+"OTH": 0,
+"prop_sims": 0.0053
+},
+{
+"DEM": 56,
+"GOP": 42,
+"OTH": 2,
+"prop_sims": 0.0053
+},
+{
+"DEM": 54,
+"GOP": 44,
+"OTH": 2,
+"prop_sims": 0.0047
+},
+{
+"DEM": 57,
+"GOP": 41,
+"OTH": 2,
+"prop_sims": 0.0047
+},
+{
+"DEM": 49,
+"GOP": 49,
+"OTH": 2,
+"prop_sims": 0.0033
+},
+{
+"DEM": 58,
+"GOP": 40,
+"OTH": 2,
+"prop_sims": 0.0033
+},
+{
+"DEM": 46,
+"GOP": 53,
+"OTH": 1,
+"prop_sims": 0.002
+},
+{
+"DEM": 58,
+"GOP": 42,
+"OTH": 0,
+"prop_sims": 0.002
+},
+{
+"DEM": 42,
+"GOP": 58,
+"OTH": 0,
+"prop_sims": 0.0013
+},
+{
+"DEM": 45,
+"GOP": 54,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 53,
+"GOP": 45,
+"OTH": 2,
+"prop_sims": 0.0013
+},
+{
+"DEM": 59,
+"GOP": 39,
+"OTH": 2,
+"prop_sims": 0.0013
+},
+{
+"DEM": 59,
+"GOP": 40,
+"OTH": 1,
+"prop_sims": 0.0013
+},
+{
+"DEM": 43,
+"GOP": 57,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 44,
+"GOP": 55,
+"OTH": 1,
+"prop_sims": 0.0007
+},
+{
+"DEM": 52,
+"GOP": 46,
+"OTH": 2,
+"prop_sims": 0.0007
+},
+{
+"DEM": 54,
+"GOP": 43,
+"OTH": 3,
+"prop_sims": 0.0007
+},
+{
+"DEM": 55,
+"GOP": 42,
+"OTH": 3,
+"prop_sims": 0.0007
+},
+{
+"DEM": 59,
+"GOP": 41,
+"OTH": 0,
+"prop_sims": 0.0007
+},
+{
+"DEM": 60,
+"GOP": 38,
+"OTH": 2,
+"prop_sims": 0.0007
+},
+{
+"DEM": 61,
+"GOP": 37,
+"OTH": 2,
+"prop_sims": 0.0007
+}
+],
+"nyt_updated_at": "2026-11-03T15:58:17.796Z"
+},
+"model_settings": {
+"start_time": "2026-11-03T23:00:00+00:00",
+"end_time": null,
+"model_status": "inactive",
+"model_inactive_reason": "waiting_for_results"
+},
+"is_reporting": true
+}
+}
+}
+]
+},
+"pollClosingTimes": [
+{
+"poll_closing_time": "2026-11-04T06:00:00.000Z",
+"poll_closing_time_display_et": "1 a.m.",
+"poll_closing_text": "Last polls close at 1 a.m. Eastern time.",
+"poll_closing_countdown_text": "Last polls close in",
+"waiting_for_results_text": "Polls have closed.",
+"reporting_unit": {
+"state_postal": "AK"
+}
+},
+{
+"poll_closing_time": "2026-11-04T05:00:00.000Z",
+"poll_closing_time_display_et": "12 a.m.",
+"poll_closing_text": "Polls close at midnight Eastern time.",
+"poll_closing_countdown_text": "Polls close in",
+"waiting_for_results_text": "Polls have closed.",
+"reporting_unit": {
+"state_postal": "HI"
+}
+},
+{
+"poll_closing_time": "2026-11-04T04:00:00.000Z",
+"poll_closing_time_display_et": "11 p.m.",
+"poll_closing_text": "Polls close at 11 p.m. Eastern time.",
+"poll_closing_countdown_text": "Polls close in",
+"waiting_for_results_text": "Polls have closed.",
+"reporting_unit": {
+"state_postal": "CA"
+}
+},
+{
+"poll_closing_time": "2026-11-04T04:00:00.000Z",
+"poll_closing_time_display_et": "11 p.m.",
+"poll_closing_text": "Polls close at 11 p.m. Eastern time.",
+"poll_closing_countdown_text": "Polls close in",
+"waiting_for_results_text": "Polls have closed.",
+"reporting_unit": {
+"state_postal": "WA"
+}
+},
+{
+"poll_closing_time": "2026-11-04T04:00:00.000Z",
+"poll_closing_time_display_et": "11 p.m.",
+"poll_closing_text": "Most polls close at 11 p.m. Eastern time.",
+"poll_closing_countdown_text": "Most polls close in",
+"waiting_for_results_text": "Most polls have closed.",
+"reporting_unit": {
+"state_postal": "OR"
+}
+},
+{
+"poll_closing_time": "2026-11-04T01:00:00.000Z",
+"poll_closing_time_display_et": "8 p.m.",
+"poll_closing_text": "Most polls close at 8 p.m. Eastern time.",
+"poll_closing_countdown_text": "Most polls close in",
+"waiting_for_results_text": "Most polls have closed.",
+"reporting_unit": {
+"state_postal": "TX"
+}
+},
+{
+"poll_closing_time": "2026-11-04T00:00:00.000Z",
+"poll_closing_time_display_et": "7 p.m.",
+"poll_closing_text": "Polls close at 7 p.m. Eastern time.",
+"poll_closing_countdown_text": "Polls close in",
+"waiting_for_results_text": "Polls have closed.",
+"reporting_unit": {
+"state_postal": "VA"
+}
+},
+{
+"poll_closing_time": "2026-11-04T00:00:00.000Z",
+"poll_closing_time_display_et": "7 p.m.",
+"poll_closing_text": "First polls close at 7 p.m. Eastern time.",
+"poll_closing_countdown_text": "First polls close in",
+"waiting_for_results_text": "Most polls have closed.",
+"reporting_unit": {
+"state_postal": "FL"
+}
+}
+],
+"resultsMeta": {
+"resultsUpdatedAt": "2026-11-04T00:33:37.675Z",
+"docsUpdatedAt": "2026-10-29T20:47:49.763Z"
+}
+}
