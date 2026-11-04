@@ -28,26 +28,20 @@ Check status at `curl -s localhost:8000/api/health`. Kalshi discovery takes 1 to
 
 ## Status (as of 2026-11-04 ~00:55 UTC)
 
-Built, tested (13 tests) and pushed on `claude/laughing-brahmagupta-yyojle`. `/api/health` returned ok against the live feeds:
+Built, tested (13 tests) and pushed on `claude/laughing-brahmagupta-yyojle`; the Kalshi key fix is on `claude/brave-thompson-x08sht`, which contains that branch plus the fix. `/api/health` returned ok against the live feeds:
 
 - **NYT/AP:** votes and calls 5 to 8 s old.
 - **Polymarket:** websocket streaming.
 - **Kalshi REST:** about 3 s old.
 - **Early vote:** loaded.
 
-## Next step: Kalshi websocket key
+## Kalshi websocket key: confirmed working (2026-11-04 ~01:04 UTC)
 
-The user created a Kalshi API key, read-only scope only ("Read all data"), and added it as environment variables:
+The user's read-only key ("Read all data") is enough for the market-data websocket. `/api/health` showed `kalshi_ws` ok, about 700 markets subscribed, and `last_msg` advancing.
 
-- `KALSHI_API_KEY_ID`
-- `KALSHI_PRIVATE_KEY`: one-line base64 of the PEM file. Raw PEM, `\n`-escaped PEM, or `KALSHI_PRIVATE_KEY_PATH` also work.
-
-To act on it:
-
-1. Check the variables are present without printing their values, e.g. `[ -n "$KALSHI_API_KEY_ID" ] && echo set`.
-2. Start the tracker. After about 1 minute, `/api/health` should show `kalshi_ws` ok with a recent `last_msg`.
-3. If it shows `handshake rejected: ... 401`, either the key was copied wrong (the ID and key don't match, or the base64 is broken) or a read-only scope isn't enough for the websocket. Tell the user which, and don't guess.
-4. If the variables aren't set, the user saved them to a different environment, or this session started before the save.
+- **`KALSHI_API_KEY_ID`:** the key UUID.
+- **`KALSHI_PRIVATE_KEY`:** a 64-character base64 of the Ed25519 key's DER, i.e. the PEM body without its BEGIN/END lines. The original loader rejected that silently and health said "disabled"; `kalshi_auth.py` now accepts it. Raw PEM, `\n`-escaped PEM, base64 PEM and `KALSHI_PRIVATE_KEY_PATH` also work, and a set-but-unreadable key now shows as `key not usable`.
+- **Reconnects during discovery:** the websocket reconnects each time discovery adds tickers, so `last_msg` is bursty for the first couple of minutes. That is by design.
 
 Never print, log or commit the key values. Never ask the user to paste a key into chat.
 
@@ -74,7 +68,7 @@ The user is deleting the Kalshi account after election night. Remind them to als
 
 ## Known gaps and backlog (in priority order)
 
-1. Confirm the Kalshi websocket with the real key (above).
+1. ~~Confirm the Kalshi websocket with the real key.~~ Done, see above.
 2. 64 House districts have no market on either site, so they show as `unpriced`.
 3. "Since 6 pm" exists for chamber control only, from Polymarket history. Per-race history is available at `/api/races/{key}/history`.
 4. Kalshi seat-count markets (`KXDSENATEWON`, etc.) and Polymarket seat buckets aren't ingested.
