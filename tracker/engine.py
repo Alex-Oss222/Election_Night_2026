@@ -356,6 +356,8 @@ class Engine:
         for t in M.KALSHI_CONTROL.values():
             await self._kx_event(t)
         await self._kx_house()
+        self.status["kalshi"].ok(discovering=True, races=len(self.kx_race))
+        self._bump()
         for key, race in self.all_races().items():
             if key in self.kx_race:
                 continue
@@ -367,7 +369,7 @@ class Engine:
                 probes += 1
                 if probes % 15 == 0:  # keep known prices fresh while discovery crawls
                     await self._kx_refresh()
-                    self.status["kalshi"].update(discovering=True, races=len(self.kx_race), last_refresh=now_iso())
+                    self.status["kalshi"].ok(discovering=True, races=len(self.kx_race))
                     self._bump()
                 if await self._kx_event(t):
                     self.kx_race[key] = t
