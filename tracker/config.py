@@ -24,6 +24,9 @@ NYT_INTERVAL = _f("NYT_INTERVAL", 10)
 POLYMARKET_INTERVAL = _f("POLYMARKET_INTERVAL", 20)   # REST refresh; websocket is the real-time path
 KALSHI_INTERVAL = _f("KALSHI_INTERVAL", 5)     # batched ?tickers= refresh of every known market
 KALSHI_MIN_GAP = _f("KALSHI_MIN_GAP", 0.5)      # seconds between Kalshi requests (it 429s readily)
+KALSHI_INTERVAL_WITH_WS = _f("KALSHI_INTERVAL_WITH_WS", 30)  # REST sweep once the websocket streams
+KALSHI_WS = os.environ.get("KALSHI_WS", "wss://api.elections.kalshi.com/trade-api/ws/v2")
+KALSHI_WS_PATH = "/trade-api/ws/v2"  # the path that gets signed
 POLYMARKET_WS = os.environ.get("POLYMARKET_WS", "1") != "0"
 HISTORY_FILE = os.environ.get("HISTORY_FILE", "data/history.jsonl")
 HISTORY_EVERY = _f("HISTORY_EVERY", 20)

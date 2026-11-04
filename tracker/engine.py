@@ -14,6 +14,7 @@ import httpx
 from . import config as C
 from . import markets as M
 from . import model
+from .kalshi_auth import KalshiSigner
 from .nyt import parse_feed
 
 log = logging.getLogger("tracker")
@@ -57,7 +58,14 @@ class Engine:
         self.early_vote: dict[str, dict] = {}
         self.history: list[dict] = []
         self.baseline: dict[str, Any] = {}         # 6 pm ET control prices
-        self.status = {k: SourceStatus(ok=None) for k in ("nyt", "polymarket", "polymarket_ws", "kalshi", "early_vote")}
+        self.status = {k: SourceStatus(ok=None)
+                       for k in ("nyt", "polymarket", "polymarket_ws", "kalshi", "kalshi_ws", "early_vote")}
+        try:
+            self.kx_signer = KalshiSigner.from_env()
+        except Exception as e:  # a malformed key must not take the whole tracker down
+            log.error("Kalshi key not usable: %s", e)
+            self.kx_signer = None
+            self.status["kalshi_ws"].fail(f"key not usable: {e}")
         self.version = 0
         self._snap: tuple[int, dict] | None = None
         self._kx_lock = asyncio.Lock()
@@ -81,6 +89,10 @@ class Engine:
                  self._loop(self.poll_early_vote, 3600, delay=3)]
         if C.POLYMARKET_WS:
             loops.append(self._pm_ws_loop())
+        if self.kx_signer:
+            loops.append(self._kx_ws_loop())
+        else:
+            self.status["kalshi_ws"].update(ok=None, error="disabled: set KALSHI_API_KEY_ID and KALSHI_PRIVATE_KEY")
         self._tasks = [asyncio.create_task(x) for x in loops]
 
     async def stop(self) -> None:
@@ -330,6 +342,74 @@ class Engine:
             self.kx_events[ev] = M.parse_kalshi_markets(mk)
             self.kx_fetched[ev] = t
 
+    # Kalshi websocket: only runs when KALSHI_API_KEY_ID + KALSHI_PRIVATE_KEY are set.
+    def _kx_ws_live(self) -> bool:
+        age = age_seconds(self.status["kalshi_ws"].get("last_msg"))
+        return age is not None and age < 30
+
+    def _kx_ws_tickers(self) -> list[str]:
+        return sorted({o["ticker"] for outs in self.kx_events.values() for o in outs
+                       if o["ticker"] and o.get("status") in (None, "active", "open")})
+
+    async def _kx_ws_loop(self) -> None:
+        import websockets
+        from websockets.asyncio.client import connect
+        backoff, subscribed = 1, []
+        while True:
+            await asyncio.sleep(1)
+            tickers = self._kx_ws_tickers()
+            if not tickers:
+                continue
+            try:
+                headers = self.kx_signer.headers("GET", C.KALSHI_WS_PATH)
+                async with connect(C.KALSHI_WS, additional_headers=headers, max_size=2**24) as ws:
+                    await ws.send(json.dumps({"id": 1, "cmd": "subscribe", "params": {
+                        "channels": ["ticker"], "market_tickers": tickers}}))
+                    subscribed = tickers
+                    self.status["kalshi_ws"].ok(markets=len(tickers))
+                    backoff = 1
+                    while True:
+                        try:
+                            raw = await asyncio.wait_for(ws.recv(), timeout=5)
+                        except asyncio.TimeoutError:
+                            raw = None
+                        if raw:
+                            self._on_kx_ws(json.loads(raw))
+                        if self._kx_ws_tickers() != subscribed:
+                            break  # new markets discovered: reconnect with the full list
+            except asyncio.CancelledError:
+                raise
+            except websockets.exceptions.InvalidStatus as e:
+                # 401 means the key is wrong or revoked: say so plainly and back off hard
+                self.status["kalshi_ws"].fail(f"handshake rejected: {e}")
+                await asyncio.sleep(min(backoff * 10, 300))
+                backoff *= 2
+            except Exception as e:
+                self.status["kalshi_ws"].fail(e)
+                await asyncio.sleep(backoff)
+                backoff = min(backoff * 2, 30)
+
+    def _on_kx_ws(self, msg: dict) -> None:
+        if msg.get("type") == "error":
+            self.status["kalshi_ws"].fail(json.dumps(msg.get("msg"))[:300])
+            return
+        if msg.get("type") != "ticker":
+            return
+        m = msg.get("msg") or {}
+        t = m.get("market_ticker")
+        for ev, outs in self.kx_events.items():
+            for o in outs:
+                if o["ticker"] == t:
+                    for src, dst in (("yes_bid_dollars", "bid"), ("yes_ask_dollars", "ask"), ("price_dollars", "last")):
+                        if (v := M._num(m.get(src))) is not None:
+                            o[dst] = v
+                    if not o.get("result"):
+                        o["p"] = M.display_price(o["bid"], o["ask"], o["last"])
+                    self.kx_fetched[ev] = now_iso()
+                    self.status["kalshi_ws"]["last_msg"] = now_iso()
+                    self._bump()
+                    return
+
     async def _kalshi_loop(self) -> None:
         await asyncio.sleep(2)
         last_discovery = 0.0
@@ -348,7 +428,9 @@ class Engine:
             except Exception as e:
                 log.warning("kalshi: %s", e)
                 self.status["kalshi"].fail(e)
-            await asyncio.sleep(max(1, C.KALSHI_INTERVAL - (time.monotonic() - t0)))
+            # with the websocket streaming, REST is just a consistency sweep
+            every = C.KALSHI_INTERVAL_WITH_WS if self._kx_ws_live() else C.KALSHI_INTERVAL
+            await asyncio.sleep(max(1, every - (time.monotonic() - t0)))
 
     async def _kx_discover(self) -> None:
         probes = 0

@@ -104,3 +104,55 @@ def test_pills_sum_to_100():
     pills = model.normalize_pills({"D": 0.825, "R": 0.185})
     assert sum(pills.values()) == 100 and pills["D"] > pills["R"]
     assert model.normalize_pills({"D": 0.999, "R": 0.001}) == {"D": 99, "R": 1}
+
+
+# ---------------------------------------------------------------- Kalshi auth + websocket
+
+def _pem(key):
+    from cryptography.hazmat.primitives import serialization
+    return key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                             serialization.NoEncryption())
+
+
+def test_kalshi_signer_ed25519_and_rsa():
+    import base64
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives.asymmetric import ed25519, padding, rsa
+    from tracker.kalshi_auth import KalshiSigner
+
+    ek = ed25519.Ed25519PrivateKey.generate()
+    h = KalshiSigner("kid", _pem(ek)).headers("GET", "/trade-api/ws/v2?x=1", ts_ms=1700000000000)
+    assert h["KALSHI-ACCESS-KEY"] == "kid" and h["KALSHI-ACCESS-TIMESTAMP"] == "1700000000000"
+    ek.public_key().verify(base64.b64decode(h["KALSHI-ACCESS-SIGNATURE"]), b"1700000000000GET/trade-api/ws/v2")
+
+    rk = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    h = KalshiSigner("kid", _pem(rk)).headers("GET", "/trade-api/ws/v2", ts_ms=1)
+    rk.public_key().verify(base64.b64decode(h["KALSHI-ACCESS-SIGNATURE"]), b"1GET/trade-api/ws/v2",
+                           padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.DIGEST_LENGTH),
+                           hashes.SHA256())
+
+
+def test_kalshi_key_env_formats(monkeypatch):
+    import base64
+    from cryptography.hazmat.primitives.asymmetric import ed25519
+    from tracker.kalshi_auth import KalshiSigner
+
+    pem = _pem(ed25519.Ed25519PrivateKey.generate()).decode()
+    monkeypatch.setenv("KALSHI_API_KEY_ID", "kid")
+    for form in (pem, pem.replace("\n", "\\n"), base64.b64encode(pem.encode()).decode()):
+        monkeypatch.setenv("KALSHI_PRIVATE_KEY", form)
+        assert KalshiSigner.from_env() is not None
+    monkeypatch.delenv("KALSHI_PRIVATE_KEY")
+    assert KalshiSigner.from_env() is None
+
+
+def test_kalshi_ws_ticker_updates_price():
+    from tracker.engine import Engine
+    e = Engine()
+    e.kx_events["SENATETX-26"] = M.parse_kalshi_markets(load("kalshi_controls.json")["markets"])
+    t = e.kx_events["SENATETX-26"][0]["ticker"]
+    e._on_kx_ws({"type": "ticker", "sid": 1, "msg": {"market_ticker": t, "yes_bid_dollars": "0.6100",
+                                                     "yes_ask_dollars": "0.6300", "price_dollars": "0.6200"}})
+    o = e.kx_events["SENATETX-26"][0]
+    assert (o["bid"], o["ask"], o["p"]) == (0.61, 0.63, 0.62)
+    assert e.status["kalshi_ws"]["last_msg"]

@@ -40,10 +40,20 @@ curl -N localhost:8000/api/stream
 | AP votes and calls | `static01.nyt.com/elections-assets/pages/data/2026-11-03/results-{senate,house,governor}.json` | 10 s, conditional GET with ETag (the CDN's max-age is 5 s) |
 | Polymarket prices | CLOB websocket `ws-subscriptions-clob.polymarket.com` | real time |
 | Polymarket markets | Gamma API, `midterms` tag discovery every 10 min, batched slug refresh | 20 s |
-| Kalshi prices | Trade API v2 `?tickers=` batches | 5 s |
+| Kalshi prices | Trade API v2 `?tickers=` batches | 5 s (30 s once the websocket streams) |
+| Kalshi prices, optional | Websocket `ticker` channel, needs an API key | real time |
 | 6 pm ET baseline | Polymarket `prices-history` | every 30 min |
 
 Each interval can be overridden with an environment variable: `NYT_INTERVAL`, `POLYMARKET_INTERVAL`, `KALSHI_INTERVAL`, `KALSHI_MIN_GAP`, `HISTORY_EVERY`, `HISTORY_FILE`, `POLYMARKET_WS=0`.
+
+## Kalshi API key (optional, makes Kalshi real time)
+
+Create the key on Kalshi under Account Settings, API Keys, Create New API Key. Ed25519 and RSA keys both work. Kalshi shows the private key once, so save the downloaded file. Then set two environment variables:
+
+- `KALSHI_API_KEY_ID`: the key ID
+- `KALSHI_PRIVATE_KEY`: the PEM text. Literal `\n` escapes or base64 of the whole PEM also work. Alternatively, set `KALSHI_PRIVATE_KEY_PATH` to the file.
+
+The tracker only reads market data with it: it never calls an order or portfolio endpoint. Without the variables it falls back to REST polling, and `/api/health` shows `kalshi_ws` as disabled. A rejected key shows up there as `handshake rejected: ... 401`.
 
 ## Rules
 

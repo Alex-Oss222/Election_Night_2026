@@ -42,7 +42,12 @@ def health():
     out, ok = {}, True
     for k, st in engine.status.items():
         age = age_seconds(st.get("last_ok") if k != "polymarket_ws" else st.get("last_msg"))
-        stale = age is None or (k in STALE_AFTER and age > STALE_AFTER[k]) or (k == "polymarket_ws" and age > 60)
+        if k == "kalshi_ws" and not engine.kx_signer:
+            out[k] = {**st, "stale": None}
+            continue
+        if k == "kalshi_ws":
+            age = age_seconds(st.get("last_msg"))
+        stale = age is None or (k in STALE_AFTER and age > STALE_AFTER[k]) or (k.endswith("_ws") and age > 60)
         out[k] = {**st, "age_seconds": None if age is None else round(age, 1), "stale": stale}
         if k in ("nyt", "polymarket", "kalshi") and (stale or not st.get("ok")):
             ok = False
