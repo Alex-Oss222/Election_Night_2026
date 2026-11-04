@@ -33,7 +33,7 @@ async def lifespan(_: FastAPI):
     await engine.stop()
 
 
-app = FastAPI(title="Election Night 2026 Tracker", version="0.1.0", lifespan=lifespan,
+app = FastAPI(title=f"Election Night {C.YEAR} Tracker", version="0.1.0", lifespan=lifespan,
               description="AP results (via NYT JSON) blended with Polymarket and Kalshi prices.")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], allow_headers=["*"])
 app.add_middleware(GZipMiddleware, minimum_size=1024)  # Starlette leaves text/event-stream uncompressed
@@ -99,12 +99,13 @@ _live: tuple[int, bytes] | None = None
 
 @app.get("/api/live")
 def live():
-    """What the results page draws: control, projections, calls and a compact row per race.
+    """What the results page draws: seats, calls and a compact row per race (no odds).
     Serialised once per data version, so many viewers cost one build."""
     global _live
     if not _live or _live[0] != engine.version:
         snap = engine.snapshot()
-        _live = (snap["version"], json.dumps(live_payload(snap, health()["sources"]),
+        election = {"date": C.ELECTION_DATE, "year": C.YEAR}
+        _live = (snap["version"], json.dumps(live_payload(snap, health()["sources"], election),
                                              separators=(",", ":")).encode())
     return Response(_live[1], media_type="application/json", headers={"Cache-Control": "no-store"})
 

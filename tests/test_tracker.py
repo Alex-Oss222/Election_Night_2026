@@ -187,10 +187,12 @@ def test_live_payload_is_compact_and_complete():
                             "incumbent": False, "img": "x"}],
             "markets": {"polymarket": {"outcomes": ["big"]}}, "provenance": {"results": "AP"}}
     s = slim_race(race)
-    assert s["tier"] == "likely" and s["rating"] == "TOSS_UP" and s["battleground"] is True
-    assert "markets" not in s and "provenance" not in s and "img" not in s["candidates"][0]
-    out = live_payload({"version": 3, "races": [race], "calls": []}, {"nyt": {"ok": True, "age_seconds": 2, "stale": False, "x": 1}})
+    assert s["rating"] == "TOSS_UP" and s["battleground"] is True
+    assert not {"markets", "provenance", "blend", "tier"} & s.keys() and "img" not in s["candidates"][0]
+    out = live_payload({"version": 3, "races": [race], "calls": [], "control": {"senate": {}}},
+                       {"nyt": {"ok": True, "age_seconds": 2, "stale": False, "x": 1}}, {"date": "2026-11-03", "year": "2026"})
     assert out["version"] == 3 and out["sources"]["nyt"] == {"ok": True, "age_seconds": 2, "stale": False}
+    assert out["election"]["year"] == "2026" and "control" not in out  # the page shows results only
 
 
 def test_page_and_map_are_served():
@@ -202,3 +204,10 @@ def test_page_and_map_are_served():
     assert c.get("/static/app.js").status_code == 200
     m = c.get("/static/us-states.json").json()
     assert len(m["states"]) == 51 and m["states"]["TX"]["d"].startswith("M")
+
+
+def test_cycle_settings_follow_election_date():
+    from tracker.config import _six_pm_et_utc
+    assert _six_pm_et_utc("2026-11-03") == "2026-11-03T23:00:00Z"   # after DST ends: EST
+    assert _six_pm_et_utc("2028-11-07") == "2028-11-07T23:00:00Z"
+    assert _six_pm_et_utc("2032-11-02") == "2032-11-02T22:00:00Z"   # Nov 1 is a Monday: still EDT

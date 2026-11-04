@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import re
 
-from .config import STATES
+from .config import STATES, YEAR, YY
 
 PARTY_RE = re.compile(r"\((D|R|I|L|G)\)\s*$")
 PARTY_WORDS = {"democrat": "D", "democratic": "D", "republican": "R", "independent": "I"}
@@ -43,7 +43,7 @@ def party_of(label: str) -> str | None:
 AT_LARGE = {"AK", "DE", "ND", "SD", "VT", "WY"}
 _NAME_TO_ST = {v.lower().replace(" ", "-"): k for k, v in STATES.items()}
 _SEN_RE = re.compile(r"^([a-z-]+?)-senate-election-winner(?:-\d+)?$")
-_GOV_RE = re.compile(r"^([a-z-]+?)-governor-(?:winner-2026|election-winner|election-2026)$")
+_GOV_RE = re.compile(rf"^([a-z-]+?)-governor-(?:winner-{YEAR}|election-winner|election-{YEAR})$")
 _HOUSE_RE = re.compile(r"^([a-z]{2})-(\d{2}|al)-house-election-winner$")
 _HOUSE_RE2 = re.compile(r"^which-party-will-win-the-house-race-for-the-([a-z]{2})-(\d{2}|al)-seat$")
 
@@ -59,7 +59,7 @@ def pm_slug(race: dict) -> str | None:
     if race["office"] == "senate":
         return f"{name}-senate-election-winner"
     if race["office"] == "governor":
-        return f"{name}-governor-winner-2026"
+        return f"{name}-governor-winner-{YEAR}"
     if race["office"] == "house":
         return f"{st.lower()}-{house_district(st, race['district']).lower()}-house-election-winner"
     return None
@@ -80,9 +80,9 @@ def race_key_from_pm_slug(slug: str) -> str | None:
 
 
 PM_CONTROL = {
-    "senate": "which-party-will-win-the-senate-in-2026",
-    "house": "which-party-will-win-the-house-in-2026",
-    "balance": "balance-of-power-2026-midterms",
+    "senate": f"which-party-will-win-the-senate-in-{YEAR}",
+    "house": f"which-party-will-win-the-house-in-{YEAR}",
+    "balance": f"balance-of-power-{YEAR}-midterms",  # midterm-only name; check the slug in a presidential year
 }
 
 
@@ -124,7 +124,7 @@ def parse_pm_event(ev: dict) -> dict:
 
 # ---------------------------------------------------------------- Kalshi
 
-KALSHI_CONTROL = {"senate": "CONTROLS-2026", "house": "CONTROLH-2026"}
+KALSHI_CONTROL = {"senate": f"CONTROLS-{YEAR}", "house": f"CONTROLH-{YEAR}"}
 
 
 def kalshi_candidates(race: dict) -> list[str]:
@@ -132,23 +132,23 @@ def kalshi_candidates(race: dict) -> list[str]:
     st = race["state"]
     if race["office"] == "senate":
         if race["special"]:
-            return [f"SENATE{st}S-26", f"KXSENATE{st}S-26"]
+            return [f"SENATE{st}S-{YY}", f"KXSENATE{st}S-{YY}"]
         if st == "LA":
-            return ["KXSENATELA-26NOV", "SENATELA-26"]
-        return [f"SENATE{st}-26", f"KXSENATE{st}-26"]
+            return [f"KXSENATELA-{YY}NOV", f"SENATELA-{YY}"]
+        return [f"SENATE{st}-{YY}", f"KXSENATE{st}-{YY}"]
     if race["office"] == "governor":
-        return [f"GOVPARTY{st}-26", f"KXGOVPARTY{st}-26"]
+        return [f"GOVPARTY{st}-{YY}", f"KXGOVPARTY{st}-{YY}"]
     if race["office"] == "house":
         # Most districts come from the KXHOUSERACE series listing; older per-district series
         # (HOUSETX15-26, KXHOUSENC11-26) are probed only for competitive seats, see engine.
         d = int(race["district"])
-        return [f"HOUSE{st}{d}-26", f"KXHOUSE{st}{d}-26"]
+        return [f"HOUSE{st}{d}-{YY}", f"KXHOUSE{st}{d}-{YY}"]
     return []
 
 
 def race_key_from_kalshi_house(event_ticker: str) -> str | None:
     """KXHOUSERACE-WV02-26 -> H-WV-02 ; KXHOUSERACE-WYAL-26 -> H-WY-01"""
-    m = re.match(r"^KXHOUSERACE-([A-Z]{2})(\d{2}|AL)-26$", event_ticker)
+    m = re.match(rf"^KXHOUSERACE-([A-Z]{{2}})(\d{{2}}|AL)-{YY}$", event_ticker)
     if not m:
         return None
     return f"H-{m.group(1)}-{'01' if m.group(2) == 'AL' else m.group(2)}"

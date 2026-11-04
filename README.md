@@ -1,6 +1,8 @@
-# Election Night 2026 Tracker API
+# Election Night Tracker
 
-A small live API for the 2026 midterms. It merges AP votes and calls (read from the New York Times results JSON) with Polymarket and Kalshi prices, then projects Senate, House and governor seats. The data sources and projection rules follow the published methodology at [election.offgramercy.com/methodology](https://election.offgramercy.com/methodology). Nothing here is a model: odds are market prices, and calls are AP calls.
+A live results site and API, built for the 2026 midterms. It reads AP votes and calls from the New York Times results JSON and serves a results page modeled on Google's election results. The API also blends Polymarket and Kalshi prices into seat projections, following the methodology at [election.offgramercy.com/methodology](https://election.offgramercy.com/methodology). Nothing here is a model: odds are market prices, and calls are AP calls.
+
+The 2026 site runs at https://electionnight2026-production.up.railway.app. To run it for another election, set `ELECTION_DATE` and follow [docs/NEXT_CYCLE.md](docs/NEXT_CYCLE.md).
 
 ## Run
 
@@ -16,23 +18,25 @@ Interactive docs are served at `http://localhost:8000/docs`. On startup the firs
 
 ## Results page
 
-Open `http://localhost:8000/` for the live results page. It has the following parts:
+Open `http://localhost:8000/` for the live results page. It shows results only, no odds:
 
-- **Office tabs:** Senate, House and governor.
-- **Seats bar:** seats not up, won and leading in votes, with the number needed to win.
-- **Map:** each state is colored by who leads in votes and by how much, and labeled with the leader's vote total. Hover or tap a state for the full count. The House tab shows seats won or led per state, plus a grid of all 435 seats.
+- **Office tabs:** Senate, House and governor, each with the number of races called.
+- **Seats bar:** seats held or won, seats where a party leads in votes, the number needed to win, and seats gained or lost.
+- **Map:** each state is colored by who leads in votes and by how much, and labeled with the leader's vote total. Hover for the full count; click to open that race's NYT results page. The House tab shows seats won or led per state, plus a grid of all 435 seats.
 - **Status board:** every race placed by the leader's vote margin, from projected through within 1 point.
-- **Battlegrounds:** a card for each battleground race. Projected winners get a yellow check everywhere.
+- **Key races:** a card per battleground with each candidate's vote % and vote count, and links to the full results.
 - **All races:** a table you can filter and sort.
 - **Live feed:** AP calls and poll closings.
 
-The page polls `GET /api/live` every 3 seconds. That endpoint is a compact version of the snapshot, serialised once per data change and gzipped to about 40 KB. Results reach the page within about 10 to 15 seconds of NYT publishing them, and market prices within a few seconds. The page has no build step and no dependencies apart from Google Fonts. The map shapes in `tracker/static/us-states.json` come from us-atlas (US Census boundaries) via `scripts/build_map.py`.
+Projected winners get a yellow check everywhere, and flipped seats a gold outline. Clicking a race opens its NYT results page, falling back to a Google search. On a phone, the first tap shows the details and a second tap opens the page.
+
+The page polls `GET /api/live` every 3 seconds. That endpoint is a compact version of the snapshot, serialised once per data change and gzipped to about 40 KB. Results reach the page within about 10 to 15 seconds of NYT publishing them. The page has no build step and no dependencies apart from Google Fonts. The map shapes in `tracker/static/us-states.json` come from us-atlas (US Census boundaries) via `scripts/build_map.py`.
 
 ## Put it on the web
 
 The included `Dockerfile` runs on any host that builds a Dockerfile, such as Render, Railway or Fly.io. To deploy:
 
-1. Create a web service from this repository and branch.
+1. Create a web service from this repository's `main` branch.
 2. Leave the start command alone. The image reads the host's `$PORT`.
 3. Optionally, set `KALSHI_API_KEY_ID` and `KALSHI_PRIVATE_KEY` in the host's environment settings for real-time Kalshi prices.
 4. Pick a plan that does not sleep when idle. A cold start restarts market discovery, which takes 1 to 2 minutes.
@@ -46,7 +50,7 @@ Before making the site public, read the licensing notes at the end of `CLAUDE.md
 | Endpoint | What it returns |
 |---|---|
 | `GET /` | The live results page |
-| `GET /api/live` | What the page draws: control, projections, calls and a compact row per race (gzipped, about 40 KB) |
+| `GET /api/live` | What the page draws: seats, calls and a compact row per race, no odds (gzipped, about 40 KB) |
 | `GET /api/health` | Per-source status, last success, last error |
 | `GET /api/snapshot` | Everything: control, projections, calls, all 506 races |
 | `GET /api/control` | Senate/House control: blended, each book, rounded pills, change since 6 pm ET, NYT needle, AP winner |
@@ -66,23 +70,25 @@ curl -N localhost:8000/api/stream
 
 | Source | Endpoint | Cadence |
 |---|---|---|
-| AP votes and calls | `static01.nyt.com/elections-assets/pages/data/2026-11-03/results-{senate,house,governor}.json` | 10 s, conditional GET with ETag (the CDN's max-age is 5 s) |
+| AP votes and calls | `static01.nyt.com/elections-assets/pages/data/{ELECTION_DATE}/results-{senate,house,governor}.json` | 10 s, conditional GET with ETag (the CDN's max-age is 5 s) |
 | Polymarket prices | CLOB websocket `ws-subscriptions-clob.polymarket.com` | real time |
-| Polymarket markets | Gamma API, `midterms` tag discovery every 10 min, batched slug refresh | 20 s |
+| Polymarket markets | Gamma API, tag discovery (`POLYMARKET_TAG`, default `midterms`) every 10 min, batched slug refresh | 20 s |
 | Kalshi prices | Trade API v2 `?tickers=` batches | 5 s (30 s once the websocket streams) |
 | Kalshi prices, optional | Websocket `ticker` channel, needs an API key | real time |
 | 6 pm ET baseline | Polymarket `prices-history` | every 30 min |
 
 Each interval can be overridden with an environment variable: `NYT_INTERVAL`, `POLYMARKET_INTERVAL`, `KALSHI_INTERVAL`, `KALSHI_MIN_GAP`, `HISTORY_EVERY`, `HISTORY_FILE`, `POLYMARKET_WS=0`.
 
+The election itself is set by `ELECTION_DATE` (default `2026-11-03`). The year in feed URLs, market slugs and tickers, and the 6 pm ET baseline all follow from it. `POLYMARKET_TAG` and `BASELINE_TS` can be overridden separately.
+
 ## Kalshi API key (optional, makes Kalshi real time)
 
 Create the key on Kalshi under Account Settings, API Keys, Create New API Key. Ed25519 and RSA keys both work. Kalshi shows the private key once, so save the downloaded file. Then set two environment variables:
 
 - `KALSHI_API_KEY_ID`: the key ID
-- `KALSHI_PRIVATE_KEY`: the PEM text. Literal `\n` escapes or base64 of the whole PEM also work. Alternatively, set `KALSHI_PRIVATE_KEY_PATH` to the file.
+- `KALSHI_PRIVATE_KEY`: the PEM text. Literal `\n` escapes, base64 of the whole PEM, or just the base64 body between the BEGIN and END lines also work. Alternatively, set `KALSHI_PRIVATE_KEY_PATH` to the file.
 
-The tracker only reads market data with it: it never calls an order or portfolio endpoint. Without the variables it falls back to REST polling, and `/api/health` shows `kalshi_ws` as disabled. A rejected key shows up there as `handshake rejected: ... 401`.
+The tracker only reads market data with it: it never calls an order or portfolio endpoint. A read-only key is enough. Without the variables it falls back to REST polling, and `/api/health` shows `kalshi_ws` as disabled. A key that is set but can't be read shows as `key not usable`, and a rejected key as `handshake rejected: ... 401`.
 
 ## Rules
 

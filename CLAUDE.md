@@ -1,10 +1,10 @@
-# Election Night 2026 tracker: working notes
+# Election Night tracker: working notes
 
 Read this first. It is the handoff between sessions: what we're building, where it stands, and what's next.
 
 ## Goal
 
-A live API for the 2026 midterms (election day 2026-11-03), built on election night. The priority is data that is as current and as close to streaming as possible. Early vote and history are backend nice-to-haves, not needs. Methodology source: https://election.offgramercy.com/methodology. Reference repo: https://github.com/KeepTheOutliers/margin-of-error.
+A live results site and API, built on election night for the 2026 midterms (2026-11-03). The priority is results that are as current as possible; a few seconds of lag is fine. Early vote and history are backend nice-to-haves. For another cycle (2028), read `docs/NEXT_CYCLE.md`: most of it is one `ELECTION_DATE` setting, and the presidential race is the main thing still to build. Methodology source: https://election.offgramercy.com/methodology. Reference repo: https://github.com/KeepTheOutliers/margin-of-error.
 
 ## Run it
 
@@ -30,29 +30,19 @@ Check status at `curl -s localhost:8000/api/health`. Kalshi discovery takes 1 to
 
 https://electionnight2026-production.up.railway.app, deployed from `main` by Railway (Dockerfile, port 8080, 1 replica). Kalshi keys are not set there, so Kalshi uses REST polling only.
 
-## Status (as of 2026-11-04 ~00:55 UTC)
+## Status (election night 2026)
 
-Built, tested (13 tests) and pushed on `claude/laughing-brahmagupta-yyojle`; the Kalshi key fix is on `claude/brave-thompson-x08sht`, which contains that branch plus the fix. `/api/health` returned ok against the live feeds:
+Everything is on `main`, with 16 offline tests. The other remote branches (`claude/laughing-brahmagupta-yyojle`, `claude/brave-thompson-x08sht`) are merged leftovers. On the live site, AP/NYT data was a few seconds old, Polymarket streamed, and Kalshi refreshed by REST.
 
-- **NYT/AP:** votes and calls 5 to 8 s old.
-- **Polymarket:** websocket streaming.
-- **Kalshi REST:** about 3 s old.
-- **Early vote:** loaded.
+## Kalshi key
 
-## Kalshi websocket key: confirmed working (2026-11-04 ~01:04 UTC)
+A read-only key ("Read all data") is enough for the market-data websocket; confirmed on 2026-11-04. The user's `KALSHI_PRIVATE_KEY` was the 64-character base64 body of an Ed25519 PEM, which `kalshi_auth.py` accepts along with the other formats in the README. The websocket reconnects each time discovery adds tickers, so `last_msg` is bursty for the first couple of minutes.
 
-The user's read-only key ("Read all data") is enough for the market-data websocket. `/api/health` showed `kalshi_ws` ok, about 700 markets subscribed, and `last_msg` advancing.
-
-- **`KALSHI_API_KEY_ID`:** the key UUID.
-- **`KALSHI_PRIVATE_KEY`:** a 64-character base64 of the Ed25519 key's DER, i.e. the PEM body without its BEGIN/END lines. The original loader rejected that silently and health said "disabled"; `kalshi_auth.py` now accepts it. Raw PEM, `\n`-escaped PEM, base64 PEM and `KALSHI_PRIVATE_KEY_PATH` also work, and a set-but-unreadable key now shows as `key not usable`.
-- **Reconnects during discovery:** the websocket reconnects each time discovery adds tickers, so `last_msg` is bursty for the first couple of minutes. That is by design.
-
-Never print, log or commit the key values. Never ask the user to paste a key into chat.
-
-The user is deleting the Kalshi account after election night. Remind them to also remove both variables from the environment settings.
+Never print, log or commit the key values. Never ask the user to paste a key into chat. The user is deleting the Kalshi account after election night; remind them to also remove both variables from the cloud environment settings.
 
 ## Code map
 
+- **`tracker/config.py`:** `ELECTION_DATE` and everything derived from it (year, feed URLs, 6 pm ET baseline), plus poll intervals.
 - **`tracker/nyt.py`:** parses the NYT results JSON (AP data). Race keys are `S-TX`, `S-OH-special`, `G-GA` and `H-PA-07`; at-large districts are `-01`.
 - **`tracker/markets.py`:** Polymarket and Kalshi parsing, slug and ticker mapping, and the display-price rule (bid/ask midpoint, or last trade if the spread is over 10 cents).
 - **`tracker/model.py`:** blend, tiers and seat projection, following the methodology rules.
@@ -62,6 +52,7 @@ The user is deleting the Kalshi account after election night. Remind them to als
 - **`tracker/live.py`:** the compact `/api/live` payload, which is what the page draws.
 - **`tracker/static/`:** the results page (`index.html`, `app.css`, `app.js`, no build step) and `us-states.json`, the Albers state paths built by `scripts/build_map.py`.
 - **`Dockerfile`:** one process, one worker, reads `$PORT`; for Render, Railway or Fly.
+- **`docs/NEXT_CYCLE.md`:** how to reuse this for 2028.
 
 ## Hard-won gotchas
 
@@ -75,14 +66,13 @@ The user is deleting the Kalshi account after election night. Remind them to als
 
 ## Known gaps and backlog (in priority order)
 
-0. **House map:** it is state-level (seats won or led per state), plus a seat grid. A true district map needs 2026 congressional boundaries, and several states redrew mid-decade, so it was left out rather than drawn on stale lines.
-
-1. ~~Confirm the Kalshi websocket with the real key.~~ Done, see above.
-2. 64 House districts have no market on either site, so they show as `unpriced`.
-3. "Since 6 pm" exists for chamber control only, from Polymarket history. Per-race history is available at `/api/races/{key}/history`.
-4. Kalshi seat-count markets (`KXDSENATEWON`, etc.) and Polymarket seat buckets aren't ingested.
-5. Optional: Open America (`openamerica.io/elections/results.json?year=2026&office=Senate`). It is state-reported, covers about 22 states and works with no key, but the publisher asks developers to contact them before repackaging. Use it only as a cross-check.
-6. Direct state feeds (AZ every 2 min, OH every 3, NC every 5 to 10) are slower than AP via NYT. Use them for verification only.
+1. **President (2028):** not supported yet; see `docs/NEXT_CYCLE.md`.
+2. **House map:** it is state-level (seats won or led per state), plus a seat grid. A true district map needs current congressional boundaries, and several states redrew mid-decade, so it was left out rather than drawn on stale lines.
+3. 64 House districts have no market on either site, so they show as `unpriced`.
+4. "Since 6 pm" exists for chamber control only, from Polymarket history. Per-race history is available at `/api/races/{key}/history`.
+5. Kalshi seat-count markets (`KXDSENATEWON`, etc.) and Polymarket seat buckets aren't ingested.
+6. Optional: Open America (`openamerica.io/elections/results.json?year=2026&office=Senate`). It is state-reported, covers about 22 states and works with no key, but the publisher asks developers to contact them before repackaging. Use it only as a cross-check.
+7. Direct state feeds (AZ every 2 min, OH every 3, NC every 5 to 10) are slower than AP via NYT. Use them for verification only.
 
 ## Licensing notes, to raise if this goes public
 
@@ -95,4 +85,4 @@ The user is deleting the Kalshi account after election night. Remind them to als
 - No em dashes.
 - Keep the user posted in a few words during long work.
 - The user granted full autonomy on this repo. Push straight to `main`, no branches and no PRs (the user's instruction on 2026-11-04). Every push to `main` redeploys the Railway site.
-- The user cares about results only: no market odds on the page. Projected winners get a yellow check, flipped seats a gold outline. The design reference is Google's election results page.
+- The user cares about results only: no market odds on the page. Projected winners get a yellow check, flipped seats a gold outline, and races link out to their NYT results page. The design reference is Google's election results page.

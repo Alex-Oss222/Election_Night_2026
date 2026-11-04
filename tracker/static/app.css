@@ -3,14 +3,14 @@
    Party scale is nine steps: called, 10+, 5-10, 1-5 point leads, then a gray "within 1" middle. */
 :root {
   --bg: #202124; --panel: #28292c; --panel-2: #303134; --line: #3c4043; --line-2: #5f6368;
-  --fg: #e8eaed; --muted: #9aa0a6; --faint: #80868b; --ink-on-light: #202124; --ink-on-dark: #ffffff;
+  --fg: #e8eaed; --muted: #9aa0a6; --faint: #80868b; --ink-on-light: #202124;
   --bar-d: #5468f0; --bar-r: #e3324b; --bar-none: #3c4043;
   --d1: #9cc3ea; --d2: #5b9bd8; --d3: #2b6fc5; --d4: #1553a8; --d-text: #7d8cff;
   --r1: #e9b3b3; --r2: #da8585; --r3: #c95252; --r4: #a62a2a; --r-text: #ff5c70;
   --i1: #d3c3ec; --i2: #ad8fd6; --i3: #8a62bf; --i4: #6b3fa3; --i-text: #b99cf0;
   --toss: #a9abb0;
   --none: #2a2b2e; --open: #36373b; --closed: #3c3e43; --hatch: #5f6368;
-  --live: #ff4d55; --yellow: #f6d20b; --yellow-ink: #141100; --wait-bg: #f0c541; --wait-fg: #1a1500; --ok: #3ccf8e; --warn: #f0b541;
+  --live: #ff4d55; --yellow: #f6d20b; --yellow-ink: #141100; --ok: #3ccf8e; --warn: #f0b541;
   --font-display: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   --font-body: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   --radius: 6px;
@@ -36,7 +36,6 @@ button { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--d2); outline-offset: 2px; }
 .wrap { max-width: 1280px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.num { font-family: var(--font-display); font-stretch: 80%; font-variant-numeric: tabular-nums; }
 .d { color: var(--d-text); } .r { color: var(--r-text); } .i { color: var(--i-text); }
 .muted { color: var(--muted); }
 
@@ -101,8 +100,6 @@ section h2 { font-family: var(--font-display); font-stretch: 80%; font-weight: 8
 .cell { background: var(--panel); padding: 10px 12px; min-width: 0; box-shadow: 1px 0 0 var(--line), 0 1px 0 var(--line); }
 .cell .v { font-family: var(--font-display); font-stretch: 80%; font-weight: 700; font-size: 22px; line-height: 1.15; }
 .cell .s { font-size: 12px; color: var(--muted); }
-.oddsbar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 6px; background: var(--open); }
-.oddsbar span { height: 100%; }
 
 /* map */
 .map-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
@@ -150,7 +147,7 @@ section h2 { font-family: var(--font-display); font-stretch: 80%; font-weight: 8
 .col h3 { margin: 0 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; text-align: center; }
 .col .cnt { font-family: var(--font-display); font-stretch: 80%; font-size: 22px; font-weight: 800; display: block; text-align: center; line-height: 1; margin-bottom: 4px; }
 .chips { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; }
-.rchip { font: 700 11px/1 var(--font-display); font-stretch: 85%; padding: 4px 5px; border-radius: 3px; cursor: default; white-space: nowrap; }
+.rchip { font: 700 11px/1 var(--font-display); font-stretch: 85%; padding: 4px 5px; border-radius: 3px; white-space: nowrap; }
 .board-note { font-size: 12px; color: var(--muted); margin-top: 8px; }
 
 /* race cards (Google-style) */
@@ -181,9 +178,11 @@ table.rc-t { width: 100%; min-width: 0; border-collapse: collapse; margin-top: 8
 .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
 .dot.D { background: var(--bar-d); } .dot.R { background: var(--bar-r); } .dot.I { background: var(--i3); }
 .rc-foot { font-size: 12px; color: var(--muted); margin-top: 8px; }
+.rc-links { display: flex; gap: 14px; margin-top: 8px; font-size: 13px; }
+.rc-links a { color: var(--d-text); text-decoration: none; font-weight: 500; }
+.rc-links a:hover { text-decoration: underline; }
+.rc, .rchip, .tile, #tbl tbody tr, #map .co { cursor: pointer; }
 .more { margin-top: 10px; background: none; border: 0; padding: 4px 0; cursor: pointer; font-size: 15px; color: var(--fg); }
-.pbox { width: 18px; height: 18px; border-radius: 2px; color: #fff; font: 700 12px/18px var(--font-display); text-align: center; }
-.pbox.D { background: var(--d3); } .pbox.R { background: var(--r3); } .pbox.I { background: var(--i3); }
 
 /* table */
 .tbl-tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
@@ -221,11 +220,9 @@ aside { min-width: 0; }
   border: 1px solid var(--line-2); border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,.35); padding: 12px 14px; pointer-events: none; font-size: 13px; }
 .tip h4 { margin: 0; font-family: var(--font-display); font-stretch: 85%; font-size: 18px; }
 .tip .row { display: grid; grid-template-columns: 18px minmax(0,1fr) auto auto; gap: 6px; align-items: center; margin-top: 5px; }
-.tip .w { font-weight: 700; }
 .tip .row .vv { color: var(--muted); font-size: 12px; text-align: right; }
-.tip .barline { height: 4px; border-radius: 2px; background: var(--open); margin: 2px 0 0 24px; overflow: hidden; }
-.tip .barline span { display: block; height: 100%; }
 .tip .rc { background: none; border: 0; padding: 0; }
+.tip-hint { margin-top: 8px; font-size: 12px; font-weight: 500; color: var(--d-text); }
 .tip .foot { margin-top: 8px; font-size: 12px; color: var(--muted); display: grid; gap: 2px; }
 
 footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; padding-block: 16px 32px; }

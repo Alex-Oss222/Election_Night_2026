@@ -52,7 +52,6 @@
     return String(n);
   }
   const fmtN = (n) => (n || 0).toLocaleString("en-US");
-  const pct = (p, d = 0) => (p == null ? "–" : (p * 100).toFixed(d) + "%");
   const pctIn = (e) => (e == null ? "–" : e > 0 && e < 1 ? "<1%" : Math.round(e) + "%");
   const ordinal = (n) => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] || "th"));
   const lastName = (name) => {
@@ -62,7 +61,6 @@
 
   // ------------------------------------------------------------------ race helpers
   const partyOf = (c) => (!c ? "I" : c.caucus === "D" || c.caucus === "R" ? c.caucus : c.party === "D" || c.party === "R" ? c.party : "I");
-  const letter = (c) => (c.party === "D" || c.party === "R" ? c.party : (c.party || "I").slice(0, 1).toUpperCase());
   const lc = (p) => p.toLowerCase();
   const distNum = (r) => {
     const n = parseInt(String(r.key).split("-")[2], 10);
@@ -133,6 +131,25 @@
     return `<span class="pill plain">Polls close ${etTime(r.poll_close) || "later"} ET</span>`;
   }
   const officeRaces = () => byOffice[office] || [];
+  // Links out: each race's own NYT results page (it comes with the feed, so its numbers match ours);
+  // a Google search when there is none, and for a state's whole House delegation.
+  const nytUrl = (u) => (typeof u === "string" && /^https:\/\/www\.nytimes\.com\//.test(u) ? u : null);
+  const googleUrl = (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+  const cycleYear = () => (data && data.election && data.election.year) || "";
+  const raceGoogle = (r) => googleUrl(`${raceName(r)} election results ${cycleYear()}`);
+  const raceLink = (r) => nytUrl(r.url) || raceGoogle(r);
+  function stateLink(ab) {
+    const rs = officeRaces().filter((r) => r.state === ab);
+    if (!rs.length) return null;
+    if (office === "house" && rs.length > 1) return googleUrl(`${STATE_NAMES[ab] || ab} House election results ${cycleYear()}`);
+    return raceLink(rs.find((r) => !r.special) || rs[0]);
+  }
+  function openLink(url) {
+    if (!url) return;
+    const a = document.createElement("a");
+    a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+    document.body.appendChild(a); a.click(); a.remove();
+  }
   function groupBy(arr, f) { const o = {}; for (const x of arr) (o[f(x)] ||= []).push(x); return o; }
   const raceSort = (a, b) => (STATE_NAMES[a.state] || a.state).localeCompare(STATE_NAMES[b.state] || b.state)
     || (+a.special - +b.special) || (parseInt(distNum(a), 10) || 0) - (parseInt(distNum(b), 10) || 0);
@@ -332,8 +349,8 @@
       }
     }
     $("map-note").textContent = office === "house"
-      ? "Each state shows House seats won or led, Democrats first. Switch to House seats for every district. Hover or tap for details."
-      : "Each state shows the leading candidate's vote total; color shows who leads and by how much. Hover or tap a state for the full count.";
+      ? "Each state shows House seats won or led, Democrats first. Switch to House seats for every district. Hover for details, click for full results."
+      : "Each state shows the leading candidate's vote total; color shows who leads and by how much. Hover for the full count, click for the full results page.";
   }
   function renderSeatGrid() {
     const show = office === "house" && houseView === "seats";
@@ -393,9 +410,10 @@
     const where = r.office === "house" ? `${st8} ${distNum(r) === "AL" ? "At-large" : "District " + distNum(r)}` : st8 + (r.special ? " (special)" : "");
     const rep = st.tv ? `${pctIn(r.eevp)} reporting` : st.kind === "open" ? `Polls close ${etTime(r.poll_close)} ET` : "No votes reported yet";
     const sub = (opts.office && r.office !== "house" ? officeLine(r) + " · " : "") + rep;
+    const links = opts.links === false ? "" : `<div class="rc-links"><a href="${esc(raceLink(r))}" target="_blank" rel="noopener noreferrer">Full results ›</a>${nytUrl(r.url) ? `<a href="${esc(raceGoogle(r))}" target="_blank" rel="noopener noreferrer">Google</a>` : ""}</div>`;
     const foot = [st.kind === "called" && r.called_at ? `Projected ${etTime(r.called_at)} ET` : "",
       !r.called && r.est_votes_outstanding ? `About ${fmtV(r.est_votes_outstanding)} votes left to count` : ""].filter(Boolean).join(" · ");
-    return `<article class="rc" data-key="${esc(r.key)}">${opts.eyebrow ? `<div class="eyebrow">${esc(opts.eyebrow)}</div>` : ""}<div class="rc-head"><div><h3>${esc(where)}</h3><div class="sub">${esc(sub)}</div></div>${r.battleground ? '<span class="chip">Key race</span>' : ""}</div>${st.kind === "called" ? `<div>${statusPill(r, st)}</div>` : ""}${candTable(r, st)}${foot ? `<div class="rc-foot">${esc(foot)}</div>` : ""}</article>`;
+    return `<article class="rc" data-key="${esc(r.key)}">${opts.eyebrow ? `<div class="eyebrow">${esc(opts.eyebrow)}</div>` : ""}<div class="rc-head"><div><h3>${esc(where)}</h3><div class="sub">${esc(sub)}</div></div>${r.battleground ? '<span class="chip">Key race</span>' : ""}</div>${st.kind === "called" ? `<div>${statusPill(r, st)}</div>` : ""}${candTable(r, st)}${foot ? `<div class="rc-foot">${esc(foot)}</div>` : ""}${links}</article>`;
   }
   function renderCards() {
     let rs = officeRaces().filter((r) => r.battleground);
@@ -468,7 +486,7 @@ oth: ({ st }) => { const o = best(st, (p) => p === "I"); return o && st.tv ? o.v
     if (r.total_votes) extra.push(`${fmtN(r.total_votes)} votes counted`);
     if (RATING[r.rating]) extra.push(`Pre-election rating: ${RATING[r.rating]}`);
     if (r.poll_close) extra.push(`Polls ${new Date(r.poll_close) <= Date.now() ? "closed" : "close"} ${etTime(r.poll_close)} ET`);
-    return raceCard(r, { office: true }) + `<div class="foot">${extra.map((f) => `<span>${esc(f)}</span>`).join("")}</div>`;
+    return raceCard(r, { office: true, links: false }) + `<div class="foot">${extra.map((f) => `<span>${esc(f)}</span>`).join("")}</div>`;
   }
   function stateTip(ab) {
     const rs = officeRaces().filter((r) => r.state === ab);
@@ -485,8 +503,10 @@ oth: ({ st }) => { const o = best(st, (p) => p === "I"); return o && st.tv ? o.v
   }
   function showTip(el, x, y) {
     const tip = $("tip");
-    tipTarget = el;
-    tip.innerHTML = el.dataset.key ? (byKey[el.dataset.key] ? raceTip(byKey[el.dataset.key]) : "") : stateTip(el.dataset.st);
+    tipTarget = el; tipId = idOf(el);
+    const url = el.dataset.key ? byKey[el.dataset.key] && raceLink(byKey[el.dataset.key]) : stateLink(el.dataset.st);
+    tip.innerHTML = (el.dataset.key ? (byKey[el.dataset.key] ? raceTip(byKey[el.dataset.key]) : "") : stateTip(el.dataset.st))
+      + (url ? `<div class="tip-hint">${lastPointer === "touch" ? "Tap again" : "Click"} for full results ›</div>` : "");
     tip.hidden = false;
     if (x != null) { tip.dataset.x = x; tip.dataset.y = y; }
     const w = tip.offsetWidth, h = tip.offsetHeight, px = +tip.dataset.x, py = +tip.dataset.y;
@@ -499,24 +519,35 @@ oth: ({ st }) => { const o = best(st, (p) => p === "I"); return o && st.tv ? o.v
     if (el.classList.contains("st")) el.classList.add("hl");
   }
   function hideTip() {
-    $("tip").hidden = true; tipTarget = null;
+    $("tip").hidden = true; tipTarget = null; tipId = null;
     document.querySelectorAll("#map .hl").forEach((n) => n.classList.remove("hl"));
   }
   const tipEl = (t) => t && t.closest && t.closest("[data-key], #map [data-st]");
+  const idOf = (el) => (el.dataset.key ? "k:" + el.dataset.key : "s:" + el.dataset.st);
+  let tipId = null, lastPointer = "mouse", touchArmed = false;
   document.addEventListener("pointermove", (e) => {
     if (e.pointerType === "touch") return;
     const el = tipEl(e.target);
     el ? showTip(el, e.clientX, e.clientY) : tipTarget && hideTip();
   });
   document.addEventListener("pointerdown", (e) => {
+    lastPointer = e.pointerType || "mouse";
     if (e.pointerType !== "touch") return;
     const el = tipEl(e.target);
+    touchArmed = !!el && tipId === idOf(el);  // a second tap on the same race opens it
     el ? showTip(el, e.clientX, e.clientY) : hideTip();
   });
   addEventListener("scroll", () => tipTarget && hideTip(), { passive: true });
 
   // ------------------------------------------------------------------ controls
   document.addEventListener("click", (e) => {
+    if (!e.target.closest("button, a, input")) {
+      const el = tipEl(e.target);
+      if (el && (lastPointer !== "touch" || touchArmed)) {
+        openLink(el.dataset.key ? byKey[el.dataset.key] && raceLink(byKey[el.dataset.key]) : stateLink(el.dataset.st));
+        return;
+      }
+    }
     const t = e.target.closest("button");
     if (!t) return;
     if (t.dataset.office) { office = t.dataset.office; allCards = false; history.replaceState(null, "", "#" + office); render(); }
@@ -549,6 +580,10 @@ oth: ({ st }) => { const o = best(st, (p) => p === "I"); return o && st.tv ? o.v
       clearTimeout(timer);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       data = await res.json();
+      if (data.election && data.election.year) {
+        $("brand").textContent = `Election Night ${data.election.year}`;
+        document.title = `Election Night ${data.election.year}`;
+      }
       lastOk = Date.now(); failures = 0;
       index(); render();
     } catch (err) {

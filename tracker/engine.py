@@ -165,7 +165,7 @@ class Engine:
             offset = 0
             while offset < 5000:
                 r = await self.client.get(f"{C.GAMMA}/events", params={
-                    "tag_slug": "midterms", "closed": closed, "limit": 500, "offset": offset})
+                    "tag_slug": C.POLYMARKET_TAG, "closed": closed, "limit": 500, "offset": offset})
                 r.raise_for_status()
                 page = r.json()
                 for ev in page:
