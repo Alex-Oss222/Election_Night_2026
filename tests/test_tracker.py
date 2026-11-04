@@ -137,11 +137,28 @@ def test_kalshi_key_env_formats(monkeypatch):
     from cryptography.hazmat.primitives.asymmetric import ed25519
     from tracker.kalshi_auth import KalshiSigner
 
-    pem = _pem(ed25519.Ed25519PrivateKey.generate()).decode()
+    import pytest
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+
+    monkeypatch.delenv("KALSHI_PRIVATE_KEY_PATH", raising=False)
     monkeypatch.setenv("KALSHI_API_KEY_ID", "kid")
-    for form in (pem, pem.replace("\n", "\\n"), base64.b64encode(pem.encode()).decode()):
-        monkeypatch.setenv("KALSHI_PRIVATE_KEY", form)
-        assert KalshiSigner.from_env() is not None
+    for k in (ed25519.Ed25519PrivateKey.generate(), rsa.generate_private_key(public_exponent=65537, key_size=2048)):
+        pem = _pem(k).decode()
+        der = k.private_bytes(serialization.Encoding.DER, serialization.PrivateFormat.PKCS8,
+                              serialization.NoEncryption())
+        pem_body = "".join(pem.strip().splitlines()[1:-1])  # the PEM with its BEGIN/END lines dropped
+        for form in (pem, pem.replace("\n", "\\n"), base64.b64encode(pem.encode()).decode(),
+                     base64.b64encode(der).decode(), pem_body):
+            monkeypatch.setenv("KALSHI_PRIVATE_KEY", form)
+            assert KalshiSigner.from_env() is not None
+
+    # A key that is set but unreadable must raise (reported as "key not usable"), not look unset
+    for bad in ("not base64 !!", base64.b64encode(b"\x00" * 48).decode()):
+        monkeypatch.setenv("KALSHI_PRIVATE_KEY", bad)
+        with pytest.raises(ValueError):
+            KalshiSigner.from_env()
+
     monkeypatch.delenv("KALSHI_PRIVATE_KEY")
     assert KalshiSigner.from_env() is None
 
