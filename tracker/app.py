@@ -7,12 +7,19 @@ import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.responses import FileResponse, Response, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 from . import config as C
 from .engine import Engine, age_seconds
+from .live import live_payload
+
+STATIC = Path(__file__).parent / "static"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -29,6 +36,14 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="Election Night 2026 Tracker", version="0.1.0", lifespan=lifespan,
               description="AP results (via NYT JSON) blended with Polymarket and Kalshi prices.")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], allow_headers=["*"])
+app.add_middleware(GZipMiddleware, minimum_size=1024)  # Starlette leaves text/event-stream uncompressed
+app.mount("/static", StaticFiles(directory=STATIC), name="static")
+
+
+@app.get("/", include_in_schema=False)
+def page():
+    """The results page. It polls /api/live every few seconds."""
+    return FileResponse(STATIC / "index.html", headers={"Cache-Control": "no-cache"})
 
 
 # A source is stale when it hasn't succeeded for 3x its poll interval.
@@ -77,6 +92,21 @@ def state_early_vote(state: str):
 def snapshot():
     """Everything in one payload: control, projections, calls, every race."""
     return engine.snapshot()
+
+
+_live: tuple[int, bytes] | None = None
+
+
+@app.get("/api/live")
+def live():
+    """What the results page draws: control, projections, calls and a compact row per race.
+    Serialised once per data version, so many viewers cost one build."""
+    global _live
+    if not _live or _live[0] != engine.version:
+        snap = engine.snapshot()
+        _live = (snap["version"], json.dumps(live_payload(snap, health()["sources"]),
+                                             separators=(",", ":")).encode())
+    return Response(_live[1], media_type="application/json", headers={"Cache-Control": "no-store"})
 
 
 @app.get("/api/control")

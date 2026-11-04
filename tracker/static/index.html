@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Election Night 2026</title>
+<meta name="description" content="Live 2026 midterm results: AP votes and calls with Polymarket and Kalshi odds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1 class="brand">Election Night 2026</h1>
+    <div class="status" id="status"><span class="live down" id="live">CONNECTING</span></div>
+    <div class="sources" id="sources"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs" role="tablist" aria-label="Office">
+    <button class="tab" role="tab" id="tab-senate" data-office="senate" aria-selected="true">Senate <small id="tab-odds-senate"></small></button>
+    <button class="tab" role="tab" id="tab-house" data-office="house" aria-selected="false">House <small id="tab-odds-house"></small></button>
+    <button class="tab" role="tab" id="tab-governor" data-office="governor" aria-selected="false">Governor <small id="tab-odds-governor"></small></button>
+  </nav>
+
+  <div class="layout">
+    <main>
+      <div class="latest" id="latest">Loading results…</div>
+
+      <section aria-labelledby="seats-h">
+        <h2 id="seats-h" hidden>Seats</h2>
+        <div class="seats-head">
+          <div class="seats-side"><div class="big d" id="seat-d">–</div><div class="side-label" id="seat-d-label">Democratic seats</div></div>
+          <div class="to-win" id="to-win"></div>
+          <div class="seats-side right"><div class="big r" id="seat-r">–</div><div class="side-label" id="seat-r-label">Republican seats</div></div>
+        </div>
+        <div class="bar" id="seat-bar" role="img" aria-label="Seats by party"></div>
+        <div class="bar-labels" id="bar-labels"></div>
+        <div class="bar-key">
+          <span><i class="sw" style="background:var(--d4)"></i>Not up</span>
+          <span><i class="sw" style="background:var(--d3)"></i>Won</span>
+          <span><i class="sw seg-hatch-d"></i>Leading in votes</span>
+          <span><i class="sw" style="background:var(--open)"></i>No votes counted yet</span>
+        </div>
+      </section>
+
+      <section aria-label="Odds and counts"><div class="strip" id="strip"></div></section>
+
+      <section aria-labelledby="map-h">
+        <div class="map-tools">
+          <h2 id="map-h" style="margin:0">Results map</h2>
+          <div class="toggles">
+            <button class="chip-btn" id="bg-only" aria-pressed="false">Battlegrounds only</button>
+            <button class="chip-btn" id="view-map" aria-pressed="true" hidden>U.S. map</button>
+            <button class="chip-btn" id="view-seats" aria-pressed="false" hidden>House seats</button>
+          </div>
+        </div>
+        <div class="legend">
+          <span class="k"><i class="box" style="background:var(--d4)"></i>Dem win</span>
+          <span class="k"><i class="box" style="background:repeating-linear-gradient(135deg,var(--d4) 0 3px,var(--d1) 3px 6px)"></i>Dem flip</span>
+          <span class="k"><i class="box" style="background:var(--r4)"></i>GOP win</span>
+          <span class="k"><i class="box" style="background:repeating-linear-gradient(135deg,var(--r4) 0 3px,var(--r1) 3px 6px)"></i>GOP flip</span>
+          <span class="k"><i class="box" style="background:repeating-linear-gradient(135deg,var(--closed) 0 3px,var(--hatch) 3px 5px)"></i>Polls closed, no votes yet</span>
+          <span class="k"><i class="box" style="background:var(--open)"></i>Polls open</span>
+          <span class="k"><i class="box" style="background:var(--none);border:1px solid var(--line-2)"></i>No election</span>
+        </div>
+        <div class="scale">
+          <div class="scale-row">
+            <span style="background:var(--d4)"></span><span style="background:var(--d3)"></span><span style="background:var(--d2)"></span><span style="background:var(--d1)"></span><span style="background:var(--toss)"></span><span style="background:var(--r1)"></span><span style="background:var(--r2)"></span><span style="background:var(--r3)"></span><span style="background:var(--r4)"></span>
+          </div>
+          <div class="scale-labels"><span>Called</span><span>Leads 10+</span><span>5–10</span><span>1–5</span><span>Within 1</span><span>1–5</span><span>5–10</span><span>Leads 10+</span><span>Called</span></div>
+        </div>
+        <div class="map-box" id="map-box">
+          <svg id="map" viewBox="0 0 1060 610" role="img" aria-label="Map of results by state"></svg>
+        </div>
+        <div class="seatgrid" id="seatgrid" hidden></div>
+        <p class="board-note" id="map-note">Each state shows the leader's vote total. Hover or tap a state for the full count.</p>
+      </section>
+
+      <section aria-labelledby="board-h">
+        <h2 id="board-h">Race ratings from the markets</h2>
+        <div class="board-scroll"><div class="board" id="board"></div></div>
+        <p class="board-note" id="board-note"></p>
+      </section>
+
+      <section aria-labelledby="bg-h">
+        <h2 id="bg-h">Battlegrounds</h2>
+        <div class="cards" id="cards"></div>
+        <button class="more" id="cards-more" hidden></button>
+      </section>
+
+      <section aria-labelledby="all-h">
+        <h2 id="all-h">All races</h2>
+        <div class="tbl-tools">
+          <input class="search" id="search" type="search" placeholder="Filter by state, district or candidate" aria-label="Filter races">
+          <span class="muted" id="tbl-count"></span>
+        </div>
+        <div class="tbl-wrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+      </section>
+    </main>
+
+    <aside>
+      <div class="feed">
+        <h2><span class="badge-live">LIVE</span> Calls and poll closings</h2>
+        <ol id="feed"></ol>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Votes and race calls: AP, read from the New York Times results feed. Unofficial until certified. AP calls can trail network projections.</p>
+    <p>Odds: Polymarket and Kalshi prices, averaged. They are market prices, not a forecast. Ratings tiers: safe 90%+, likely 75–90, lean 60–75, toss-up 40–60.</p>
+    <p>Map: U.S. Census Bureau boundaries via us-atlas. Data refreshes every 3 seconds; the results feed itself updates about every 10.</p>
+  </div>
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+<script src="/static/app.js"></script>
+</body>
+</html>

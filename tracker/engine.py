@@ -521,7 +521,7 @@ class Engine:
             if kx_t in self.kx_events:
                 r["markets"]["kalshi"]["outcomes"] = self.kx_events[kx_t]
         else:
-            r["candidates"] = [{k: c[k] for k in ("name", "party", "votes", "pct", "winner", "incumbent")}
+            r["candidates"] = [{k: c.get(k) for k in ("name", "party", "caucus", "votes", "pct", "winner", "incumbent")}
                                for c in r["candidates"][:4]]
         return r
 

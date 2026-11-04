@@ -54,7 +54,10 @@ The user is deleting the Kalshi account after election night. Remind them to als
 - **`tracker/model.py`:** blend, tiers and seat projection, following the methodology rules.
 - **`tracker/engine.py`:** all pollers and websockets, plus the in-memory store.
 - **`tracker/kalshi_auth.py`:** Ed25519 and RSA-PSS signing.
-- **`tracker/app.py`:** FastAPI endpoints, an SSE stream at `/api/stream`, and staleness reporting in `/api/health`.
+- **`tracker/app.py`:** FastAPI endpoints, an SSE stream at `/api/stream`, staleness reporting in `/api/health`, the page at `/` and `/api/live`, cached per data version.
+- **`tracker/live.py`:** the compact `/api/live` payload, which is what the page draws.
+- **`tracker/static/`:** the results page (`index.html`, `app.css`, `app.js`, no build step) and `us-states.json`, the Albers state paths built by `scripts/build_map.py`.
+- **`Dockerfile`:** one process, one worker, reads `$PORT`; for Render, Railway or Fly.
 
 ## Hard-won gotchas
 
@@ -67,6 +70,8 @@ The user is deleting the Kalshi account after election night. Remind them to als
 - **Grepping JSON:** FastAPI returns compact JSON (`"ok":true`, no spaces), so grep patterns must match that.
 
 ## Known gaps and backlog (in priority order)
+
+0. **House map:** it is state-level (seats won or led per state), plus a seat grid. A true district map needs 2026 congressional boundaries, and several states redrew mid-decade, so it was left out rather than drawn on stale lines.
 
 1. ~~Confirm the Kalshi websocket with the real key.~~ Done, see above.
 2. 64 House districts have no market on either site, so they show as `unpriced`.

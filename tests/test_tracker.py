@@ -173,3 +173,32 @@ def test_kalshi_ws_ticker_updates_price():
     o = e.kx_events["SENATETX-26"][0]
     assert (o["bid"], o["ask"], o["p"]) == (0.61, 0.63, 0.62)
     assert e.status["kalshi_ws"]["last_msg"]
+
+
+def test_live_payload_is_compact_and_complete():
+    from tracker.live import live_payload, slim_race
+    race = {"key": "S-TX", "office": "senate", "state": "TX", "district": None, "special": False, "called": False,
+            "winner": None, "winner_party": None, "flip": None, "runoff": False, "eevp": 23.0, "total_votes": 100,
+            "expected_votes": 400, "est_votes_outstanding": 300, "uncontested": False,
+            "poll_close": "2026-11-04T01:00:00Z", "call_status": "too_early", "called_at": None,
+            "blend": {"D": 0.9, "R": 0.1}, "rating": {"normalized": "TOSS_UP", "battleground": True},
+            "classification": {"party": "D", "tier": "likely", "p": 0.9},
+            "candidates": [{"name": "A", "party": "D", "caucus": "D", "votes": 60, "pct": 60, "winner": False,
+                            "incumbent": False, "img": "x"}],
+            "markets": {"polymarket": {"outcomes": ["big"]}}, "provenance": {"results": "AP"}}
+    s = slim_race(race)
+    assert s["tier"] == "likely" and s["rating"] == "TOSS_UP" and s["battleground"] is True
+    assert "markets" not in s and "provenance" not in s and "img" not in s["candidates"][0]
+    out = live_payload({"version": 3, "races": [race], "calls": []}, {"nyt": {"ok": True, "age_seconds": 2, "stale": False, "x": 1}})
+    assert out["version"] == 3 and out["sources"]["nyt"] == {"ok": True, "age_seconds": 2, "stale": False}
+
+
+def test_page_and_map_are_served():
+    from fastapi.testclient import TestClient
+    from tracker.app import app
+    c = TestClient(app)  # no lifespan: the engine (and its network pollers) never starts
+    r = c.get("/")
+    assert r.status_code == 200 and "/static/app.js" in r.text
+    assert c.get("/static/app.js").status_code == 200
+    m = c.get("/static/us-states.json").json()
+    assert len(m["states"]) == 51 and m["states"]["TX"]["d"].startswith("M")

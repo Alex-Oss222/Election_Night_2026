@@ -14,10 +14,39 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
 Interactive docs are served at `http://localhost:8000/docs`. On startup the first NYT pull takes about 2 seconds, Polymarket discovery about 5, and Kalshi discovery 1 to 2 minutes, because Kalshi rate-limits aggressively and discovery probes one event per request. Once discovery is done, Kalshi is refreshed in batches of 100 markets.
 
+## Results page
+
+Open `http://localhost:8000/` for the live results page. It has the following parts:
+
+- **Office tabs:** Senate, House and governor.
+- **Seats bar:** seats not up, won and leading in votes, with the number needed to win.
+- **Map:** each state is colored by who leads in votes and by how much, and labeled with the leader's vote total. Hover or tap a state for the full count. The House tab shows seats won or led per state, plus a grid of all 435 seats.
+- **Ratings board:** called, safe, likely, lean and toss-up races, from the blended market odds.
+- **Battlegrounds:** a card for each battleground race.
+- **All races:** a table you can filter and sort.
+- **Live feed:** AP calls and poll closings.
+
+The page polls `GET /api/live` every 3 seconds. That endpoint is a compact version of the snapshot, serialised once per data change and gzipped to about 40 KB. Results reach the page within about 10 to 15 seconds of NYT publishing them, and market prices within a few seconds. The page has no build step and no dependencies apart from Google Fonts. The map shapes in `tracker/static/us-states.json` come from us-atlas (US Census boundaries) via `scripts/build_map.py`.
+
+## Put it on the web
+
+The included `Dockerfile` runs on any host that builds a Dockerfile, such as Render, Railway or Fly.io. To deploy:
+
+1. Create a web service from this repository and branch.
+2. Leave the start command alone. The image reads the host's `$PORT`.
+3. Optionally, set `KALSHI_API_KEY_ID` and `KALSHI_PRIVATE_KEY` in the host's environment settings for real-time Kalshi prices.
+4. Pick a plan that does not sleep when idle. A cold start restarts market discovery, which takes 1 to 2 minutes.
+
+Run exactly one instance with one worker, because all state is in memory. The page and the API share one origin, so the site needs no other configuration.
+
+Before making the site public, read the licensing notes at the end of `CLAUDE.md`. The NYT results JSON is not licensed for redistribution.
+
 ## Endpoints
 
 | Endpoint | What it returns |
 |---|---|
+| `GET /` | The live results page |
+| `GET /api/live` | What the page draws: control, projections, calls and a compact row per race (gzipped, about 40 KB) |
 | `GET /api/health` | Per-source status, last success, last error |
 | `GET /api/snapshot` | Everything: control, projections, calls, all 506 races |
 | `GET /api/control` | Senate/House control: blended, each book, rounded pills, change since 6 pm ET, NYT needle, AP winner |
